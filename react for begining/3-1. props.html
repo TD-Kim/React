@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <!-- development 를 사용하면 label의 for를 사용할 때 에러가난다. -->
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type= "text/babel">
+    
+    // function SaveBtn(){
+    //   return <button style={{
+    //     backgroundColor : "tomato",
+    //     color : "white",
+    //     padding : "10px 20px",
+    //     border : 0,
+    //     borderRadius : 10
+    //   }}>Save Changes</button>
+    // }
+    
+    // function Btn(props){  /* Btn 으로부터 전달받는 파라미터 */
+    function Btn({ banana, big }){
+      {/* console.log(props) */}
+      return (
+        <button 
+          style={{
+            backgroundColor : "tomato",
+            color : "white",
+            padding : "10px 20px",
+            border : 0,
+            borderRadius : 10,
+            fontSize : big ? 18 : 16
+          }}>
+            {/* {props.banana} */}
+            {banana}
+        </button>
+      )
+    }
+
+    // function ConfirmBtn(){
+    //   return <button>Confirm</button>
+    // }
+
+
+    // function App() {
+    //   return (
+    //     <div>
+    //       <SaveBtn /> {/* 함수형 컴포넌트라고 부른다. */}
+    //       <ConfirmBtn />
+    //     </div>
+    //   )
+    // }
+
+    function App() {
+      return (
+        <div>
+          {/* 아래는 Btn({banana:"save changes"}) 이렇게 작성하는 것과 똑같다. (React.js 가 이런형태로 바꿔줌. Btn 함수에 banana를 넣어준다는뜻) */}
+          <Btn banana="Save Changes" big={false}/>   
+          <Btn banana="Continue" big={true}/>
+        </div>
+      )
+    }
+    
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
+</html>

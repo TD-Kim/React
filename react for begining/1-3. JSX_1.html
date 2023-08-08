@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>    <!-- 이거 넣어줘도 아직 오류남. 아래 script 태그에 type 을 작성해줘야함.-->
+    <script type="text/babel">
+        /* JSX */
+        const root = document.getElementById("root");
+        const Title = (
+            <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
+                Hello I'm a title    
+            </h3>
+        );
+        const Button = (
+            <button 
+                style={{
+                    backgroundColor : "tomato",
+                }}
+                onClick = {() => console.log("im clicked")}
+            >
+                Click me
+            </button>
+        );
+
+        const container = React.createElement("div", null, [Title, Button]);
+        ReactDOM.render(container, root);
+
+        /* 
+            실행시키면 아래와 같은 오류가남.
+            Uncaught SyntaxError: Unexpected token '<'
+            브라우저가 온전히 JSX를 이해하는 것은 아니라서 에러가 발생하는 것.
+            그래서 브라우저가 JSX를 이해할 수 있게 뭔가르 설치해줘야 함.
+            (한 번 변환해줘야 한다. ==> index.html 에서 했던 방식으로 변환해줘야함. 이걸 해주는게 Babel)
+        */
+
+    </script>
+</html>

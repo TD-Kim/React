@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById("root");
+        function App() {
+            /* useState() 는 counter 같은 데이터를 숫자형 데이터로 건네주고, 그 데이터 값을 바꿀 함수도 함께 준다. */
+            /* 아래 modifier 는 보통 앞의 변수명을 set 한다는 의미로 "setCounter" 이런 식의 변수명으로 많이 짓는다. */
+            const [counter, setCounter] = React.useState(0);  
+            const onClick = () => {
+                setCounter(counter + 1);
+            }
+            // console.log(data);  /* [undefined, ƒ] ==>  undefined가 data, f는 undefined를 바꿔줄 함수 */
+            /* React.js 가 달라진 state 만 감지하여 변경해준다. */
+            return ( 
+                <div>
+                    <h3>Total clicks : {counter}</h3>
+                    <button onClick={onClick}>Click me</button>
+                </div>
+            )
+        };
+
+        ReactDOM.render(<App/>, root);
+    </script>
+</html>

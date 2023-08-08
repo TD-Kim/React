@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>    <!-- 이거 넣어줘도 아직 오류남. 아래 script 태그에 type 을 작성해줘야함.-->
+    <script type="text/babel">
+        /* JSX */
+        const root = document.getElementById("root");
+        let counter = 0;
+        function countUp(){
+            counter = counter + 1;
+            render();   /* 계속해서 render 해주는걸 잊으면 안되기 때문에 최고의 방법은 아니다. */
+        } /* 버튼을 클릭해도 계속 0 ==> Container를 리렌더링 해주지 않아서 */
+        function render(){
+            ReactDOM.render(<Container/>, root);
+        }
+        const Container = () => (
+            <div>
+                <h3>Total clicks : {counter}</h3>
+                <button onClick={countUp}>Click me</button>
+            </div>
+        );  
+
+        render();
+    </script>
+</html>
