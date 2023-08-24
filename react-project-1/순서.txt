@@ -1,0 +1,4 @@
+1. index.js
+2. App.js
+3. Cleanup.js => index.js 에서 App.js 주석하고 Cleanup.js 추가
+4. ToDoList_1.js => index.js 에서 ToDoList_1.js 주석하고 ToDoList_1.js 추가
