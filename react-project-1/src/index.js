@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 // import CoinTracker from "./CoinTracker";
 // import MovieApp from "./MovieApp";
 import ReactRouter from "./ReactRouter";
+import styles from "./styles.css";
 
 ReactDOM.render(
   // <App />
