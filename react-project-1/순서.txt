@@ -1,4 +1,22 @@
 1. index.js
 2. App.js
 3. Cleanup.js => index.js 에서 App.js 주석하고 Cleanup.js 추가
-4. ToDoList_1.js => index.js 에서 ToDoList_1.js 주석하고 ToDoList_1.js 추가
+4. ToDoList.js => index.js 에서 ToDoList.js 주석하고 ToDoList.js 추가
+5. CoinTracker
+6. MovieApp.js
+7. Movie.js (npm install react-router-dom 터미널 입력)
+8. routes, components 폴더 생성 (Movie.js components 폴더로 이동)
+9. routes 폴더에 Home.js 생성하고 MoiveApp.js 내용 Home.js 로 이동
+10. routes 폴더에 Detail.js 생성
+11. ReactRouter.js 생성 (https://v5.reactrouter.com/web/guides/quick-start 에서 import 복사해오기)
+(css 는 제외)
+12. 터미널 npm i gh-pages 입력해서 설치 ==> 결과물을 github에 업로드 할 수 있게 해주는 패키지
+  12-1. package.json 에 있는 scripts 확인
+        script를 실행하면 소스의 production ready code를 생성하게 된다.
+        production ready 란 코드가 압축되고 모든게 최적화된다는 의미.
+        (npm run build 명령어로 production ready code 생성)
+        npm run build 하면 build 폴더가 생김. build 안에는 브라우저가 이해할 수 있는 코드로 변경되어있는 소스를 볼 수 있음.(못생김)
+  12-2. package.json 에 homepage 정보 입력(github 레포지토리 경로)
+  12-3. package.json script 부분에 deploy 추가. ==> 방금 설치한 gh-pages를 실행시키고 build 디렉토리를 가져가는 역할.
+  12-4. predeploy 커맨드도 추가. ==> deploy 실행하면 predeploy가 자동으로 먼저 실행되고
+        predeploy는 npm run build 를 실행시킴(build 전에 한 번 했으면 build 폴더 삭제하고 다시 해본다.)
