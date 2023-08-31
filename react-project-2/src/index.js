@@ -1,17 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import State from "./State";
+import ComponentLifeCycle from "./ComponentLifeCycle";
+import MovieComponent from "./MovieComponent";
+import StylingTheMovies from "./StylingTheMovies";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// ReactDOM.render(<App />, document.getElementById("root"));
+// ReactDOM.render(<State />, document.getElementById("root"));
+// ReactDOM.render(<ComponentLifeCycle />, document.getElementById("root"));
+// ReactDOM.render(<MovieComponent />, document.getElementById("root"));
+ReactDOM.render(<StylingTheMovies />, document.getElementById("root"));
