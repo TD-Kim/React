@@ -6,3 +6,9 @@
 6. useConfirm
 7. usePreventLeave
 8. useBeforeLeave
+9. useFadeIn
+10. useNetwork
+11. useScroll
+12. useFullscreen
+13. useNotification
+14. useAxios
