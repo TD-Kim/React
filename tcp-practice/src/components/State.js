@@ -74,6 +74,7 @@ const List = () => {
   );
 };
 
+// path="" 로 지정하면 기본적으로 상위 부모의 path 를 따라간다.
 const State = () => {
   return (
     <>
