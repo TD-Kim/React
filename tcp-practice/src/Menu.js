@@ -26,6 +26,9 @@ const Menu = () => {
           <li>
             <Link to="/state">State</Link>
           </li>
+          <li>
+            <Link to="/css">Css Styling</Link>
+          </li>
         </ul>
       </nav>
 

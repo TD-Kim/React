@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import About from "./components/About";
 import NoMatch from "./components/NoMatch";
@@ -7,6 +7,7 @@ import JSX from "./components/JSX";
 import Comp from "./components/Comp";
 import Props from "./components/Props";
 import State from "./components/State";
+import CssStyle from "./components/CssStyle";
 import Menu from "./Menu";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/comp" element={<Comp />} />
           <Route path="/props" element={<Props />} />
           <Route path="/state/*" element={<State />} />
+          <Route path="/css/*" element={<CssStyle />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

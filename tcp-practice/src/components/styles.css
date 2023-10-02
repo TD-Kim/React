@@ -1,0 +1,15 @@
+.App {
+  text-align: left;
+}
+
+.App-header {
+  background-color: black;
+  color: yellow;
+  text-align: center;
+  min-height: 2vh;
+}
+
+.App-title {
+  text-decoration: underline;
+  text-shadow: 4px 1px #9c9c9c;
+}

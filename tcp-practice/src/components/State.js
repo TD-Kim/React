@@ -63,7 +63,7 @@ const List = () => {
     <div>
       <ul>
         <li>
-          <Link to="counter">Counter 증가</Link>
+          <Link to="">Counter 증가</Link>
         </li>
         <li>
           <Link to="area">Area 증가</Link>
@@ -81,7 +81,7 @@ const State = () => {
       <h1>State</h1>
       <Routes>
         <Route path="" element={<List />}>
-          <Route path="counter" index element={<Counter />} />
+          <Route index element={<Counter />} />
           <Route path="area" element={<Area />} />
         </Route>
       </Routes>
