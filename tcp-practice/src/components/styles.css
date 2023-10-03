@@ -13,3 +13,21 @@
   text-decoration: underline;
   text-shadow: 4px 1px #9c9c9c;
 }
+
+/* light와 dark 공통 스타일 */
+.box-light,
+.box-dark {
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+/* light 스타일 */
+.box-light {
+  color: black;
+  background: white;
+}
+/* dark 스타일 */
+.box-dark {
+  color: white;
+  background: black;
+}

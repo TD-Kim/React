@@ -9,6 +9,7 @@ import Props from "./components/Props";
 import State from "./components/State";
 import CssStyle from "./components/CssStyle";
 import Menu from "./Menu";
+import Hooks from "./components/Hooks";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/props" element={<Props />} />
           <Route path="/state/*" element={<State />} />
           <Route path="/css/*" element={<CssStyle />} />
+          <Route path="/hooks/*" element={<Hooks />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

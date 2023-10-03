@@ -29,6 +29,9 @@ const Menu = () => {
           <li>
             <Link to="/css">Css Styling</Link>
           </li>
+          <li>
+            <Link to="/hooks">Hooks</Link>
+          </li>
         </ul>
       </nav>
 
