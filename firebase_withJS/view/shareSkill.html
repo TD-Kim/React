@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShareSkill</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="../resources/css/shareSkill.css" rel="stylesheet" />
+  </head>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-expand-xxl bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">ShareSkill</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">튜터 신청</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">수업 목록</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">회원가입</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- 캐러셀 시작 -->
+    <div id="carouselExampleCaptions" class="carousel slide">
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <!-- <img
+            src="../resources/img/guitar.jpg"
+            class="d-block w-100"
+            alt="..."
+          /> -->
+          <div
+            class="item1"
+            style="
+              width: 100%;
+              height: 100%;
+              background-image: url('../resources/img/guitar.jpg');
+              background-position: left center;
+            "
+          >
+            <div class="carousel-caption d-none d-md-block intro">
+              <h2>음악 배워보세요</h2>
+              <h3>멋진 뮤지션들이 주변에 있습니다.</h3>
+              <a href="#">수업 찾기</a>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <!-- <img
+            src="../resources/img/course5.jpg"
+            class="d-block w-100"
+            alt="..."
+          /> -->
+          <div
+            class="item2"
+            style="
+              width: 100%;
+              height: 100%;
+              background-image: url('../resources/img/course5.jpg');
+              background-position: center;
+            "
+          >
+            <div class="carousel-caption d-none d-md-block intro">
+              <h2>메이크업 배워보세요</h2>
+              <h3>멋진 메이크업 아티스트들이 주변에 있습니다.</h3>
+              <a href="#">수업 찾기</a>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <!-- <img
+            src="../resources/img/cooking.jpg"
+            class="d-block w-100"
+            alt="..."
+          /> -->
+          <div
+            class="item3"
+            style="
+              width: 100%;
+              height: 100%;
+              background-image: url('../resources/img/cooking.jpg');
+              background-position: center;
+            "
+          >
+            <div class="carousel-caption d-none d-md-block intro">
+              <h2>요리 배워보세요</h2>
+              <h3>멋진 요리사들이 주변에 있습니다.</h3>
+              <a href="#">수업 찾기</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <!-- 캐러셀 끝 -->
+    <div class="container">
+      <!-- 튜터 모집 alert 시작  -->
+      <div class="row">
+        <div class="col-12">
+          <div
+            class="alert alert-warning alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>튜터 모집!</strong> 재능을 나누어보아요.
+            <button type="button" class="btn-close" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+      <!-- 튜터 모집 alert 끝  -->
+      <!-- 클래스 목록 시작 -->
+      <div class="row" id="courseList"></div>
+    </div>
+  </body>
+  <script type="module">
+    // import { db, getDocs } from "../resources/js/firebase.js";
+    import * as firebase from "../resources/js/firebase.js";
+    const { db, getDocs, collection } = firebase;
+    // import {
+    //   db,
+    //   collection,
+    //   getDocs,
+    //   doc,
+    //   setDoc,
+    //   addDoc,
+    //   updateDoc,
+    //   deleteDoc,
+    //   deleteField,
+    //   onSnapshot,
+    // } from "../resources/js/firebase.js";
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // const firebaseConfig = {
+    //   apiKey: "AIzaSyChTHSbAjDu1N7t98jK01Hc9SWHB_MJ1lo",
+    //   authDomain: "t-01-d1b15.firebaseapp.com",
+    //   projectId: "t-01-d1b15",
+    //   storageBucket: "t-01-d1b15.appspot.com",
+    //   messagingSenderId: "207422918508",
+    //   appId: "1:207422918508:web:d8a73303fb892186fbed49",
+    //   measurementId: "G-7W31LLPQQ1",
+    // };
+
+    // Initialize Firebase
+    // const app = initializeApp(firebaseConfig);
+    // const analytics = getAnalytics(app);
+    // const db = getFirestore(app);
+
+    async function getCourse() {
+      const querySnapshot = await getDocs(collection(db, "course"));
+      // console.log(querySnapshot);
+      querySnapshot.forEach((doc) => {
+        // console.log(doc)
+        console.log(doc.data());
+        const {
+          courseImgPath,
+          courseAlt,
+          courseName,
+          tchrPflImgPath,
+          tchrName,
+        } = doc.data();
+        // 문서 id 가져오기
+        // console.log(doc.id);
+
+        const courseList = document.getElementById("courseList");
+        doc;
+        courseList.insertAdjacentHTML(
+          "beforeend",
+          `
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+          <a href="#" class="course">
+            <img
+              src="${courseImgPath}"
+              width="100%"
+              class="course-img"
+              alt="${courseAlt}"
+            />
+            <div class="info">
+              <h4>${courseName}</h4>
+              <div class="lecture">
+                <img
+                  src="${tchrPflImgPath}"
+                  width="20"
+                  height="20"
+                  alt="강사 프로필"
+                />
+                <span class="name">${tchrName}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      `
+        );
+      });
+
+      // const unsubscribe = onSnapshot(querySnapshot, (ss) => {
+      //   ss.docChanges().forEach((change) => {
+      //     if (change.type === "added") {
+      //       console.log("New product", change.doc.data());
+      //     }
+      //     if (change.type === "modified") {
+      //       console.log("modified product", change.doc.data());
+      //     }
+      //     if (change.type === "removed") {
+      //       console.log("Removed product", change.doc.data());
+      //     }
+      //   });
+      // });
+      // unsubscribe();
+      //   const docRef = doc(db, "product");
+      //   const docSnap = await getDoc(docRef);
+      //   console.log(docSnap.data());
+    }
+    getCourse();
+  </script>
+  <script>
+    // const courseArr = [];
+    // const courseObj1 = {
+    //   courseImgPath: "../resources/img/course1.jpg",
+    //   courseAlt: "과정1번 이미지",
+    //   courseName: "개성있는 일러스트 작품 만들기",
+    //   tchrPflImgPath: "../resources/img/user.png",
+    //   tchrName: "김진용",
+    // };
+    // const courseObj2 = {
+    //   courseImgPath: "../resources/img/course2.jpg",
+    //   courseAlt: "과정2번 이미지",
+    //   courseName: "내가 만드는 나만의 악세서리",
+    //   tchrPflImgPath: "../resources/img/user.png",
+    //   tchrName: "김진용",
+    // };
+    // const courseObj3 = {
+    //   courseImgPath: "../resources/img/course3.jpg",
+    //   courseAlt: "과정3번 이미지",
+    //   courseName: "내 이야기를 노래로!",
+    //   tchrPflImgPath: "../resources/img/user.png",
+    //   tchrName: "김진용",
+    // };
+    // const courseObj4 = {
+    //   courseImgPath: "../resources/img/course4.jpg",
+    //   courseAlt: "과정4번 이미지",
+    //   courseName: "비전공자를 위한 웹 프로그래밍",
+    //   tchrPflImgPath: "../resources/img/user.png",
+    //   tchrName: "김진용",
+    // };
+
+    // courseArr.push(courseObj1);
+    // courseArr.push(courseObj2);
+    // courseArr.push(courseObj3);
+    // courseArr.push(courseObj4);
+
+    // console.log(courseArr);
+    // 노드, 요소
+    // 노드를 추가하는 방법
+    // append, prepend, before, after, appendChild, insertBefore
+    // 문자열로 추가할 수 있는 방법
+    // innerHTML, insertAdjacentHTML
+
+    const courseList = document.getElementById("courseList");
+    // courseArr.forEach(el => {
+    //   courseList.insertAdjacentHTML("beforeend", `
+    //   <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+    //       <a href="#" class="course">
+    //         <img
+    //           src="${el.courseImgPath}"
+    //           width="100%"
+    //           class="course-img"
+    //           alt="${el.courseAlt}"
+    //         />
+    //         <div class="info">
+    //           <h4>${el.courseName}</h4>
+    //           <div class="lecture">
+    //             <img
+    //               src="${el.tchrPflImgPath}"
+    //               width="20"
+    //               height="20"
+    //               alt="강사 프로필"
+    //             />
+    //             <span class="name">${el.tchrName}</span>
+    //           </div>
+    //         </div>
+    //       </a>
+    //     </div>
+    //   `);
+    // })
+  </script>
+</html>
