@@ -1,0 +1,19 @@
+0. node 재설치 후 cra 명령어가 오류가 나면 아래 명령어 진행 후 다시 실행
+    $ npm rm -g create-react-app
+    $ npm install create-react-app
+    위 명령어는 윈도우 cmd 에서 진행
+1. 프로젝트 생성 후 npm run start 로 프로젝트 실행
+   개발모드로 실행하는 것이며 코드를 수정할때마다 바로바로 반영된다.
+ 1.1 npm start 명령어 오류시 npm install -g react-scripts 실행하고 다시 실행
+2. 크롬 react developer tools 검색하고 확장 프로그램 추가(">>" 눌러보면 Components, Profiler 추가됨)
+3. 필요 없는 파일 삭제. 
+    (public 폴더 index.html 만. index.html 도 불필요한 내용 제거)
+    (src폴더 index.js 빼고 다 삭제.)
+4. index.html 파일은 가장 먼저 실행되는 파일
+   index.js 는 index.html 파일이 열리고나서 실행되는 파일. 리액트 코드들 중에 가장 먼저 실행되는 파일이라 생각하면 된다.
+5. App.js 생성
+6. assets 폴더 생성 및 이미지 추가
+7. Dice.js 생성
+8. App.js 에 Dice 컴포넌트 추가하고 props 로 color 추가한 뒤 개발자 도구에서 Components 확인
+
+
