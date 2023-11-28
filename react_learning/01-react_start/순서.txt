@@ -15,5 +15,9 @@
 6. assets 폴더 생성 및 이미지 추가
 7. Dice.js 생성
 8. App.js 에 Dice 컴포넌트 추가하고 props 로 color 추가한 뒤 개발자 도구에서 Components 확인
+9. Button.js 생성
+10. App.js 에 State 추가
+11. board.js 생성. App.js 내용 Board.js 로 옮기고 App.js 수정
+    11.1 화면확인 후 던지기 버튼 하나로 두개의 주사위 변경되도록 수정
 
 

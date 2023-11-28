@@ -23,9 +23,10 @@ const DICE_IMAGES = {
   red: [diceRed01, diceRed02, diceRed03, diceRed04, diceRed05, diceRed06],
 };
 
-function Dice(props) {
-  const diceImg = props.color == "red" ? diceRed01 : diceBlue01;
-  return <img src={diceImg} alt="주사위" />;
+function Dice({ color = "blue", num = 1 }) {
+  const src = DICE_IMAGES[color][num - 1];
+  const alt = `${color} ${num}`;
+  return <img src={src} alt={alt} />;
 }
 
 export default Dice;
