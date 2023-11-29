@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Button from "./Button";
 import Board from "./Board";
+import "./App.css";
+import logo from "./assets/logo.png";
 
 /* 
   리액트 컴포넌트에 전달된 속성들을 props 라고 한다.
@@ -115,12 +117,22 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="App">
       <div>
-        <Button onClick={handleRollClick}>던지기</Button>
-        <Button onClick={handleClearClick}>처음부터</Button>
+        <img class="App-logo" src={logo} alt="주사위게임 로고" />
+        <h1 className="App-title">주사위게임</h1>
+        <div>
+          {/* <Button color="blue" onClick={handleRollClick}> */}
+          <Button className="App-button" color="blue" onClick={handleRollClick}>
+            던지기
+          </Button>
+          {/* <Button color="red" onClick={handleClearClick}> */}
+          <Button className="App-button" color="red" onClick={handleClearClick}>
+            처음부터
+          </Button>
+        </div>
       </div>
-      <div>
+      <div className="App-boards">
         {/*
         <Board
           name="나"

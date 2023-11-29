@@ -1,0 +1,42 @@
+0. node 재설치 후 cra 명령어가 오류가 나면 아래 명령어 진행 후 다시 실행
+    $ npm rm -g create-react-app
+    $ npm install create-react-app
+    위 명령어는 윈도우 cmd 에서 진행
+1. 프로젝트 생성 후 npm run start 로 프로젝트 실행
+   개발모드로 실행하는 것이며 코드를 수정할때마다 바로바로 반영된다.
+ 1.1 npm start 명령어 오류시 npm install -g react-scripts 실행하고 다시 실행
+2. 크롬 react developer tools 검색하고 확장 프로그램 추가(">>" 눌러보면 Components, Profiler 추가됨)
+3. 필요 없는 파일 삭제. 
+    (public 폴더 index.html 만. index.html 도 불필요한 내용 제거)
+    (src폴더 index.js 빼고 다 삭제.)
+4. index.html 파일은 가장 먼저 실행되는 파일
+   index.js 는 index.html 파일이 열리고나서 실행되는 파일. 리액트 코드들 중에 가장 먼저 실행되는 파일이라 생각하면 된다.
+5. App.js 생성
+6. assets 폴더 생성 및 이미지 추가
+7. Dice.js 생성
+8. App.js 에 Dice 컴포넌트 추가하고 props 로 color 추가한 뒤 개발자 도구에서 Components 확인
+9. Button.js 생성
+10. App.js 에 State 추가
+ 10.1 State가 바뀌었을때 리액트가 렌더링 하는 순서
+      렌더링 될 때 문제점 ==> 아무 변화없는 요소들도 다시 렌더링됨
+      ==> virtualDOM 이라는걸 활용하여 문제점 해결
+      ==> DOM트리 자료구조로 저장되어있음
+      ==> DOM트리를 본따서 만든 virtualDOM 사용
+      ==> 실제 DOM트리에 바로 반영하는게 아니라 virtualDOM에 먼저 적용
+      ==> 화면을 바꿀 준비만하고 실제로 반영은 하지 않고 State 변경 전의 VirtualDOM과 변경 후의 virtualDOM을 비교한다.(리액트가)
+      ==> 바뀐 부분만 찾아내 실제 DOM 노드를 변경한다.
+      ==> 직접 DOM 노드를 신경쓸 필요가 없다. ==> 코드가 단순하고 깔끔 ==> 데이터만 어떻게 보여줄지 신경쓰면된다.
+          변경사항들을 리액트가 적당히 모아서 처리할 수 있음.
+          ==> 적당히 일감들을 모아뒀다가 적당히 처리함
+11. board.js 생성. App.js 내용 Board.js 로 옮기고 App.js 수정
+    11.1 화면확인 후 던지기 버튼 하나로 두개의 주사위 변경되도록 수정
+12. Button.js 에서 인라인 스타일 설명
+13. CSS 클래스 사용해서 디자인 적용(index.css 파일 생성)
+14. Button.css 만들고 코드 작성
+ 14.1 Button.js 에 인라인 스타일 객체 적용한것을 클래스로 적용
+15. App.css 생성
+ 15.1 왜 굳이 App.js 에서(부모 컴포넌트에서) 스타일을 지정해주는 것일까?
+      ==> 자식 요소들 간의 여백을 조절할 수 있으니까 훨씬 더 직관적으로 스타일을 다룰 수 있다.
+
+
+

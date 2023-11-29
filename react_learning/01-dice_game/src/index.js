@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // JSX는 자바스크립트의 확장문법. 실행될 때 자바스크립트 코드로 변환되어 실행된다.
