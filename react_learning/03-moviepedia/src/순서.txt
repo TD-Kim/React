@@ -1,0 +1,10 @@
+1. mock.json 파일 생성(내용 추가, 이미지 인터넷에서 따오기)
+2. components 폴더 생성
+3. ReviewList.js 생성
+4. App.js 생성
+5. map으로 배열 렌더링하기
+ 5.1 ReviewList.js 에 ReviewListItem 컴포넌트 생성
+ 5.2 ReviewList.css 생성하고 내용 작성
+6. sort로 정렬 바꾸기
+7. filter로 아이템 삭제하기
+ * filter 는 걸러내고 새로운 배열을 반환, find 는 찾으면 바로 반복 종료하고 배열이 아닌 값으로 반환
