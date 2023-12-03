@@ -28,8 +28,9 @@ function ReviewList({ items, onDelete }) {
       {items.map((item) => {
         // return <li>{item.title}</li>;
         return (
-          <li>
+          <li key={item.id}>
             <ReviewListItem item={item} onDelete={onDelete} />
+            {/* <input></input> */}
           </li>
         );
       })}
