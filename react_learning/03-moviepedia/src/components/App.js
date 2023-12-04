@@ -3,14 +3,15 @@ import ReviewList from "./ReviewList";
 // import items from "../mock.json";
 // import mockItems from "../mock.json";
 import { useEffect, useState } from "react";
+import { db, getDatas } from "../firebase.js";
 
-const LIMIT = 6;
+const LIMIT = 25;
 
 function App() {
   // const [items, setItems] = useState(mockItems);
   const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
-  const [offset, setOffset] = useState(0);
+  const [lq, setLq] = useState({});
   const [hasNext, setHasNext] = useState(false);
   // sort 메소드에 아무런 아규먼트도 전달하지 않을 때는 기본적으로 유니코드에 정의된 문자열 순서에 따라 정렬된다.
   // ==> compareFunction이 생략될 경우 , 배열의 요소들은 모두 문자열 취급되며, 유니코드 값 순서대로 정렬된다.
@@ -21,7 +22,8 @@ function App() {
   // 반환 값 > 0 : b가 a보다 앞에 있어야 한다.
   // a-b : 오름차순, b-a : 내림차순
   // const sortedItems = items.sort((a, b) => b.rating - a.rating);
-  const sortedItems = items.sort((a, b) => b[order] - a[order]);
+  // const sortedItems = items.sort((a, b) => b[order] - a[order]);
+  const sortedItems = items;
   const handleNewestClick = () => setOrder("createdAt");
   const handleBestClick = () => setOrder("rating");
   const handleDelete = (id) => {
@@ -51,19 +53,37 @@ function App() {
   //   setOffset(options.offset + reviews.length);
   //   setHasNext(paging.hasNext);
   // };
+  // const handleLoad = async (options) => {
+  //   const { reviews, paging } = await getReviews(options);
+  //   if (options.offset === 0) {
+  //     setItems(reviews);
+  //   } else {
+  //     setItems((prevItems) => [...prevItems, ...reviews]);
+  //   }
+  //   setOffset(options.offset + reviews.length);
+  //   setHasNext(paging.hasNext);
+  // };
+
   const handleLoad = async (options) => {
-    const { reviews, paging } = await getReviews(options);
-    if (options.offset === 0) {
+    const { reviews, lastQuery } = await getDatas("movie", options);
+    if (options.lq === undefined) {
       setItems(reviews);
     } else {
       setItems((prevItems) => [...prevItems, ...reviews]);
+      console.log(lastQuery);
     }
-    setOffset(options.offset + reviews.length);
-    setHasNext(paging.hasNext);
+    // if (lastQuery) {
+    //   setHasNext(true);
+    //   setLq(lastQuery);
+    // } else {
+    //   setHasNext(false);
+    // }
+    setLq(lastQuery);
+    setHasNext(lastQuery);
   };
 
   const handleLoadMore = () => {
-    handleLoad({ order, offset, limit: LIMIT });
+    handleLoad({ order, lq, limit: LIMIT });
   };
 
   // handleLoad();
@@ -76,7 +96,8 @@ function App() {
   //   handleLoad(order);
   // }, [order]);
   useEffect(() => {
-    handleLoad({ order, offset: 0, limit: LIMIT });
+    // handleLoad({ order, offset: 0, limit: LIMIT });
+    handleLoad({ order, lq: undefined, limit: LIMIT });
   }, [order]);
   // useEffect 는 argument로 콜백함수와 배열을 넘겨준다.
   // [] 는 dependency list 라고 하는데 위에서 handleLoad 함수가 무한루프 작동하는 이유를 설명할 때
