@@ -40,6 +40,21 @@
  api.js 수정하고 App.js 수정
 14. 비동기로 State를 변경할 때 주의할 점
  더보기 버튼을 누르고 삭제를 빠르게 눌러본다.
-
+15. 네트워크 로딩 처리하기
+ 개발자도구의 네트워크 탭에서 Slow 3G로 바꾼 후 더보기 버튼을 빠르게 클릭 해본다.
+ ==> 불필요한 중복된 요청이 생길 수 있다.
+ App.js 에 isLoading State 생성. button 태그의 disabled prop에 isLoading 으로 변경
+16. 네트워크 에러 처리하기
+17. 입력폼 만들기
+ ReviewForm.js 생성. App.js 에 ReviewForm 컴포넌트 추가
+18. ReviewForm.css 생성
+19. ReviewForm.js 에 확인 버튼 추가
+20. 하나의 State로 폼 구현하기
+21. 제어 컴포넌트와 비제어 컴포넌트
+ input 태그에서 onChange 로 리액트 state와 값을 input 값과 동일하게 맞추고 있는데
+ 이런 방식을 제어 컴포넌트라고 부른다. 리액트를 통해서 input 값을 제어하고 있기 때문.
+ 제어하지 않는 컴포넌트는 비제어 컴포넌트 라고 한다.
+22. FileInput.js 생성
+ * 파일 input 은 반드시 비제어 input 으로 만들어야 한다.
 
  

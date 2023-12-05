@@ -25,13 +25,9 @@ const db = getFirestore(app);
 
 async function getDatas(collectionName, options) {
   let querySnapshot;
-  let reviews;
+  let foods;
   let lastQuery;
-  // throw new Error("에러가 아니라 기능입니다.");
   if (options === undefined) {
-    // querySnapshot = await getDocs(collection(db, collectionName));
-    // dataList = querySnapshot.docs.map((doc) => doc.data());
-    // return dataList;
     return await getDocs(collection(db, collectionName)).then((result) =>
       result.docs.map((doc) => doc.data())
     );
@@ -45,12 +41,12 @@ async function getDatas(collectionName, options) {
     querySnapshot = await getDocs(firstQuery);
     if (querySnapshot.size > 0) {
       lastQuery = querySnapshot.docs[querySnapshot.docs.length - 1];
-      reviews = querySnapshot.docs.map((doc) => doc.data());
-      return { reviews, lastQuery };
+      foods = querySnapshot.docs.map((doc) => doc.data());
+      return { foods, lastQuery };
     } else {
-      reviews = [];
+      foods = [];
       lastQuery = null;
-      return { reviews, lastQuery };
+      return { foods, lastQuery };
     }
   } else {
     const firstQuery = query(
@@ -60,8 +56,8 @@ async function getDatas(collectionName, options) {
     );
     querySnapshot = await getDocs(firstQuery);
     lastQuery = querySnapshot.docs[querySnapshot.docs.length - 1];
-    reviews = querySnapshot.docs.map((doc) => doc.data());
-    return { reviews, lastQuery };
+    foods = querySnapshot.docs.map((doc) => doc.data());
+    return { foods, lastQuery };
   }
 }
 

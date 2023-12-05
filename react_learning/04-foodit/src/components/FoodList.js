@@ -24,7 +24,7 @@ function FoodList({ items, onDelete }) {
     <ul className="FoodList">
       {items.map((item) => (
         <li key={item.id}>
-          <FoodListItem item={item} onDelete={handleDelete} />
+          <FoodListItem item={item} onDelete={onDelete} />
         </li>
       ))}
     </ul>

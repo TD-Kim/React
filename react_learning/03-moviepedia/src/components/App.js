@@ -4,6 +4,7 @@ import ReviewList from "./ReviewList";
 // import mockItems from "../mock.json";
 import { useEffect, useState } from "react";
 import { db, getDatas } from "../firebase.js";
+import ReviewForm from "./ReviewForm.js";
 
 const LIMIT = 25;
 
@@ -13,6 +14,8 @@ function App() {
   const [order, setOrder] = useState("createdAt");
   const [lq, setLq] = useState({});
   const [hasNext, setHasNext] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState(null);
   // sort 메소드에 아무런 아규먼트도 전달하지 않을 때는 기본적으로 유니코드에 정의된 문자열 순서에 따라 정렬된다.
   // ==> compareFunction이 생략될 경우 , 배열의 요소들은 모두 문자열 취급되며, 유니코드 값 순서대로 정렬된다.
   // 그렇기 때문에 numbers에 sort 메소드를 사용한 것 처럼, 숫자를 정렬할 때는 우리가 상식적으로 이해하는 오름차순이나 내림차순 정렬이 되지 않는다.
@@ -65,19 +68,25 @@ function App() {
   // };
 
   const handleLoad = async (options) => {
-    const { reviews, lastQuery } = await getDatas("movie", options);
+    let result;
+    try {
+      setIsLoading(true);
+      setLoadingError(null);
+      result = await getDatas("movie", options);
+    } catch (error) {
+      console.error(error);
+      setLoadingError(error);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+    // const { reviews, lastQuery } = await getDatas("movie", options);
+    const { reviews, lastQuery } = result;
     if (options.lq === undefined) {
       setItems(reviews);
     } else {
       setItems((prevItems) => [...prevItems, ...reviews]);
-      console.log(lastQuery);
     }
-    // if (lastQuery) {
-    //   setHasNext(true);
-    //   setLq(lastQuery);
-    // } else {
-    //   setHasNext(false);
-    // }
     setLq(lastQuery);
     setHasNext(lastQuery);
   };
@@ -111,6 +120,7 @@ function App() {
         <button onClick={handleBestClick}>베스트순</button>
       </div>
       {/* <ReviewList items={items} /> */}
+      <ReviewForm />
       <ReviewList items={sortedItems} onDelete={handleDelete} />
       {/* <button onClick={handleLoadClick}>불러오기</button> */}
       {/* <button disabled={!hasNext} onClick={handleLoadMore}>
@@ -123,10 +133,18 @@ function App() {
         OR : 앞에 나오는 값이 false 이면 렌더링
       */}
       {hasNext && (
-        <button disabled={!hasNext} onClick={handleLoadMore}>
+        // <button disabled={!hasNext} onClick={handleLoadMore}>
+        <button disabled={isLoading} onClick={handleLoadMore}>
           더 보기
         </button>
       )}
+      {
+        // ? 표기는 Optional Chaining 이라는 표기법이다.
+        // 아래와 같이 쓰면 loadingError 가 있을 때만 message 프로퍼티를 참조하겠다는 의미이다.
+        // nullish 병합 연산자 '??'
+        // a ?? b ==> a가 null도 아니고 undefined 도 아니면 a, 그 외의 경우는 b
+        loadingError?.message && <span>{loadingError.message}</span>
+      }
     </div>
   );
 }

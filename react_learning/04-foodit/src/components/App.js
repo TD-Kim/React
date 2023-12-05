@@ -1,12 +1,19 @@
 import FoodList from "./FoodList";
 // import mockItems from "../mock.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db, getDatas } from "../firebase.js";
+import FoodForm from "./FoodForm.js";
+
+const LIMIT = 15;
 
 function App() {
   // const [items, setItems] = useState(mockItems);
   const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
-  const [cursor, setCursor] = useState();
+  const [lq, setLq] = useState({});
+  const [hasNext, setHasNext] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState(null);
 
   const handleNewestClick = () => setOrder("createdAt");
 
@@ -17,37 +24,47 @@ function App() {
   };
 
   const handleLoad = async (options) => {
-    const {
-      foods,
-      paging: { nextCursor },
-    } = await getFoods(options);
-    if (!options.cursor) {
+    let result;
+    try {
+      setLoadingError(null);
+      setIsLoading(true);
+      result = await getDatas("food", options);
+    } catch (error) {
+      setLoadingError(error);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
+    const { foods, lastQuery } = result;
+    if (options.lq === undefined) {
       setItems(foods);
     } else {
       setItems((prevItems) => [...prevItems, ...foods]);
     }
-    setCursor(nextCursor);
+    setLq(lastQuery);
+    setHasNext(lastQuery);
   };
 
   const handleLoadMore = () => {
-    handleLoad({
-      order,
-      cursor,
-    });
+    handleLoad({ order, lq, limit: LIMIT });
   };
 
   useEffect(() => {
-    handleLoad({ order });
+    handleLoad({ order, lq: undefined, limit: LIMIT });
   }, [order]);
 
-  const sortedItems = items.sort((a, b) => b[order] - a[order]);
   return (
     <div>
       <button onClick={handleNewestClick}>최신순</button>
       <button onClick={handleCalorieClick}>칼로리순</button>
-      <FoodList items={sortedItems} onDelete={handleDelete} />
-      <button onClick={handleLoad}>불러오기</button>
-      {cursor && <button onClick={handleLoadMore}>더보기</button>}
+      <FoodForm />
+      <FoodList items={items} onDelete={handleDelete} />
+      {/* <button onClick={handleLoad}>불러오기</button> */}
+      {hasNext && (
+        <button disabled={isLoading} onClick={handleLoadMore}>
+          더 보기
+        </button>
+      )}
     </div>
   );
 }
