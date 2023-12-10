@@ -3,12 +3,22 @@ import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
   query,
   where,
   orderBy,
   limit,
   startAfter,
+  addDoc,
+  doc,
+  exists,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAdHy-PY5GiXz7B73eiyeL8FT0udOmhBkM",
@@ -61,4 +71,42 @@ async function getDatas(collectionName, options) {
   }
 }
 
-export { db, getDatas };
+async function getLastId(collectionName) {
+  const lastQuery = await query(
+    collection(db, collectionName),
+    orderBy("id", "desc"),
+    limit(1)
+  );
+  const lastDoc = await getDocs(lastQuery);
+  const lastId = lastDoc.docs[0].data().id;
+  return lastId;
+}
+
+async function addDatas(collectionName, formData) {
+  const storage = getStorage();
+  const uuid = crypto.randomUUID();
+  const path = `food/${uuid}`;
+  // const path = `movie/movie-thumb`;
+  const lastId = (await getLastId(collectionName)) + 1;
+  const time = new Date().getTime();
+
+  const imageRef = ref(storage, path);
+  await uploadBytes(imageRef, formData.imgUrl).then(async (snapshot) => {
+    console.log("Uploaded a blob or file!");
+    await getDownloadURL(imageRef).then(async (url) => {
+      formData.imgUrl = url;
+      formData.id = lastId;
+      formData.createdAt = time;
+      formData.updatedAt = time;
+    });
+  });
+  const result = await addDoc(collection(db, collectionName), formData);
+  // addDoc 의 return 으로 doc 의 ref 객체가 나옴
+  const docSnap = await getDoc(result);
+  if (docSnap.exists()) {
+    const review = docSnap.data();
+    return { review };
+  }
+}
+
+export { db, getDatas, addDatas };

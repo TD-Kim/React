@@ -3,16 +3,32 @@ import "./ReviewForm.css";
 import FileInput from "./FileInput";
 import RatingInput from "./RatingInput";
 
-function ReviewForm() {
+const INITIAL_VALUES = {
+  title: "",
+  rating: 0,
+  content: "",
+  imgUrl: null,
+};
+
+function ReviewForm({
+  initialValues = INITIAL_VALUES,
+  initialPreview,
+  onSubmitSuccess,
+  onCancel,
+  onSubmit,
+}) {
   //   const [title, setTitle] = useState("");
   //   const [rating, setRating] = useState(0);
   //   const [content, setContent] = useState("");
-  const [values, setValues] = useState({
-    title: "",
-    rating: 0,
-    content: "",
-    imgFile: null,
-  });
+  // const [values, setValues] = useState({
+  //   title: "",
+  //   rating: 0,
+  //   content: "",
+  //   imgFile: null,
+  // });
+  const [values, setValues] = useState(initialValues);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittingError, setSubmittingError] = useState(null);
 
   //   const handleTitleChange = (e) => {
   //     setTitle(e.target.value);
@@ -45,16 +61,42 @@ function ReviewForm() {
     handleChange(name, value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    // const formData = new FormData(); // 파이어베이스에 데이터를 추가할 때 formData 는 사용할 수 없다.
+    const formData = {
+      title: values.title,
+      rating: values.rating,
+      content: values.content,
+      imgUrl: values.imgUrl,
+    };
+
+    // formData 는 XMLHttpRequest 전송을 위해 설꼐된 특수한 객체여서
+    // 문자열화할 수 없는 객체이기 때문에 console 로 확인할 수 없다.
+    // console.log(formData);
+    // for (let key of formData.keys()) {
+    //   console.log(key);
+    // }
+    try {
+      setSubmittingError(null);
+      setIsSubmitting(true);
+      const { review } = await onSubmit("movie", formData);
+      onSubmitSuccess(review);
+    } catch (error) {
+      setSubmittingError(error);
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
+    setValues(INITIAL_VALUES);
   };
 
   return (
     <form className="ReviewForm" onSubmit={handleSubmit}>
       <FileInput
-        name="imgFile"
-        value={values.imgFile}
+        name="imgUrl"
+        value={values.imgUrl}
+        initialPreview={initialPreview}
         onChange={handleChange}
       />
       {/*
@@ -87,7 +129,11 @@ function ReviewForm() {
         value={values.content}
         onChange={handleInputChange}
       />
-      <button type="submit">확인</button>
+      {onCancel && <button onClick={onCancel}>취소</button>}
+      <button type="submit" disabled={isSubmitting}>
+        확인
+      </button>
+      {submittingError?.message && <div>{submittingError.message}</div>}
     </form>
   );
 }

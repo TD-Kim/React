@@ -3,7 +3,7 @@ import ReviewList from "./ReviewList";
 // import items from "../mock.json";
 // import mockItems from "../mock.json";
 import { useEffect, useState } from "react";
-import { db, getDatas } from "../firebase.js";
+import { addDatas, getDatas } from "../firebase.js";
 import ReviewForm from "./ReviewForm.js";
 
 const LIMIT = 25;
@@ -75,7 +75,7 @@ function App() {
       result = await getDatas("movie", options);
     } catch (error) {
       console.error(error);
-      setLoadingError(error);
+      // setLoadingError(error);
       return;
     } finally {
       setIsLoading(false);
@@ -101,12 +101,32 @@ function App() {
   // setItems를 통해서 state를 변경한다. 그럼 리액트는 App 컴포넌트를 다시 렌더링 하기 때문에
   // handleLoad 함수를 실행시키고 다시 state 를 변경해서 다시 App 컴포넌트를 렌더링 한다. ==> 무한루프
 
-  // useEffect(() => {
-  //   handleLoad(order);
-  // }, [order]);
+  // request 이후에 items 를 변경할 함수
+  const handleAddSuccess = (review) => {
+    setItems((prevItems) => [review, ...prevItems]);
+  };
+
+  const handleUpdateSuccess = (review) => {
+    console.log(review);
+    setItems((prevItems) => {
+      const splitIdx = prevItems.findIndex((item) => item.id === review.id);
+      // debugger;
+      // prevItems[splitIdx] = review;
+      return [
+        ...prevItems.slice(0, splitIdx),
+        review,
+        ...prevItems.slice(splitIdx + 1),
+      ];
+    });
+  };
+
   useEffect(() => {
     // handleLoad({ order, offset: 0, limit: LIMIT });
     handleLoad({ order, lq: undefined, limit: LIMIT });
+    // const func = async () => {
+    //   await getImageURL(item.imgUrl).then((url) => setImgUrl(url));
+    // };
+    // func();
   }, [order]);
   // useEffect 는 argument로 콜백함수와 배열을 넘겨준다.
   // [] 는 dependency list 라고 하는데 위에서 handleLoad 함수가 무한루프 작동하는 이유를 설명할 때
@@ -120,8 +140,13 @@ function App() {
         <button onClick={handleBestClick}>베스트순</button>
       </div>
       {/* <ReviewList items={items} /> */}
-      <ReviewForm />
-      <ReviewList items={sortedItems} onDelete={handleDelete} />
+      <ReviewForm onSubmit={addDatas} onSubmitSuccess={handleAddSuccess} />
+      <ReviewList
+        items={sortedItems}
+        onDelete={handleDelete}
+        onUpdate={addDatas}
+        onUpdateSuccess={handleUpdateSuccess}
+      />
       {/* <button onClick={handleLoadClick}>불러오기</button> */}
       {/* <button disabled={!hasNext} onClick={handleLoadMore}>
         더 보기

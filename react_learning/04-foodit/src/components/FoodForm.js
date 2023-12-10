@@ -1,13 +1,41 @@
 import { useState } from "react";
 import "./FoodForm.css";
 import FileInput from "./FileInput";
+import { addDatas } from "../firebase";
 
-function FoodForm() {
-  const [values, setValues] = useState({});
+const INITIAL_VALUES = {
+  title: "",
+  calorie: 0,
+  content: "",
+  imgUrl: null,
+};
 
-  const handleSubmit = (e) => {
+function FoodForm({ onSubmitSuccess }) {
+  const [values, setValues] = useState(INITIAL_VALUES);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittingError, setSubmittingError] = useState(null);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    const formData = {
+      title: values.title,
+      calorie: values.calorie,
+      content: values.content,
+      imgUrl: values.imgFile,
+    };
+
+    try {
+      setSubmittingError(null);
+      setIsSubmitting(true);
+      const { review } = await addDatas("food", formData);
+      onSubmitSuccess(review);
+    } catch (error) {
+      setSubmittingError(error);
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
+    setValues(INITIAL_VALUES);
   };
 
   function sanitize(type, value) {

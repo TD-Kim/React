@@ -49,6 +49,10 @@ function App() {
     handleLoad({ order, lq, limit: LIMIT });
   };
 
+  const handleSubmitSuccess = (review) => {
+    setItems((prevItems) => [review, ...prevItems]);
+  };
+
   useEffect(() => {
     handleLoad({ order, lq: undefined, limit: LIMIT });
   }, [order]);
@@ -57,7 +61,7 @@ function App() {
     <div>
       <button onClick={handleNewestClick}>최신순</button>
       <button onClick={handleCalorieClick}>칼로리순</button>
-      <FoodForm />
+      <FoodForm onSubmitSuccess={handleSubmitSuccess} />
       <FoodList items={items} onDelete={handleDelete} />
       {/* <button onClick={handleLoad}>불러오기</button> */}
       {hasNext && (

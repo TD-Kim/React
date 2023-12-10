@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-function FileInput({ name, value, onChange }) {
-  const [preview, setPreview] = useState();
+function FileInput({ name, value, onChange, initialPreview }) {
+  const [preview, setPreview] = useState(initialPreview);
 
   const inputRef = useRef();
 
@@ -28,6 +28,7 @@ function FileInput({ name, value, onChange }) {
   };
 
   useEffect(() => {
+    // 값이 없을수도 있기 때문에 useEffect 를 종료해준다.
     if (!value) return;
 
     // ObjectURL 을 만들면 웹 브라우저는 메모리를 할당(이게 사이드 이펙트)하고 파일에 해당하는 주소를 만들어 준다.
@@ -45,10 +46,10 @@ function FileInput({ name, value, onChange }) {
     // => value 값 변경으로 인한 useEffect 함수 실행 및 콜백함수 실행 => 앞에서 기억해뒀던 return 함수 실행
     // (앞에서 만들어진 사이드 이펙트가 더이상 쓸모없어졌기 때문)
     return () => {
-      setPreview();
+      setPreview(initialPreview);
       URL.revokeObjectURL(nextPreview);
     };
-  }, [value]);
+  }, [value, initialPreview]);
 
   //   return <input type="file" value={value} onChange={handleChange} />;
   // return <input type="file" onChange={handleChange} ref={inputRef} />;
