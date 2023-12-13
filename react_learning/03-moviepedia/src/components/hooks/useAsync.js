@@ -7,7 +7,7 @@ function useAsync(asyncFunction) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
 
-  const wrappedFunction = async () => {
+  const wrappedFunction = async (...args) => {
     try {
       setError(null);
       setPending(true);
