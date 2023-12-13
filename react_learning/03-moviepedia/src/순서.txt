@@ -101,6 +101,8 @@
  ReviewList 컴포넌트에서 prop 들을 추가해주고 handleSubmit 함수를 만들어준다.
  handleSubmitSuccess 함수에서는 파라미터로 받은 review 를 onUpdateSuccess 에 넘겨주고 입력폼을 닫아주기 위해서 editingId state 를 null 로 바꿔준다.
  그리고 ReviewForm 컴포넌트의 prop 으로 onSubmit 과 onSubmitSuccess 을 넘겨준다.
+30. 글 삭제하기
+ 
 
 
 

@@ -14,6 +14,7 @@ import {
   doc,
   exists,
   updateDoc,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import {
   getStorage,
@@ -57,7 +58,10 @@ async function getDatas(collectionName, options) {
     querySnapshot = await getDocs(firstQuery);
     if (querySnapshot.size > 0) {
       lastQuery = querySnapshot.docs[querySnapshot.docs.length - 1];
-      reviews = querySnapshot.docs.map((doc) => doc.data());
+      reviews = querySnapshot.docs.map((doc) => ({
+        docId: doc.id,
+        ...doc.data(),
+      }));
       return { reviews, lastQuery };
     } else {
       reviews = [];
@@ -121,7 +125,7 @@ async function addDatas(collectionName, ...args) {
 
   const docSnap = await getDoc(result);
   if (docSnap.exists()) {
-    const review = docSnap.data();
+    const review = { docId: docSnap.id, ...docSnap.data() };
     return { review };
   }
 }
@@ -135,9 +139,17 @@ async function uploadImage(path, imgUrl) {
 }
 
 async function updateDatas(collectionName, docId, formData) {
-  console.log(docId, formData);
   const docRef = doc(db, collectionName, docId);
   await updateDoc(docRef, formData);
+}
+
+async function deleteDatas(collectionName, docId) {
+  try {
+    await deleteDoc(doc(db, collectionName, docId));
+  } catch (error) {
+    return false;
+  }
+  return true;
 }
 
 async function getImageURL(imgUrl) {
@@ -148,4 +160,4 @@ async function getImageURL(imgUrl) {
   return url;
 }
 
-export { db, getDatas, addDatas };
+export { db, getDatas, addDatas, deleteDatas };

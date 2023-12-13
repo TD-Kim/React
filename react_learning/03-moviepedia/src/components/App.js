@@ -3,7 +3,7 @@ import ReviewList from "./ReviewList";
 // import items from "../mock.json";
 // import mockItems from "../mock.json";
 import { useEffect, useState } from "react";
-import { addDatas, getDatas } from "../firebase.js";
+import { addDatas, getDatas, deleteDatas } from "../firebase.js";
 import ReviewForm from "./ReviewForm.js";
 
 const LIMIT = 25;
@@ -29,9 +29,16 @@ function App() {
   const sortedItems = items;
   const handleNewestClick = () => setOrder("createdAt");
   const handleBestClick = () => setOrder("rating");
-  const handleDelete = (id) => {
-    const nextItems = items.filter((item) => item.id !== id);
-    setItems(nextItems);
+  const handleDelete = async (docId) => {
+    // 1. 화면에서만 삭제
+    // const nextItems = items.filter((item) => item.id !== id);
+    // setItems(nextItems);
+
+    // 2. db에서 삭제(삭제가 성공했을 때만 그 결과를 반영한다.)
+    const result = await deleteDatas("movie", docId);
+    if (!result) return;
+
+    setItems((prevItems) => prevItems.filter((item) => item.docId !== docId));
   };
 
   // const handleLoadClick = async () => {

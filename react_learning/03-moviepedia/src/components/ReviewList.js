@@ -8,7 +8,8 @@ function formatDate(value) {
 }
 
 function ReviewListItem({ item, onDelete, onEdit }) {
-  const handleDeleteClick = () => onDelete(item.id);
+  // const handleDeleteClick = () => onDelete(item.id);
+  const handleDeleteClick = () => onDelete(item.docId);
 
   const handleEditClick = () => {
     onEdit(item.id);
