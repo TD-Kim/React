@@ -117,6 +117,9 @@
 33. 나만의 Hook 으로 코드 정리하기
  33.1. components 폴더안에 hooks 폴더 생성 후 안에 useAsync.js 생성
  33.2. App2.js 만들어서 코드 수정(useAsync 사용)
+34. useCallback 
+ App.js 의 useEffect 의 디펜던시 리스트에 handleLoad 함수를 추가해야 콘솔창의 오류가 없어진다.(오류 안생기면 넘어가)
+ 설명 할 때 코드잇 강의 React로 데이터 다루기 - 4. 데이터 보내기 - 13. 빠짐없는 디펜던시(exhaustive-deps) 참조
  
  
 

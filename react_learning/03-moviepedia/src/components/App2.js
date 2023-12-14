@@ -2,7 +2,7 @@ import { getReviews } from "../api.js";
 import ReviewList from "./ReviewList.js";
 // import items from "../mock.json";
 // import mockItems from "../mock.json";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addDatas, getDatas, deleteDatas } from "../firebase.js";
 import ReviewForm from "./ReviewForm2.js";
 import useAsync from "./hooks/useAsync.js";
@@ -74,20 +74,27 @@ function App() {
   //   setHasNext(paging.hasNext);
   // };
 
-  const handleLoad = async (options) => {
-    let result = await getReviewsAsync("movie", options);
-    if (!result) return; // return 값이 없으면 return => getReviewsAsync 에서 에러일시 return 값이 undefined 이기 때문.
+  // const handleLoad = async (options) => {
+  const handleLoad = useCallback(
+    async (options) => {
+      let result = await getReviewsAsync("movie", options);
+      if (!result) return; // return 값이 없으면 return => getReviewsAsync 에서 에러일시 return 값이 undefined 이기 때문.
 
-    // const { reviews, lastQuery } = await getDatas("movie", options);
-    const { reviews, lastQuery } = result;
-    if (options.lq === undefined) {
-      setItems(reviews);
-    } else {
-      setItems((prevItems) => [...prevItems, ...reviews]);
-    }
-    setLq(lastQuery);
-    setHasNext(lastQuery);
-  };
+      // const { reviews, lastQuery } = await getDatas("movie", options);
+      const { reviews, lastQuery } = result;
+      if (options.lq === undefined) {
+        setItems(reviews);
+      } else {
+        setItems((prevItems) => [...prevItems, ...reviews]);
+      }
+      setLq(lastQuery);
+      setHasNext(lastQuery);
+      // };
+    },
+    [getReviewsAsync]
+  );
+  // 디펜던시 리스트는 useCallback 에 전달한 함수를 언제 새로 생성할 것인지를 판단하는 기준이 된다.
+  //useCallback 으로 지정한 함수는 리액트에서 기억해두기 때문에 디펜던시 리스트의 값이 그대로라면 함수를 새로 만드는게 아니라 재사용하게 된다.
 
   const handleLoadMore = () => {
     handleLoad({ order, lq, limit: LIMIT });
@@ -125,7 +132,10 @@ function App() {
     //   await getImageURL(item.imgUrl).then((url) => setImgUrl(url));
     // };
     // func();
-  }, [order]);
+  }, [order, handleLoad]); // => handleLoad 함수를 디펜던시 리스트에 넣어주면 처음 렌더링하고 나서 useEffect의 콜백을 실행하면 state 값이 바뀌어서 다시
+  // 렌더링 하게 되는데 이 때, handleLoad 함수를 새로 만들기 때문에 디펜던시리스트의 값이 달라진다.
+  // 그래서 useEffect의 콜백이 실행되고, state가 변경되면서 다시 렌더링 되는 무한루프가 발생한다.
+  // => useCallback 으로 해결할 수 있다. 함수를 기억해뒀다가 재사용할 수 있다.
   // useEffect 는 argument로 콜백함수와 배열을 넘겨준다.
   // [] 는 dependency list 라고 하는데 위에서 handleLoad 함수가 무한루프 작동하는 이유를 설명할 때
   // App 컴포넌트가 다시 렌더링 될 때(2번째) useEffect 함수도 다시 실행하는데 이번에는
