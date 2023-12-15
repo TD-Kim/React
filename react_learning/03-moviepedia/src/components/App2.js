@@ -6,10 +6,12 @@ import { useCallback, useEffect, useState } from "react";
 import { addDatas, getDatas, deleteDatas } from "../firebase.js";
 import ReviewForm from "./ReviewForm2.js";
 import useAsync from "./hooks/useAsync.js";
+import LocaleContext from "../contexts/LocaleContext.js";
 
 const LIMIT = 25;
 
 function App() {
+  const [locale, setLocale] = useState("ko");
   // const [items, setItems] = useState(mockItems);
   const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
@@ -142,43 +144,45 @@ function App() {
   // [] 안에 있는 값들을 앞에서 기억한 값이랑 비교한다. 비교해서 다른경우에만 콜백함수를 실행한다.(그 전에는 콜백함수를 등록만 해놓음)
 
   return (
-    <div>
+    <LocaleContext.Provider value={locale}>
       <div>
-        <button onClick={handleNewestClick}>최신순</button>
-        <button onClick={handleBestClick}>베스트순</button>
-      </div>
-      {/* <ReviewList items={items} /> */}
-      <ReviewForm onSubmit={addDatas} onSubmitSuccess={handleAddSuccess} />
-      <ReviewList
-        items={sortedItems}
-        onDelete={handleDelete}
-        onUpdate={addDatas}
-        onUpdateSuccess={handleUpdateSuccess}
-      />
-      {/* <button onClick={handleLoadClick}>불러오기</button> */}
-      {/* <button disabled={!hasNext} onClick={handleLoadMore}>
+        <div>
+          <button onClick={handleNewestClick}>최신순</button>
+          <button onClick={handleBestClick}>베스트순</button>
+        </div>
+        {/* <ReviewList items={items} /> */}
+        <ReviewForm onSubmit={addDatas} onSubmitSuccess={handleAddSuccess} />
+        <ReviewList
+          items={sortedItems}
+          onDelete={handleDelete}
+          onUpdate={addDatas}
+          onUpdateSuccess={handleUpdateSuccess}
+        />
+        {/* <button onClick={handleLoadClick}>불러오기</button> */}
+        {/* <button disabled={!hasNext} onClick={handleLoadMore}>
         더 보기
       </button> */}
 
-      {/* 
+        {/* 
         조건부 연산자 
         AND : 앞에 나오는 값이 true 이면 렌더링
         OR : 앞에 나오는 값이 false 이면 렌더링
       */}
-      {hasNext && (
-        // <button disabled={!hasNext} onClick={handleLoadMore}>
-        <button disabled={isLoading} onClick={handleLoadMore}>
-          더 보기
-        </button>
-      )}
-      {
-        // ? 표기는 Optional Chaining 이라는 표기법이다.
-        // 아래와 같이 쓰면 loadingError 가 있을 때만 message 프로퍼티를 참조하겠다는 의미이다.
-        // nullish 병합 연산자 '??'
-        // a ?? b ==> a가 null도 아니고 undefined 도 아니면 a, 그 외의 경우는 b
-        loadingError?.message && <span>{loadingError.message}</span>
-      }
-    </div>
+        {hasNext && (
+          // <button disabled={!hasNext} onClick={handleLoadMore}>
+          <button disabled={isLoading} onClick={handleLoadMore}>
+            더 보기
+          </button>
+        )}
+        {
+          // ? 표기는 Optional Chaining 이라는 표기법이다.
+          // 아래와 같이 쓰면 loadingError 가 있을 때만 message 프로퍼티를 참조하겠다는 의미이다.
+          // nullish 병합 연산자 '??'
+          // a ?? b ==> a가 null도 아니고 undefined 도 아니면 a, 그 외의 경우는 b
+          loadingError?.message && <span>{loadingError.message}</span>
+        }
+      </div>
+    </LocaleContext.Provider>
   );
 }
 
