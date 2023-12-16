@@ -6,12 +6,13 @@ import { useCallback, useEffect, useState } from "react";
 import { addDatas, getDatas, deleteDatas } from "../firebase.js";
 import ReviewForm from "./ReviewForm2.js";
 import useAsync from "./hooks/useAsync.js";
-import LocaleContext from "../contexts/LocaleContext.js";
+import LocaleContext, { LocaleProvider } from "../contexts/LocaleContext.js";
+import LocaleSelect from "./LocaleSelect.js";
 
 const LIMIT = 25;
 
 function App() {
-  const [locale, setLocale] = useState("ko");
+  // const [locale, setLocale] = useState("ko");
   // const [items, setItems] = useState(mockItems);
   const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
@@ -144,8 +145,11 @@ function App() {
   // [] 안에 있는 값들을 앞에서 기억한 값이랑 비교한다. 비교해서 다른경우에만 콜백함수를 실행한다.(그 전에는 콜백함수를 등록만 해놓음)
 
   return (
-    <LocaleContext.Provider value={locale}>
+    <LocaleProvider defaultValue="ko">
+      {/* <LocaleContext.Provider value={locale}> */}
       <div>
+        {/* <LocaleSelect value={locale} onChange={setLocale} /> */}
+        <LocaleSelect />
         <div>
           <button onClick={handleNewestClick}>최신순</button>
           <button onClick={handleBestClick}>베스트순</button>
@@ -182,7 +186,8 @@ function App() {
           loadingError?.message && <span>{loadingError.message}</span>
         }
       </div>
-    </LocaleContext.Provider>
+      {/* </LocaleContext.Provider> */}
+    </LocaleProvider>
   );
 }
 

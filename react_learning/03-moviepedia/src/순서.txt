@@ -132,6 +132,8 @@
  Provider 의 value prop 으로 공유할 데이터를 지정해 주면 된다.
 36. Context 값에 State 사용하기
  App.js 에 locale State 생성
+37. Context 코드 분리하기
+ SomeComponent 가 생성되면 코드를 수정할 때 헷갈릴 수 있다. 그래서 State와 Context Provider 를 함께 사용한다.
  
  
 
