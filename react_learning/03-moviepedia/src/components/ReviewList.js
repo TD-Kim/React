@@ -2,7 +2,9 @@ import Rating from "./Rating";
 import "./ReviewList.css";
 import ReviewForm from "./ReviewForm.js";
 import { useContext, useState } from "react";
-import LocaleContext, { useLocale } from "../contexts/LocaleContext.js";
+import useTranslate from "../hooks/useTranslate.js";
+import "./ReviewList.css";
+
 function formatDate(value) {
   const date = new Date(value);
   return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
@@ -10,7 +12,8 @@ function formatDate(value) {
 
 function ReviewListItem({ item, onDelete, onEdit }) {
   // const locale = useContext(LocaleContext);
-  const locale = useLocale();
+  // const locale = useLocale();
+  const t = useTranslate();
   // const handleDeleteClick = () => onDelete(item.id);
   const handleDeleteClick = () => onDelete(item.docId);
 
@@ -21,14 +24,25 @@ function ReviewListItem({ item, onDelete, onEdit }) {
   return (
     <div className="ReviewListItem">
       <img className="ReviewListItem-img" src={item.imgUrl} alt={item.title} />
-      <div>
-        <h1>{item.title}</h1>
-        <Rating value={item.rating} />
-        <p>{formatDate(item.createdAt)}</p>
-        <p>{item.content}</p>
-        <p>현재 언어 : {locale}</p>
-        <button onClick={handleDeleteClick}>삭제</button>
-        <button onClick={handleEditClick}>수정</button>
+      <div className="ReviewListItem-rows">
+        <h1 className="ReviewListItem-title">{item.title}</h1>
+        <Rating className="ReviewListItem-rating" value={item.rating} />
+        <p className="ReviewListItem-date">{formatDate(item.createdAt)}</p>
+        <p className="ReviewListItem-content">{item.content}</p>
+        <div className="ReviewListItem-buttons">
+          <button
+            className="ReviewListItem-edit-button"
+            onClick={handleDeleteClick}
+          >
+            {t("edit button")}
+          </button>
+          <button
+            className="ReviewListItem-delete-button"
+            onClick={handleEditClick}
+          >
+            {t("delete button")}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -40,7 +54,7 @@ function ReviewList({ items, onDelete, onUpdate, onUpdateSuccess }) {
   const handleCancel = () => setEditingId(null);
 
   return (
-    <ul>
+    <ul className="ReviewList">
       {items.map((item) => {
         // return <li>{item.title}</li>;
         if (item.id === editingId) {

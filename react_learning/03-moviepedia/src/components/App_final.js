@@ -8,8 +8,24 @@ import ReviewForm from "./ReviewForm2.js";
 import useAsync from "../hooks/useAsync.js";
 import LocaleContext, { LocaleProvider } from "../contexts/LocaleContext.js";
 import LocaleSelect from "./LocaleSelect.js";
+import "./App.css";
+import logoImg from "../assets/logo.png";
+import ticketImg from "../assets/ticket.png";
+import useTranslate from "../hooks/useTranslate";
 
 const LIMIT = 25;
+
+function AppSortButton({ selected, children, onClick }) {
+  return (
+    <button
+      disabled={selected}
+      className={`AppSortButton ${selected ? "selected" : ""}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
 
 function App() {
   // const [locale, setLocale] = useState("ko");
@@ -19,6 +35,7 @@ function App() {
   const [lq, setLq] = useState({});
   const [hasNext, setHasNext] = useState(false);
   const [isLoading, loadingError, getReviewsAsync] = useAsync(getDatas);
+  const t = useTranslate();
   // sort 메소드에 아무런 아규먼트도 전달하지 않을 때는 기본적으로 유니코드에 정의된 문자열 순서에 따라 정렬된다.
   // ==> compareFunction이 생략될 경우 , 배열의 요소들은 모두 문자열 취급되며, 유니코드 값 순서대로 정렬된다.
   // 그렇기 때문에 numbers에 sort 메소드를 사용한 것 처럼, 숫자를 정렬할 때는 우리가 상식적으로 이해하는 오름차순이나 내림차순 정렬이 되지 않는다.
@@ -145,49 +162,61 @@ function App() {
   // [] 안에 있는 값들을 앞에서 기억한 값이랑 비교한다. 비교해서 다른경우에만 콜백함수를 실행한다.(그 전에는 콜백함수를 등록만 해놓음)
 
   return (
-    <LocaleProvider defaultValue="ko">
-      {/* <LocaleContext.Provider value={locale}> */}
-      <div>
-        {/* <LocaleSelect value={locale} onChange={setLocale} /> */}
-        <LocaleSelect />
-        <div>
-          <button onClick={handleNewestClick}>최신순</button>
-          <button onClick={handleBestClick}>베스트순</button>
+    <div className="App">
+      <nav className="App-nav">
+        <div className="App-nav-container">
+          <img className="App-logo" src={logoImg} alt="MOVIE PEDIA" />
+          <LocaleSelect />
         </div>
-        {/* <ReviewList items={items} /> */}
-        <ReviewForm onSubmit={addDatas} onSubmitSuccess={handleAddSuccess} />
-        <ReviewList
-          items={sortedItems}
-          onDelete={handleDelete}
-          onUpdate={addDatas}
-          onUpdateSuccess={handleUpdateSuccess}
-        />
-        {/* <button onClick={handleLoadClick}>불러오기</button> */}
-        {/* <button disabled={!hasNext} onClick={handleLoadMore}>
-        더 보기
-      </button> */}
-
-        {/* 
-        조건부 연산자 
-        AND : 앞에 나오는 값이 true 이면 렌더링
-        OR : 앞에 나오는 값이 false 이면 렌더링
-      */}
-        {hasNext && (
-          // <button disabled={!hasNext} onClick={handleLoadMore}>
-          <button disabled={isLoading} onClick={handleLoadMore}>
-            더 보기
-          </button>
-        )}
-        {
-          // ? 표기는 Optional Chaining 이라는 표기법이다.
-          // 아래와 같이 쓰면 loadingError 가 있을 때만 message 프로퍼티를 참조하겠다는 의미이다.
-          // nullish 병합 연산자 '??'
-          // a ?? b ==> a가 null도 아니고 undefined 도 아니면 a, 그 외의 경우는 b
-          loadingError?.message && <span>{loadingError.message}</span>
-        }
+      </nav>
+      <div className="App-container">
+        <div
+          className="App-ReviewForm"
+          style={{ backgroundImage: `url("${ticketImg}")` }}
+        >
+          <ReviewForm onSubmit={addDatas} onSubmitSuccess={handleAddSuccess} />
+        </div>
+        <div className="App-sorts">
+          <AppSortButton
+            selected={order === "createdAt"}
+            onClick={handleNewestClick}
+          >
+            {/* {t("serviceError")} */}
+          </AppSortButton>
+          <AppSortButton
+            selected={order === "rating"}
+            onClick={handleBestClick}
+          >
+            {/* {t("serviceError")} */}
+          </AppSortButton>
+        </div>
+        <div className="App-ReviewList">
+          <ReviewList
+            items={sortedItems}
+            onDelete={handleDelete}
+            onUpdate={addDatas}
+            onUpdateSuccess={handleUpdateSuccess}
+          />
+          {hasNext ? (
+            <button
+              className="App-load-more-button"
+              disabled={isLoading}
+              onClick={handleLoadMore}
+            >
+              {/* {t("load more")} */}
+            </button>
+          ) : (
+            <div className="App-load-more-button" />
+          )}
+          {loadingError?.message && <span>{loadingError.message}</span>}
+        </div>
       </div>
-      {/* </LocaleContext.Provider> */}
-    </LocaleProvider>
+      <footer className="App-footer">
+        <div className="App-footer-container">
+          {/* {t("term of service")} | {t("privacy policy")} */}
+        </div>
+      </footer>
+    </div>
   );
 }
 
