@@ -1,9 +1,9 @@
-import { Link, Outlet, Route, Routes } from "react-router-dom";
-import "./styles.css";
-import style1 from "./FirstModule.module.css";
-import style2 from "./SecondModule.module.css";
-import classNames from "classnames/bind";
-import styled, { css } from "styled-components";
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import './styles.css';
+import style1 from './FirstModule.module.css';
+import style2 from './SecondModule.module.css';
+import classNames from 'classnames/bind';
+import styled, { css } from 'styled-components';
 
 const Css = () => {
   //   const appStyle = {
@@ -33,9 +33,9 @@ const Css = () => {
           <h3 style={titleStyle}>Hello, React!</h3>
         </header>
       </div> */}
-      <div className="App">
-        <header className="App-header">
-          <h3 className="App-title">Hello, React!</h3>
+      <div className='App'>
+        <header className='App-header'>
+          <h3 className='App-title'>Hello, React!</h3>
         </header>
       </div>
       <p>
@@ -91,7 +91,7 @@ const CssModule = () => {
     const cx = classNames.bind(style1);
     let isHovered = false;
     return (
-      <div className={cx("wrapper", { h1: isHovered })}>
+      <div className={cx('wrapper', { h1: isHovered })}>
         {/* <div className={`${style1.wrapper} ${style1.h1 && isHovered}`}> */}
         {/* <div className={[style1.wrapper, style1.h1].join(" ")}> */}
         {/* <div className={`${style1.wrapper} ${style1.h1}`}> */}
@@ -202,8 +202,8 @@ const StyledComp = () => {
         Shell # npm인 경우 npm install styled-components
       </p>
       <div>
-        <ButtonOne color="red">빨간색 버튼</ButtonOne>
-        <ButtonOne color="orange" bold>
+        <ButtonOne color='red'>빨간색 버튼</ButtonOne>
+        <ButtonOne color='orange' bold>
           오렌지색 버튼
         </ButtonOne>
         {/* <ButtonTwo>초록색 버튼</ButtonTwo> */}
@@ -217,16 +217,16 @@ const List = () => {
     <div>
       <ul>
         <li>
-          <Link to="">CSS</Link>
+          <Link to=''>CSS</Link>
         </li>
         <li>
-          <Link to="sass">Sass</Link>
+          <Link to='sass'>Sass</Link>
         </li>
         <li>
-          <Link to="cssModule">CSS Module</Link>
+          <Link to='cssModule'>CSS Module</Link>
         </li>
         <li>
-          <Link to="styledComp">styled-components</Link>
+          <Link to='styledComp'>styled-components</Link>
         </li>
       </ul>
       <Outlet />
@@ -239,11 +239,11 @@ const CssStyle = () => {
     <>
       <h3>컴포넌트 스타일링</h3>
       <Routes>
-        <Route path="" element={<List />}>
-          <Route path="" element={<Css />} />
-          <Route path="sass" element={<Sass />} />
-          <Route path="cssModule" element={<CssModule />} />
-          <Route path="styledComp" element={<StyledComp />} />
+        <Route path='' element={<List />}>
+          <Route path='' element={<Css />} />
+          <Route path='sass' element={<Sass />} />
+          <Route path='cssModule' element={<CssModule />} />
+          <Route path='styledComp' element={<StyledComp />} />
         </Route>
       </Routes>
     </>

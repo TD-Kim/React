@@ -1,17 +1,17 @@
-import { getReviews } from "../api.js";
-import ReviewList from "./ReviewList.js";
+import { getReviews } from '../api.js';
+import ReviewList from './ReviewList.js';
 // import items from "../mock.json";
 // import mockItems from "../mock.json";
-import { useCallback, useEffect, useState } from "react";
-import { addDatas, getDatas, deleteDatas } from "../firebase.js";
-import ReviewForm from "./ReviewForm2.js";
-import useAsync from "../hooks/useAsync.js";
-import LocaleContext, { LocaleProvider } from "../contexts/LocaleContext.js";
-import LocaleSelect from "./LocaleSelect.js";
-import "./App.css";
-import logoImg from "../assets/logo.png";
-import ticketImg from "../assets/ticket.png";
-import useTranslate from "../hooks/useTranslate";
+import { useCallback, useEffect, useState } from 'react';
+import { addDatas, getDatas, deleteDatas } from '../firebase.js';
+import ReviewForm from './ReviewForm2.js';
+import useAsync from '../hooks/useAsync.js';
+import LocaleContext, { LocaleProvider } from '../contexts/LocaleContext.js';
+import LocaleSelect from './LocaleSelect.js';
+import './App.css';
+import logoImg from '../assets/logo.png';
+import ticketImg from '../assets/ticket.png';
+import useTranslate from '../hooks/useTranslate';
 
 const LIMIT = 25;
 
@@ -19,7 +19,7 @@ function AppSortButton({ selected, children, onClick }) {
   return (
     <button
       disabled={selected}
-      className={`AppSortButton ${selected ? "selected" : ""}`}
+      className={`AppSortButton ${selected ? 'selected' : ''}`}
       onClick={onClick}
     >
       {children}
@@ -30,12 +30,12 @@ function AppSortButton({ selected, children, onClick }) {
 function App() {
   // const [locale, setLocale] = useState("ko");
   // const [items, setItems] = useState(mockItems);
+  const t = useTranslate();
   const [items, setItems] = useState([]);
-  const [order, setOrder] = useState("createdAt");
+  const [order, setOrder] = useState('createdAt');
   const [lq, setLq] = useState({});
   const [hasNext, setHasNext] = useState(false);
   const [isLoading, loadingError, getReviewsAsync] = useAsync(getDatas);
-  const t = useTranslate();
   // sort 메소드에 아무런 아규먼트도 전달하지 않을 때는 기본적으로 유니코드에 정의된 문자열 순서에 따라 정렬된다.
   // ==> compareFunction이 생략될 경우 , 배열의 요소들은 모두 문자열 취급되며, 유니코드 값 순서대로 정렬된다.
   // 그렇기 때문에 numbers에 sort 메소드를 사용한 것 처럼, 숫자를 정렬할 때는 우리가 상식적으로 이해하는 오름차순이나 내림차순 정렬이 되지 않는다.
@@ -47,15 +47,15 @@ function App() {
   // const sortedItems = items.sort((a, b) => b.rating - a.rating);
   // const sortedItems = items.sort((a, b) => b[order] - a[order]);
   const sortedItems = items;
-  const handleNewestClick = () => setOrder("createdAt");
-  const handleBestClick = () => setOrder("rating");
+  const handleNewestClick = () => setOrder('createdAt');
+  const handleBestClick = () => setOrder('rating');
   const handleDelete = async (docId) => {
     // 1. 화면에서만 삭제
     // const nextItems = items.filter((item) => item.id !== id);
     // setItems(nextItems);
 
     // 2. db에서 삭제(삭제가 성공했을 때만 그 결과를 반영한다.)
-    const result = await deleteDatas("movie", docId);
+    const result = await deleteDatas('movie', docId);
     if (!result) return;
 
     setItems((prevItems) => prevItems.filter((item) => item.docId !== docId));
@@ -97,7 +97,7 @@ function App() {
   // const handleLoad = async (options) => {
   const handleLoad = useCallback(
     async (options) => {
-      let result = await getReviewsAsync("movie", options);
+      let result = await getReviewsAsync('movie', options);
       if (!result) return; // return 값이 없으면 return => getReviewsAsync 에서 에러일시 return 값이 undefined 이기 때문.
 
       // const { reviews, lastQuery } = await getDatas("movie", options);
@@ -162,35 +162,37 @@ function App() {
   // [] 안에 있는 값들을 앞에서 기억한 값이랑 비교한다. 비교해서 다른경우에만 콜백함수를 실행한다.(그 전에는 콜백함수를 등록만 해놓음)
 
   return (
-    <div className="App">
-      <nav className="App-nav">
-        <div className="App-nav-container">
-          <img className="App-logo" src={logoImg} alt="MOVIE PEDIA" />
+    <div className='App'>
+      <nav className='App-nav'>
+        <div className='App-nav-container'>
+          <img className='App-logo' src={logoImg} alt='MOVIDE PEDIA' />
           <LocaleSelect />
         </div>
       </nav>
-      <div className="App-container">
+      <div className='App-container'>
         <div
-          className="App-ReviewForm"
-          style={{ backgroundImage: `url("${ticketImg}")` }}
+          className='App-ReviewForm'
+          style={{
+            backgroundImage: `url("${ticketImg}")`,
+          }}
         >
           <ReviewForm onSubmit={addDatas} onSubmitSuccess={handleAddSuccess} />
         </div>
-        <div className="App-sorts">
+        <div className='App-sorts'>
           <AppSortButton
-            selected={order === "createdAt"}
+            selected={order === 'createdAt'}
             onClick={handleNewestClick}
           >
-            {/* {t("serviceError")} */}
+            {t('newest')}
           </AppSortButton>
           <AppSortButton
-            selected={order === "rating"}
+            selected={order === 'rating'}
             onClick={handleBestClick}
           >
-            {/* {t("serviceError")} */}
+            {t('best')}
           </AppSortButton>
         </div>
-        <div className="App-ReviewList">
+        <div className='App-ReviewList'>
           <ReviewList
             items={sortedItems}
             onDelete={handleDelete}
@@ -199,21 +201,21 @@ function App() {
           />
           {hasNext ? (
             <button
-              className="App-load-more-button"
+              className='App-load-more-button'
               disabled={isLoading}
               onClick={handleLoadMore}
             >
-              {/* {t("load more")} */}
+              {t('load more')}
             </button>
           ) : (
-            <div className="App-load-more-button" />
+            <div className='App-load-more-button' />
           )}
           {loadingError?.message && <span>{loadingError.message}</span>}
         </div>
       </div>
-      <footer className="App-footer">
-        <div className="App-footer-container">
-          {/* {t("term of service")} | {t("privacy policy")} */}
+      <footer className='App-footer'>
+        <div className='App-footer-container'>
+          {t('terms of service')} | {t('privacy policy')}
         </div>
       </footer>
     </div>

@@ -1,20 +1,20 @@
-import { useState } from "react";
-import "./ReviewForm.css";
-import FileInput from "./FileInput";
-import RatingInput from "./RatingInput";
-import useAsync from "../hooks/useAsync";
-import useTranslate from "../hooks/useTranslate";
-import "./ReviewForm.css";
+import { useState } from 'react';
+import './ReviewForm.css';
+import FileInput from './FileInput';
+import RatingInput from './RatingInput';
+import useAsync from '../hooks/useAsync';
+import useTranslate from '../hooks/useTranslate';
+import './ReviewForm.css';
 
 const INITIAL_VALUES = {
-  title: "",
+  title: '',
   rating: 0,
-  content: "",
+  content: '',
   imgUrl: null,
 };
 
 function ReviewForm({
-  className = "",
+  className = '',
   initialValues = INITIAL_VALUES,
   initialPreview,
   onSubmitSuccess,
@@ -30,9 +30,9 @@ function ReviewForm({
   //   content: "",
   //   imgFile: null,
   // });
+  const t = useTranslate();
   const [values, setValues] = useState(initialValues);
   const [isSubmitting, submittingError, onSubmitAsync] = useAsync(onSubmit);
-  const t = useTranslate();
 
   //   const handleTitleChange = (e) => {
   //     setTitle(e.target.value);
@@ -81,7 +81,7 @@ function ReviewForm({
     // for (let key of formData.keys()) {
     //   console.log(key);
     // }
-    let result = await onSubmitAsync("movie", formData);
+    let result = await onSubmitAsync('movie', formData);
     if (!result) return;
     const { review } = result;
     setValues(INITIAL_VALUES);
@@ -91,51 +91,51 @@ function ReviewForm({
   return (
     <form className={`ReviewForm ${className}`} onSubmit={handleSubmit}>
       <FileInput
-        className="ReviewForm-preview"
-        name="imgUrl"
+        className='ReviewForm-preview'
+        name='imgUrl'
         value={values.imgUrl}
         initialPreview={initialPreview}
         onChange={handleChange}
       />
-      <div className="ReviewForm-rows">
-        <div className="ReviewForm-title-rating">
+      <div className='ReviewForm-rows'>
+        <div className='ReviewForm-title-rating'>
           <input
-            className="ReviewForm-title"
-            name="title"
+            className='ReviewForm-title'
+            name='title'
             value={values.title}
             onChange={handleInputChange}
           />
           <RatingInput
-            className="ReviewForm-rating"
-            type="number"
-            name="rating"
+            className='ReviewForm-rating'
+            type='number'
+            name='rating'
             value={values.rating}
             onChange={handleChange}
           />
         </div>
         <textarea
-          className="ReviewForm-content"
-          name="content"
+          className='ReviewForm-content'
+          name='content'
           value={values.content}
-          placeholder={t("content placeholder")}
+          placeholder={t('content placeholder')}
           onChange={handleInputChange}
         />
-        <div className="ReviewForm-error-buttons">
-          <div className="ReviewForm-error">
+        <div className='ReviewForm-error-buttons'>
+          <div className='ReviewForm-error'>
             {submittingError && <div>{submittingError.message}</div>}
           </div>
-          <div className="ReviewForm-buttons">
+          <div className='ReviewForm-buttons'>
             {onCancel && (
-              <button className="ReviewForm-cancel-button" onClick={onCancel}>
-                {t("cancel button")}
+              <button className='ReviewForm-cancel-button' onClick={onCancel}>
+                {t('cancel button')}
               </button>
             )}
             <button
-              className="ReviewForm-submit-button"
-              type="submit"
+              className='ReviewForm-submit-button'
+              type='submit'
               disabled={isSubmitting}
             >
-              {t("confirm button")}
+              {t('confirm button')}
             </button>
           </div>
         </div>

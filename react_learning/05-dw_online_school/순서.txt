@@ -1,0 +1,39 @@
+0. classnames 모듈 설치
+1. 리액트 라우터
+ Router - 리액트 라우터에서 사용하는 데이터들을 모두 가지고 있다.
+          현재 주소라던지 페이지 기록같은 것들.
+          라우터 컴포넌트도 내부적으로는 컨텍스트 프로바이더 이다.
+          그래서 리액트 라우터에서 제공하는 기능을 사용하려면 반드시 Router 컴포넌트 안에서 사용해야 한다.
+ Routes, Route - 두개는 주로 같이 사용한다. 자바스크립트의 switch case문과 비슷하다.
+ Link - 리액트 라우터에서 a 태그 대신에 사용하는 것.
+
+2. 리액트 라우터 설치
+ npm install react-router-dom    (-dom@6 이렇게 하면 6버전 설치)
+
+3. Routes 로 페이지 나누기
+
+4. Link로 이동하기
+ Nav.js 에 Link 컴포넌트 import
+ Link 컴포넌트에 to prop 을 사용하여 경로를 지정해주는데 맨앞에 붙이는 / 는
+ 절대경로라는 의미이고 localhost:3000에 /courses 를 붙인 주소로 이동하게 된다.
+ 안붙이면 현재의 경로 마지막에 /courses 를 붙여서 이동하게 된다.
+ 
+ UserMenu.js 도 위시리스트 Link 태그로 감싸준다.
+ CourseItem.js 에서 course.title 부분도 Link 태그
+
+5. 커뮤니티 페이지 추가하기(QuestionListPage, QuestionPage 연결)
+
+6. NavLink로 네비게이션 구현하기(Nav.js)
+ 웹사이트에서 메뉴를 클릭하면 강조되는 효과가 있다. NavLink 를 사용하여 구현하자.
+ NavLink 는 style 이라는 prop 으로 함수를 내려줄 수 있다.
+
+7. 하위 페이지 나누기
+ path가 길어지고 복잡해지면 하아늬 Route 에서 관리하기 어려움. ==> Route 중첩을 사용하여 해결
+ Main.js 에 course 관련 Route 두개를 Route 로 다시 감싼다.
+ 감싼 Route 의 path prop 에 courses 를 쓰고 안에 있는 Route 들의 path 에서는 courses 를 지운다.
+ 안쪽 Route 중에서 상위 Route에 index prop 을 사용하여 기본 페이지라는 것을 알려준다.
+
+ Route를 중첩해서 만들 때 간혹 특정 path 안에서는 공통된 스타일을 보여주고 싶을 수 있다.
+ 최상위 경로를 Route 로 감싸서 해결해보자.
+ Outlet 이라는 컴포넌트를 사용하여 해결할 수 있는데 이렇게 하면 Route 안에서 렌더링 되는 부분은
+ Outlet 컴포넌트가 있는 부분에 렌더링 된다.
