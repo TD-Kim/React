@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
 import {
   getFirestore,
   collection,
@@ -15,21 +15,22 @@ import {
   exists,
   updateDoc,
   deleteDoc,
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
+  deleteObject,
+} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAdHy-PY5GiXz7B73eiyeL8FT0udOmhBkM",
-  authDomain: "moviepedia-c1462.firebaseapp.com",
-  projectId: "moviepedia-c1462",
-  storageBucket: "moviepedia-c1462.appspot.com",
-  messagingSenderId: "452125101812",
-  appId: "1:452125101812:web:40b9aedb70d1e7e97e98a1",
+  apiKey: 'AIzaSyAdHy-PY5GiXz7B73eiyeL8FT0udOmhBkM',
+  authDomain: 'moviepedia-c1462.firebaseapp.com',
+  projectId: 'moviepedia-c1462',
+  storageBucket: 'moviepedia-c1462.appspot.com',
+  messagingSenderId: '452125101812',
+  appId: '1:452125101812:web:40b9aedb70d1e7e97e98a1',
 };
 
 // Initialize Firebase
@@ -51,7 +52,7 @@ async function getDatas(collectionName, options) {
   } else if (options.lq !== undefined) {
     const firstQuery = query(
       collection(db, collectionName),
-      orderBy(options.order, "desc"),
+      orderBy(options.order, 'desc'),
       startAfter(options.lq),
       limit(options.limit)
     );
@@ -71,7 +72,7 @@ async function getDatas(collectionName, options) {
   } else {
     const firstQuery = query(
       collection(db, collectionName),
-      orderBy(options.order, "desc"),
+      orderBy(options.order, 'desc'),
       limit(options.limit)
     );
     querySnapshot = await getDocs(firstQuery);
@@ -87,7 +88,7 @@ async function getDatas(collectionName, options) {
 async function getLastId(collectionName) {
   const lastQuery = await query(
     collection(db, collectionName),
-    orderBy("id", "desc"),
+    orderBy('id', 'desc'),
     limit(1)
   );
   const lastDoc = await getDocs(lastQuery);
@@ -112,7 +113,7 @@ async function addDatas(collectionName, ...args) {
     result = await addDoc(collection(db, collectionName), formData);
     // addDoc 의 return 으로 doc 의 ref 객체가 나옴
   } else {
-    if (formData.imgUrl !== null && typeof formData.imgUrl === "object") {
+    if (formData.imgUrl !== null && typeof formData.imgUrl === 'object') {
       const url = await uploadImage(path, formData.imgUrl);
       formData.imgUrl = url;
     } else if (formData.imgUrl === null || formData.imgUrl === undefined) {
@@ -143,8 +144,13 @@ async function updateDatas(collectionName, docId, formData) {
   await updateDoc(docRef, formData);
 }
 
-async function deleteDatas(collectionName, docId) {
+async function deleteDatas(collectionName, docId, imgUrl) {
+  console.log(imgUrl);
+  const storage = getStorage();
+  const deleteRef = ref(storage, imgUrl);
+  console.log(deleteRef);
   try {
+    await deleteObject(deleteRef);
     await deleteDoc(doc(db, collectionName, docId));
   } catch (error) {
     return false;

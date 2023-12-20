@@ -49,13 +49,13 @@ function App() {
   const sortedItems = items;
   const handleNewestClick = () => setOrder('createdAt');
   const handleBestClick = () => setOrder('rating');
-  const handleDelete = async (docId) => {
+  const handleDelete = async (docId, imgUrl) => {
     // 1. 화면에서만 삭제
     // const nextItems = items.filter((item) => item.id !== id);
     // setItems(nextItems);
 
     // 2. db에서 삭제(삭제가 성공했을 때만 그 결과를 반영한다.)
-    const result = await deleteDatas('movie', docId);
+    const result = await deleteDatas('movie', docId, imgUrl);
     if (!result) return;
 
     setItems((prevItems) => prevItems.filter((item) => item.docId !== docId));

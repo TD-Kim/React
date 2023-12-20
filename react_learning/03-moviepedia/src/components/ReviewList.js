@@ -1,9 +1,9 @@
-import Rating from "./Rating";
-import "./ReviewList.css";
-import ReviewForm from "./ReviewForm.js";
-import { useContext, useState } from "react";
-import useTranslate from "../hooks/useTranslate.js";
-import "./ReviewList.css";
+import Rating from './Rating';
+import './ReviewList.css';
+import ReviewForm from './ReviewForm.js';
+import { useContext, useState } from 'react';
+import useTranslate from '../hooks/useTranslate.js';
+import './ReviewList.css';
 
 function formatDate(value) {
   const date = new Date(value);
@@ -15,32 +15,32 @@ function ReviewListItem({ item, onDelete, onEdit }) {
   // const locale = useLocale();
   const t = useTranslate();
   // const handleDeleteClick = () => onDelete(item.id);
-  const handleDeleteClick = () => onDelete(item.docId);
+  const handleDeleteClick = () => onDelete(item.docId, item.imgUrl);
 
   const handleEditClick = () => {
     onEdit(item.id);
   };
 
   return (
-    <div className="ReviewListItem">
-      <img className="ReviewListItem-img" src={item.imgUrl} alt={item.title} />
-      <div className="ReviewListItem-rows">
-        <h1 className="ReviewListItem-title">{item.title}</h1>
-        <Rating className="ReviewListItem-rating" value={item.rating} />
-        <p className="ReviewListItem-date">{formatDate(item.createdAt)}</p>
-        <p className="ReviewListItem-content">{item.content}</p>
-        <div className="ReviewListItem-buttons">
+    <div className='ReviewListItem'>
+      <img className='ReviewListItem-img' src={item.imgUrl} alt={item.title} />
+      <div className='ReviewListItem-rows'>
+        <h1 className='ReviewListItem-title'>{item.title}</h1>
+        <Rating className='ReviewListItem-rating' value={item.rating} />
+        <p className='ReviewListItem-date'>{formatDate(item.createdAt)}</p>
+        <p className='ReviewListItem-content'>{item.content}</p>
+        <div className='ReviewListItem-buttons'>
           <button
-            className="ReviewListItem-edit-button"
-            onClick={handleDeleteClick}
-          >
-            {t("edit button")}
-          </button>
-          <button
-            className="ReviewListItem-delete-button"
+            className='ReviewListItem-edit-button'
             onClick={handleEditClick}
           >
-            {t("delete button")}
+            {t('edit button')}
+          </button>
+          <button
+            className='ReviewListItem-delete-button'
+            onClick={handleDeleteClick}
+          >
+            {t('delete button')}
           </button>
         </div>
       </div>
@@ -54,7 +54,7 @@ function ReviewList({ items, onDelete, onUpdate, onUpdateSuccess }) {
   const handleCancel = () => setEditingId(null);
 
   return (
-    <ul className="ReviewList">
+    <ul className='ReviewList'>
       {items.map((item) => {
         // return <li>{item.title}</li>;
         if (item.id === editingId) {
