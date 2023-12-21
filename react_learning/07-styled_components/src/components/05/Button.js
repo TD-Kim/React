@@ -6,7 +6,7 @@ const SIZES = {
   small: 16,
 };
 
-const DynamicButton = styled.button`
+const Button = styled.button`
   background-color: #6750a4;
   border: none;
   /* border-radius: ${(props) => (props.round ? `9999px` : `3px`)}; */
@@ -22,4 +22,4 @@ const DynamicButton = styled.button`
   }
 `;
 
-export default DynamicButton;
+export default Button;
