@@ -136,9 +136,31 @@
  App.js 에 locale State 생성
 37. Context 코드 분리하기
  SomeComponent 가 생성되면 코드를 수정할 때 헷갈릴 수 있다. 그래서 State와 Context Provider 를 함께 사용한다.
+ 매번 useContext랑 LocaleContext 를 가지고 사용하는건 번거로우니까 이걸 대신해주는걸 만들어준다.
+ useLocale 이라는 Hook은 locale 값을 전달해주고, useSetLocale 이라는 Hook 은 setLocale 함수를 전달해주도록 한다.
+ 이렇게 하면 어디서 값을 사용하고 변경하는지 알기 편하다.
+
+ 일단 함수 안에서 Context 값을 가져온다. 이 커스텀 훅을 LocaleContext.Provider 바깥에서 사용하면 context 값이 없다.
+ 그런 경우에는 error 를 throw 해준다. 커스텀 훅을 사용하면 이렇게 error 처리를 해줄 수 있다는 장점이 있다.
+
+ 마지막에 export default LocaleContext 는 지워준다.(함수마다 export 붙이고나서)
+
+ 소스 적용 - ReviewList 에서 useContext 사용하던걸 useLocale 훅으로 바꿔준다.
+             LocaleSelect 에서는 value와 onChange prop 받아오던걸 useLocale과 useSetLocale 훅으로 받아온다.
 38. 다국어 기능 완성하기
+ 사전 즉, Dictionary 구조를 사용한다.(그냥 객체와 똑같다.)
  hooks 폴더에 useTranslate.js 생성
- 
+ useLocale 커스텀 훅으로 locale 값을 가져온다.
+ dict 라는 객체를 만들고 언어마다 필요한 단어를 작성해준다.
+
+ useTranslate 라는 함수를 만들고 dict 에서 필요한 값을 뽑아온다.
+ 마지막에는 translate 함수를 리턴해준다.
+
+ 소스 적용 - ReviewListItem 컴포넌트로 가서 적용.
+             useTranslate 훅으로 translate 함수를 가져오고 각 단어에 필요한 키값으로 변경해준다.
+             ReviewForm 컴포넌트에도 적용한다.
+
+
  
 
  
