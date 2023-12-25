@@ -31,7 +31,7 @@ function Home({ toDos, addToDo }) {
   );
 }
 
-// function getCurrentState(state, ownProps) {
+// function getCurrentState(state, ownProps) {  // store로 부터 state 를 가져다주는 용도의 함수이다.
 function mapStateToProps(state, ownProps) {
   return { toDos: state };
 }
@@ -43,5 +43,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 // export default Home;
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home); // connect 함수는
 // export default connect(null, mapDispatchToProps)(Home); // props 를 전달할 필요가 없으면 connect 함수의 첫번째 파라미터를 null 을 넣어주면 된다.
