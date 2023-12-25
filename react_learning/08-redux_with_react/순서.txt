@@ -1,0 +1,42 @@
+0. 리덕스는 자바스크립트 어플리케이션들의 state(상태)를 관리하는 방법이다.(리액트와는 별개)
+ 리덕스를 배우라고 할 때 무슨 문제를 해결해 줄 수 있는지 모르고 배운다.
+ 리덕스 프로젝트를 시작할 때 부터 만들 수 있다. npx create-react-app [프로젝트명] --template redux
+ 리액트 프로젝트에 리덕스를 추가 할 때는 프로젝트 폴더에서 npm install redux
+
+ store 란? ==> 데이터를 넣는곳. state 이다.
+ state ==> 어플리케이션에서 변화하는 데이터
+
+ store를 만들면 reducer 를 만들어 달라고 에러가 난다.
+
+ reducer 는 data를 modify 하는 함수이다.
+ reducer 에서 return 하는 데이터가 애플리케이션의 데이터가 된다.
+
+ store에 dispatch 함수를 사용해서 action을 보낼 수 있다.(action 은 객체이어야함)
+ 
+
+1. 필요한것 셋팅
+ npm install react-redux react-router-dom
+
+2. connecting the Store
+ 리덕스를 사용하기 위해서는 우선적으로 store 라는것을 만들어야 한다.
+ src 폴더에 store.js 생성
+ store.js 소스 작성
+
+3. mapStateToProps
+ 리덕스의 state 로 부터 state 를 가져올 수 있어야 한다.
+ connect 라는 함수를 사용하는데 우리의 components 들과 store 를 연결시켜준다.
+ connect 는 argument 로 state 와 dispatch 를 가진다.
+ store.getState() ==> state를 전달
+ store.dispatch() ==> store 혹은 reducer 에 메세지를 전달
+
+ Home.js 에 getCurrentState 함수 생성
+
+ mapStateToProps 을 사용한다는 것은 무엇인가를 가져오고 싶다는것이다. 리덕스 store 로 부터.
+ connect 함수가 Home 으로 보내는 props에 추가될 수 있도록 해준다.
+
+4. mapDispatchToProps
+ 어떻게 하면 component 가 dispatch 동작도 할 수 있을지에 대해 살펴보자.
+
+5. Deleting To Do
+ 
+6. Detail Screen

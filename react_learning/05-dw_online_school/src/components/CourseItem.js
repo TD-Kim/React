@@ -1,11 +1,11 @@
-import Card from './Card';
-import CourseIcon from './CourseIcon';
-import Tags from './Tags';
-import getCourseColor from '../utils/getCourseColor';
-import styles from './CourseItem.module.css';
-import { Link } from 'react-router-dom';
+import Card from "./Card";
+import CourseIcon from "./CourseIcon";
+import Tags from "./Tags";
+import getCourseColor from "../utils/getCourseColor";
+import styles from "./CourseItem.module.css";
+import { Link } from "react-router-dom";
 
-const DIFFICULTY = ['입문', '초급', '중급', '고급'];
+const DIFFICULTY = ["입문", "초급", "중급", "고급"];
 
 function CourseItem({ course }) {
   const showSummary = course.summary && course.title !== course.summary;
