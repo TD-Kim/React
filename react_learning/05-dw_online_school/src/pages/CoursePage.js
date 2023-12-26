@@ -1,21 +1,29 @@
-import { addWishlist, getCourseBySlug } from "../api";
-import Button from "../components/Button";
-import Container from "../components/Container";
-import Card from "../components/Card";
-import CourseIcon from "../components/CourseIcon";
-import getCourseColor from "../utils/getCourseColor";
-import styles from "./CoursePage.module.css";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { addWishlist, getCourseBySlug } from '../api';
+import Button from '../components/Button';
+import Container from '../components/Container';
+import Card from '../components/Card';
+import CourseIcon from '../components/CourseIcon';
+import getCourseColor from '../utils/getCourseColor';
+import styles from './CoursePage.module.css';
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
+import { getData } from '../api/firebase';
+import { useEffect } from 'react';
 
 function CoursePage() {
+  const { course } = useLocation().state;
   const { courseSlug } = useParams(); // useParams가 리턴하는 객체에는 현재 경로의 파라미터들이 저장되어 있다.
   // const course = getCourseBySlug("react-frontend-development");
   const navigate = useNavigate();
-  const course = getCourseBySlug(courseSlug);
+
   const courseColor = getCourseColor(course?.code);
 
   if (!course) {
-    return <Navigate to="/courses" />;
+    return <Navigate to='/courses' />;
   }
 
   const headerStyle = {
@@ -24,7 +32,7 @@ function CoursePage() {
 
   const handleAddWishlistClick = () => {
     addWishlist(course?.slug);
-    navigate("/wishlist");
+    navigate('/wishlist');
   };
 
   return (
@@ -33,7 +41,7 @@ function CoursePage() {
         <Container className={styles.content}>
           <CourseIcon photoUrl={course.photoUrl} />
           <h1 className={styles.title}>{course.title}</h1>
-          <Button variant="round" onClick={handleAddWishlistClick}>
+          <Button variant='round' onClick={handleAddWishlistClick}>
             + 코스 담기
           </Button>
           <p className={styles.summary}>{course.summary}</p>

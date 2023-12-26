@@ -1,11 +1,11 @@
-import Card from "./Card";
-import CourseIcon from "./CourseIcon";
-import Tags from "./Tags";
-import getCourseColor from "../utils/getCourseColor";
-import styles from "./CourseItem.module.css";
-import { Link } from "react-router-dom";
+import Card from './Card';
+import CourseIcon from './CourseIcon';
+import Tags from './Tags';
+import getCourseColor from '../utils/getCourseColor';
+import styles from './CourseItem.module.css';
+import { Link } from 'react-router-dom';
 
-const DIFFICULTY = ["입문", "초급", "중급", "고급"];
+const DIFFICULTY = ['입문', '초급', '중급', '고급'];
 
 function CourseItem({ course }) {
   const showSummary = course.summary && course.title !== course.summary;
@@ -22,7 +22,9 @@ function CourseItem({ course }) {
       </div>
       <div className={styles.content}>
         <h2 className={styles.title}>
-          <Link to={`/courses/${course.slug}`}>{course.title}</Link>
+          <Link to={`/courses/${course.slug}`} state={{ course }}>
+            {course.title}
+          </Link>
         </h2>
         <p className={styles.description}>{showSummary && course.summary}</p>
         <div>
