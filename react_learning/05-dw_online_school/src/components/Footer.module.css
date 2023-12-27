@@ -42,3 +42,20 @@
 .sns :not(:last-child) {
   margin-right: 13px;
 }
+
+.logo {
+  font-family: 'SBAggroB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff')
+    format('woff');
+  font-weight: 550;
+  font-style: normal;
+  font-size: 20px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.logo > span {
+  background-color: #878787;
+  color: #515151;
+  padding: 0 3px;
+  margin-right: 2px;
+}

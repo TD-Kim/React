@@ -17,7 +17,11 @@ function Nav() {
     <div className={styles.nav}>
       <Container className={styles.container}>
         <Link to='/'>
-          <img src={logoImg} alt='Codethat Logo' />
+          <div className={styles.logo}>
+            <span>DW</span>
+            OS
+          </div>
+          {/* <img src={logoImg} alt='Codethat Logo' /> */}
         </Link>
         <ul className={styles.menu}>
           <li>
