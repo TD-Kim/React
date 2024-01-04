@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const isLogined = localStorage.getItem("token");
+  // console.log(isLogined);
 
   // const handleButtonClick = useCallback((e) => {
   //   e.stopPropagation();
@@ -23,7 +25,6 @@ function UserMenu() {
   // useEffect 는 컴포넌트의 렌더링 이후에 실행된다.
   // clean-up 함수는 컴포넌트의 update 이전에 실행된다.
   useEffect(() => {
-    console.log(isOpen);
     if (!isOpen) return;
 
     const handleClickOutside = () => setIsOpen(false);
@@ -33,7 +34,7 @@ function UserMenu() {
     window.addEventListener('click', handleClickOutside);
 
     return () => {
-      console.log('언제냐?');
+      // console.log('언제냐?');
       // isOpen이 바뀌는 시점에 return 의 콜백함수가 실행된다.
       window.removeEventListener('click', handleClickOutside);
     };
@@ -50,9 +51,16 @@ function UserMenu() {
             <li>위시리스트</li>
           </Link>
           <li className={styles.disabled}>회원가입</li>
-          <Link to='/login'>
+          {
+            !isLogined ? (<Link to='/login'>
             <li>로그인</li>
-          </Link>
+          </Link>) : (<Link to='/logout'>
+            <li>로그아웃</li>
+          </Link>)
+          }
+          {/* <Link to='/login'>
+            <li>로그인</li>
+          </Link> */}
         </ul>
       )}
     </div>

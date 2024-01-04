@@ -13,6 +13,7 @@ function getLinkStyle({ isActive }) {
 }
 
 function Nav() {
+  console.log(localStorage.getItem("token"))
   return (
     <div className={styles.nav}>
       <Container className={styles.container}>

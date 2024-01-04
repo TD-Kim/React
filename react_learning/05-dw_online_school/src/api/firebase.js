@@ -86,11 +86,11 @@ async function getDatas(collectionName, options) {
 }
 
 async function getData(collectionName, fieldName, condition, value) {
-  const query = query(
+  const docQuery = query(
     collection(db, collectionName),
     where(fieldName, condition, value)
   );
-  const querySnapshot = await getDocs(query);
+  const querySnapshot = await getDocs(docQuery);
   const data = querySnapshot.docs.map((doc) => ({
     docId: doc.id,
     ...doc.data(),
@@ -157,7 +157,12 @@ async function uploadImage(path, imgUrl) {
 
 async function updateDatas(collectionName, docId, formData) {
   const docRef = doc(db, collectionName, docId);
-  await updateDoc(docRef, formData);
+  try {
+    await updateDoc(docRef, formData);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 async function deleteDatas(collectionName, docId, imgUrl) {
@@ -182,4 +187,4 @@ async function getImageURL(imgUrl) {
   return url;
 }
 
-export { db, getDatas, addDatas, deleteDatas, getData };
+export { db, getDatas, addDatas, deleteDatas, getData, updateDatas };

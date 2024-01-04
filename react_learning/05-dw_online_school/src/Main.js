@@ -8,6 +8,7 @@ import QuestionListPage from './pages/QuestionListPage';
 import QuestionPage from './pages/QuestionPage';
 import NotFound from './pages/NotFoundPage';
 import LoginPage from './pages/LoginPage';
+import LogoutPage from './pages/LogoutPage';
 
 function Main() {
   // Routes 를 렌더링 할 때는 안에있는 Route를 차례대로 검사하면서
@@ -30,6 +31,7 @@ function Main() {
           </Route>
           <Route path='wishlist' element={<WishlistPage />} />
           <Route path='login' element={<LoginPage />} />
+          <Route path='logout' element={<LogoutPage />} />
           <Route path='*' element={<NotFound />}></Route>
         </Route>
       </Routes>
