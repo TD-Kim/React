@@ -1,25 +1,38 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { deleteWishlist, getWishlist } from '../api';
-import Button from '../components/Button';
-import Container from '../components/Container';
-import CourseItem from '../components/CourseItem';
-import Warn from '../components/Warn';
-import closeButton from '../assets/closeButton.svg';
-import styles from './WishlistPage.module.css';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { deleteWishlist, getWishlist } from "../api";
+import Button from "../components/Button";
+import Container from "../components/Container";
+import CourseItem from "../components/CourseItem";
+import Warn from "../components/Warn";
+import closeButton from "../assets/closeButton.svg";
+import styles from "./WishlistPage.module.css";
+import { getData, updateDatas } from "../api/firebase";
 
 function WishlistPage() {
   const [courses, setCourses] = useState([]);
+  const member = JSON.parse(localStorage.getItem("member"));
 
-  const handleDelete = (courseSlug) => {
-    deleteWishlist(courseSlug);
-    const nextCourses = getWishlist();
-    setCourses(nextCourses);
+  const handleDelete = async (course) => {
+    // deleteWishlist(courseSlug);
+    // const nextCourses = getWishlist();
+    // setCourses(nextCourses);
+    const result = await updateDatas("member", member.docId, course, {
+      type: "DELETE",
+      fieldName: "courseList",
+    });
+    handleLoad();
+  };
+
+  const handleLoad = async () => {
+    const result = await getData("member", "id", "==", member.id);
+    setCourses(result[0].courseList);
   };
 
   useEffect(() => {
-    const nextCourses = getWishlist();
-    setCourses(nextCourses);
+    handleLoad();
+    // const nextCourses = getWishlist();
+    // setCourses(nextCourses);
   }, []);
 
   return (
@@ -47,7 +60,7 @@ function WishlistPage() {
                 className={styles.delete}
                 src={closeButton}
                 alt="닫기"
-                onClick={() => handleDelete(course.slug)}
+                onClick={() => handleDelete(course)}
               />
             </li>
           ))}

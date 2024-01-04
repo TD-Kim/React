@@ -1,4 +1,4 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import {
   getFirestore,
   collection,
@@ -15,22 +15,24 @@ import {
   exists,
   updateDoc,
   deleteDoc,
-} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+  arrayUnion,
+  arrayRemove,
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
-} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js';
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyC1oPPa_zO7fFXUmfBrLnxsjlAwfj1zUrs',
-  authDomain: 'dwos-9bd0b.firebaseapp.com',
-  projectId: 'dwos-9bd0b',
-  storageBucket: 'dwos-9bd0b.appspot.com',
-  messagingSenderId: '401090286699',
-  appId: '1:401090286699:web:a2553c88b240b5fab34d2e',
+  apiKey: "AIzaSyC1oPPa_zO7fFXUmfBrLnxsjlAwfj1zUrs",
+  authDomain: "dwos-9bd0b.firebaseapp.com",
+  projectId: "dwos-9bd0b",
+  storageBucket: "dwos-9bd0b.appspot.com",
+  messagingSenderId: "401090286699",
+  appId: "1:401090286699:web:a2553c88b240b5fab34d2e",
 };
 
 // Initialize Firebase
@@ -52,7 +54,7 @@ async function getDatas(collectionName, options) {
   } else if (options.lq !== undefined) {
     const firstQuery = query(
       collection(db, collectionName),
-      orderBy(options.order, 'desc'),
+      orderBy(options.order, "desc"),
       startAfter(options.lq),
       limit(options.limit)
     );
@@ -72,7 +74,7 @@ async function getDatas(collectionName, options) {
   } else {
     const firstQuery = query(
       collection(db, collectionName),
-      orderBy(options.order, 'desc'),
+      orderBy(options.order, "desc"),
       limit(options.limit)
     );
     querySnapshot = await getDocs(firstQuery);
@@ -104,7 +106,7 @@ async function getSearchDatas(collectionName, keyword) {}
 async function getLastId(collectionName) {
   const lastQuery = await query(
     collection(db, collectionName),
-    orderBy('id', 'desc'),
+    orderBy("id", "desc"),
     limit(1)
   );
   const lastDoc = await getDocs(lastQuery);
@@ -129,7 +131,7 @@ async function addDatas(collectionName, ...args) {
     result = await addDoc(collection(db, collectionName), formData);
     // addDoc 의 return 으로 doc 의 ref 객체가 나옴
   } else {
-    if (formData.imgUrl !== null && typeof formData.imgUrl === 'object') {
+    if (formData.imgUrl !== null && typeof formData.imgUrl === "object") {
       const url = await uploadImage(path, formData.imgUrl);
       formData.imgUrl = url;
     } else if (formData.imgUrl === null || formData.imgUrl === undefined) {
@@ -155,10 +157,22 @@ async function uploadImage(path, imgUrl) {
   return url;
 }
 
-async function updateDatas(collectionName, docId, formData) {
+async function updateDatas(collectionName, docId, updateData, options) {
   const docRef = doc(db, collectionName, docId);
   try {
-    await updateDoc(docRef, formData);
+    if (options) {
+      if (options.type == "ADD") {
+        await updateDoc(docRef, {
+          [options.fieldName]: arrayUnion(updateData),
+        });
+      } else if (options.type == "DELETE") {
+        await updateDoc(docRef, {
+          [options.fieldName]: arrayRemove(updateData),
+        });
+      }
+    } else {
+      await updateDoc(docRef, updateData);
+    }
     return true;
   } catch (error) {
     return false;

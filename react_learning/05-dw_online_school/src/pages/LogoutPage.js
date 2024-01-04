@@ -1,8 +1,8 @@
-import { Navigate } from "react-router-dom"
+import { Navigate } from "react-router-dom";
 
-function LogoutPage(){
-    localStorage.removeItem("token");
-    return <Navigate to="/" />
+function LogoutPage() {
+  localStorage.removeItem("member");
+  return <Navigate to="/" />;
 }
 
 export default LogoutPage;

@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import personIcon from '../assets/person.png';
-import styles from './UserMenu.module.css';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useState } from "react";
+import personIcon from "../assets/person.png";
+import styles from "./UserMenu.module.css";
+import { Link } from "react-router-dom";
 
 function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const isLogined = localStorage.getItem("token");
+  const isLogined = localStorage.getItem("member");
   // console.log(isLogined);
 
   // const handleButtonClick = useCallback((e) => {
@@ -31,33 +31,35 @@ function UserMenu() {
     // const handleClickOutside = () => {
     //   alert('test');
     // };
-    window.addEventListener('click', handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
 
     return () => {
       // console.log('언제냐?');
       // isOpen이 바뀌는 시점에 return 의 콜백함수가 실행된다.
-      window.removeEventListener('click', handleClickOutside);
+      window.removeEventListener("click", handleClickOutside);
     };
   }, [isOpen]);
 
   return (
     <div className={styles.userMenu}>
       <button className={styles.iconButton} onClick={handleButtonClick}>
-        <img src={personIcon} alt='유저 메뉴' />
+        <img src={personIcon} alt="유저 메뉴" />
       </button>
       {isOpen && (
         <ul className={styles.popup}>
-          <Link to='/wishlist'>
+          <Link to="/wishlist">
             <li>위시리스트</li>
           </Link>
           <li className={styles.disabled}>회원가입</li>
-          {
-            !isLogined ? (<Link to='/login'>
-            <li>로그인</li>
-          </Link>) : (<Link to='/logout'>
-            <li>로그아웃</li>
-          </Link>)
-          }
+          {!isLogined ? (
+            <Link to="/login">
+              <li>로그인</li>
+            </Link>
+          ) : (
+            <Link to="/logout">
+              <li>로그아웃</li>
+            </Link>
+          )}
           {/* <Link to='/login'>
             <li>로그인</li>
           </Link> */}
