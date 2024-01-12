@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import ColorSurvey from "./components/ColorSurvey";
-import axios from "./lib/axios";
-import styles from "./Home.module.css";
-import { getMockItems } from "./lib/api";
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { Link } from 'react-router-dom';
+import ColorSurvey from './components/ColorSurvey';
+import axios from './lib/axios';
+import styles from './Home.module.css';
+import { getMockItems } from './lib/api';
 
 function Home() {
   const [items, setItems] = useState([]);
@@ -16,35 +16,40 @@ function Home() {
     // const res = await axios.get("/color-surveys/", {
     //   params: { mbti, limit: 20 },
     // });
-    const mockItems = getMockItems();
+    const { data } = getMockItems();
     // console.log(res, mockItems);
     // nextPageRef.current = res.data.next;
-    nextPageRef.current = mockItems.length;
-    const nextItems = mockItems;
+    nextPageRef.current = data.length;
+    const nextItems = data;
     setItems(nextItems);
+    // handleSetItems(nextItems);
   }
+
+  const handleSetItems = (nexItems) => setItems(nexItems);
 
   async function handleLoadNext() {
-    console.log(items.length);
     // const res = await axios.get(nextPageRef.current);
     // const data = res.data;
-    const data = getMockItems(nextPageRef.current);
-    setItems((prevItems) => {
-      console.log(prevItems.length);
-      // return [...prevItems, ...data.results];
-      return [...prevItems, ...data];
-    });
-    nextPageRef.current = data.next;
+    const result = getMockItems(nextPageRef.current);
+    if (result?.data) {
+      setItems((prevItems) => {
+        // return [...prevItems, ...data.results];
+        return [...prevItems, ...result.data];
+      });
+    }
+    // nextPageRef.current = data.next;
+    nextPageRef.current = result?.nextItemNum;
   }
 
+  useLayoutEffect(() => {}, []);
+
   useEffect(() => {
-    console.log("첫번째 useEffect");
     handleLoad(filter);
   }, [filter]);
 
   useEffect(() => {
-    console.log("두번째 useEffect");
     async function handleScroll() {
+      // console.log(!nextPageRef.current, isLoadingRef.current);
       // console.log(!nextPageRef.current || isLoadingRef.current);
       if (!nextPageRef.current || isLoadingRef.current) return;
       isLoadingRef.current = true;
@@ -71,8 +76,8 @@ function Home() {
       isLoadingRef.current = false;
     }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -80,7 +85,7 @@ function Home() {
       <div className={styles.headerContainer}>
         <header className={styles.header}>
           <h1 className={styles.heading}>
-            MBTI별{console.log("로딩")}
+            MBTI별{console.log('로딩')}
             <br />
             <span className={styles.accent}>좋아하는 컬러</span>
           </h1>
@@ -90,8 +95,8 @@ function Home() {
                 {filter}
                 <img
                   className={styles.removeIcon}
-                  src="/images/x.svg"
-                  alt="필터 삭제"
+                  src='/images/x.svg'
+                  alt='필터 삭제'
                 />
               </div>
             )}
@@ -99,7 +104,7 @@ function Home() {
         </header>
       </div>
       <main className={styles.content}>
-        <Link className={styles.addItem} to="/new">
+        <Link className={styles.addItem} to='/new'>
           + 새 컬러 등록하기
         </Link>
         <ul className={styles.items}>

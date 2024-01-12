@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import ListPage from '../components/ListPage';
 import Warn from '../components/Warn';
 import CourseItem from '../components/CourseItem';
@@ -8,6 +8,7 @@ import searchBarStyles from '../components/SearchBar.module.css';
 import searchIcon from '../assets/search.svg';
 import { useSearchParams } from 'react-router-dom';
 import { getDatas } from '../api/firebase';
+import TestComponent from '../components/TestComponent';
 
 let listItems;
 
@@ -19,6 +20,7 @@ function CourseListPage() {
 
   const [items, setItems] = useState([]);
   const [isInitPage, setIsInitPage] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   // const courses = getCourses();
   // const courses = getCourses(initKeyword);
@@ -42,15 +44,35 @@ function CourseListPage() {
   };
 
   const handleLoad = async () => {
+    console.log('handleLoad');
+    setIsLoading(true);
     const items = await getDatas('courses');
     listItems = items;
     setItems(items);
-    setIsInitPage(false);
+    setIsLoading(false);
+    // setIsInitPage(false);
   };
+
+  // useLayoutEffect(() => {
+  //   console.log('useLayoutEffect');
+  //   handleLoad();
+  // }, []);
 
   useEffect(() => {
     handleLoad();
   }, []);
+
+  if (isLoading) {
+    return (
+      <ListPage
+        variant='catalog'
+        title='모든 코스'
+        description='자체 제작된 코스들로 기초를 쌓으세요.'
+      >
+        <p>Loading profile...</p>
+      </ListPage>
+    );
+  }
 
   return (
     <ListPage
@@ -75,7 +97,9 @@ function CourseListPage() {
 
       {/* {courses.length === 0 ? ( */}
       {/* {initKeyword && courses.length === 0 ? ( */}
-      {items.length === 0 && !isInitPage ? (
+      {/* <Suspense fallback={<h1>Loading...</h1>}> */}
+      {/* <TestComponent resource={handleLoad()} /> */}
+      {items.length === 0 ? (
         <Warn
           className={styles.emptyList}
           title='조건에 맞는 코스가 없어요.'
@@ -83,14 +107,12 @@ function CourseListPage() {
         />
       ) : (
         <div className={styles.courseList}>
-          {/* {courses.map((course) => (
-            <CourseItem key={course.id} course={course} />
-          ))} */}
           {items.map((course) => (
             <CourseItem key={course.docId} course={course} />
           ))}
         </div>
       )}
+      {/* </Suspense> */}
     </ListPage>
   );
 }

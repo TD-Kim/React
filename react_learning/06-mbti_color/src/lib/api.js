@@ -1,16 +1,15 @@
-import mockItems from "../mock.json";
+import mockItems from '../mock.json';
 
 const mock = mockItems;
 const LIMITS = 10;
 
-export function getMockItems(prevPage) {
-  if (prevPage === undefined) {
-    const res = mock.slice(0, LIMITS);
-    console.log(mock);
-    return mock.slice(0, LIMITS);
-  }
+export function getMockItems(lastItemNum) {
+  if (lastItemNum === mock.length) return;
 
-  const prevIdx = prevPage - 1;
-  console.log(mock);
-  return mock.slice(prevPage, prevPage + LIMITS);
+  lastItemNum = lastItemNum ? lastItemNum : 0;
+
+  let nextItemNum = lastItemNum + LIMITS;
+
+  const prevIdx = lastItemNum - 1;
+  return { data: mock.slice(lastItemNum, nextItemNum), nextItemNum };
 }
