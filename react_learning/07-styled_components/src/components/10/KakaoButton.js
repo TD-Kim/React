@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import Button from './Button';
-import kakaoIcon from './kakao.svg';
+import styled from "styled-components";
+import Button from "./Button";
+import kakaoIcon from "./kakao.svg";
 
 const Icon = styled.img`
   height: 24px;
@@ -26,7 +26,7 @@ const StyledButton = styled(Button)`
 function KakaoButton({ className }) {
   return (
     <StyledButton className={className}>
-      <Icon src={kakaoIcon} alt='kakao icon' />
+      <Icon src={kakaoIcon} alt="kakao icon" />
       카카오 로그인
     </StyledButton>
   );
