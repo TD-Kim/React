@@ -1,4 +1,4 @@
-import mockItems from '../mock.json';
+import mockItems from "../mock.json";
 
 const mock = mockItems;
 const LIMITS = 10;

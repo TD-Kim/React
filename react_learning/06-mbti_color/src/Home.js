@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
-import ColorSurvey from './components/ColorSurvey';
-import axios from './lib/axios';
-import styles from './Home.module.css';
-import { getMockItems } from './lib/api';
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { Link } from "react-router-dom";
+import ColorSurvey from "./components/ColorSurvey";
+import axios from "./lib/axios";
+import styles from "./Home.module.css";
+import { getMockItems } from "./lib/api";
 
 function Home() {
   const [items, setItems] = useState([]);
@@ -41,7 +41,7 @@ function Home() {
     nextPageRef.current = result?.nextItemNum;
   }
 
-  useLayoutEffect(() => {}, []);
+  // useLayoutEffect(() => {}, []);
 
   useEffect(() => {
     handleLoad(filter);
@@ -76,8 +76,8 @@ function Home() {
       isLoadingRef.current = false;
     }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -85,7 +85,7 @@ function Home() {
       <div className={styles.headerContainer}>
         <header className={styles.header}>
           <h1 className={styles.heading}>
-            MBTI별{console.log('로딩')}
+            MBTI별
             <br />
             <span className={styles.accent}>좋아하는 컬러</span>
           </h1>
@@ -95,8 +95,8 @@ function Home() {
                 {filter}
                 <img
                   className={styles.removeIcon}
-                  src='/images/x.svg'
-                  alt='필터 삭제'
+                  src="/images/x.svg"
+                  alt="필터 삭제"
                 />
               </div>
             )}
@@ -104,7 +104,7 @@ function Home() {
         </header>
       </div>
       <main className={styles.content}>
-        <Link className={styles.addItem} to='/new'>
+        <Link className={styles.addItem} to="/new">
           + 새 컬러 등록하기
         </Link>
         <ul className={styles.items}>
