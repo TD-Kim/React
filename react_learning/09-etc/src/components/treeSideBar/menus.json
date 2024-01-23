@@ -1,0 +1,119 @@
+[
+  {
+    "menuId": "STW01",
+    "menuNm": "시스템관리",
+    "pmenuId": "ROOT",
+    "childrens": [
+      {
+        "menuId": "STW0110",
+        "menuNm": "시스템인프라",
+        "pmenuId": "STW01",
+        "childrens": [
+          {
+            "menuId": "STW01101",
+            "menuNm": "시스템인프라",
+            "pmenuId": "STW0110"
+          },
+          {
+            "menuId": "STW01102",
+            "menuNm": "시스템조사",
+            "pmenuId": "STW0110"
+          },
+          { "menuId": "STW01103", "menuNm": "인프라PM", "pmenuId": "STW0110" }
+        ]
+      },
+      {
+        "menuId": "STW0101",
+        "menuNm": "기준정보",
+        "pmenuId": "STW01",
+        "childrens": [
+          {
+            "menuId": "STW01011",
+            "menuNm": "시스템ID관리",
+            "pmenuId": "STW0101"
+          },
+          { "menuId": "STW01012", "menuNm": "서버관리", "pmenuId": "STW0101" },
+          {
+            "menuId": "STW01013",
+            "menuNm": "공통코드관리",
+            "pmenuId": "STW0101"
+          }
+        ]
+      },
+      {
+        "menuId": "STW0102",
+        "menuNm": "권한관리",
+        "pmenuId": "STW01",
+        "childrens": [
+          { "menuId": "STW01021", "menuNm": "역할관리", "pmenuId": "STW0102" },
+          {
+            "menuId": "STW01022",
+            "menuNm": "역할별메뉴권한",
+            "pmenuId": "STW0102"
+          },
+          {
+            "menuId": "STW01023",
+            "menuNm": "역할별화면권한",
+            "pmenuId": "STW0102"
+          },
+          {
+            "menuId": "STW01023",
+            "menuNm": "사용자별역할관리",
+            "pmenuId": "STW0102"
+          },
+          {
+            "menuId": "STW01023",
+            "menuNm": "역할별사용자권한",
+            "pmenuId": "STW0102"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "menuId": "STW08",
+    "menuNm": "SUPPORT",
+    "pmenuId": "ROOT",
+    "childrens": [
+      { "menuId": "STW0801", "menuNm": "서포트화면", "pmenuId": "STW08" }
+    ]
+  },
+  {
+    "menuId": "STW02",
+    "menuNm": "개발지원",
+    "pmenuId": "ROOT",
+    "childrens": [
+      {
+        "menuId": "STW0201",
+        "menuNm": "화면패턴",
+        "pmenuId": "STW02",
+        "childrens": [
+          { "menuId": "STW02011", "menuNm": "조회1단+리스트" },
+          { "menuId": "STW02012", "menuNm": "조회2단+리스트" },
+          { "menuId": "STW02013", "menuNm": "멀티맵핑" }
+        ]
+      },
+      {
+        "menuId": "STW0202",
+        "menuNm": "개발샘플",
+        "pmenuId": "STW02",
+        "childrens": [
+          { "menuId": "STW02021", "menuNm": "그리드 셀 Drag&Drop" },
+          { "menuId": "STW02022", "menuNm": "그리드 공통 버튼" },
+          { "menuId": "STW02023", "menuNm": "첨부파일가이드" }
+        ]
+      },
+      {
+        "menuId": "STW0203",
+        "menuNm": "화면가이드",
+        "pmenuId": "STW02",
+        "childrens": [
+          { "menuId": "STW02031", "menuNm": "버튼 가이드" },
+          { "menuId": "STW02032", "menuNm": "컴포넌트 가이드" },
+          { "menuId": "STW02033", "menuNm": "팝업 가이드01" },
+          { "menuId": "STW02034", "menuNm": "팝업 가이드02" }
+        ]
+      }
+    ]
+  }
+]
