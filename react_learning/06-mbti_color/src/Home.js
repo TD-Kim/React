@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { Link } from 'react-router-dom';
-import ColorSurvey from './components/ColorSurvey';
-import axios from './lib/axios';
-import styles from './Home.module.css';
-import { getMockItems } from './lib/api';
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { Link } from "react-router-dom";
+import ColorSurvey from "./components/ColorSurvey";
+import axios from "./lib/axios";
+import styles from "./Home.module.css";
+import { getMockItems, getMockItemsByFilter } from "./lib/api";
 
 function Home() {
   const [items, setItems] = useState([]);
@@ -12,16 +12,24 @@ function Home() {
   const isLoadingRef = useRef(false);
   // 렌더링 이후에도 기존값을 계속 유지하기 위해서 useRef 를 사용할 수 도 있다.
   // ref 변수의 current 프로퍼티에 값을 넣어주면 렌더링 이후에도 값이 유지된다.
-  async function handleLoad(mbti) {
+  function handleLoad(mbti) {
     // const res = await axios.get("/color-surveys/", {
     //   params: { mbti, limit: 20 },
     // });
-    const { data } = getMockItems();
+    let result;
+    let data;
+    if (mbti) {
+      result = getMockItemsByFilter(mbti);
+      data = result.data;
+    } else {
+      data = getMockItems().data;
+    }
+    // const { data } = getMockItems();
     // console.log(res, mockItems);
     // nextPageRef.current = res.data.next;
-    nextPageRef.current = data.length;
     const nextItems = data;
     setItems(nextItems);
+    nextPageRef.current = data.length;
     // handleSetItems(nextItems);
   }
 
@@ -39,9 +47,10 @@ function Home() {
     }
     // nextPageRef.current = data.next;
     nextPageRef.current = result?.nextItemNum;
+    // nextPageRef.current = result ? result.nextItemNum : null;
   }
 
-  useLayoutEffect(() => {}, []);
+  // useLayoutEffect(() => {}, []);
 
   useEffect(() => {
     handleLoad(filter);
@@ -49,10 +58,11 @@ function Home() {
 
   useEffect(() => {
     async function handleScroll() {
-      // console.log(!nextPageRef.current, isLoadingRef.current);
+      console.log(nextPageRef.current, isLoadingRef.current);
       // console.log(!nextPageRef.current || isLoadingRef.current);
-      if (!nextPageRef.current || isLoadingRef.current) return;
-      isLoadingRef.current = true;
+      if (!nextPageRef.current) return;
+      console.log("handleScroll");
+      // isLoadingRef.current = true;
       // 여기서 잠깐, 한 가지 주의할 점이 있습니다. 이 함수는 언제 실행되어야 할까요?
       // 일단 다음 페이지가 있는 경우에만 실행해야 하고(nextPageRef.current값이 존재할 때만 실행)
       // handleScroll()이 실행되지 않는 경우에만 실행해야 합니다.
@@ -71,13 +81,13 @@ function Home() {
       const currentScrollTop = document.documentElement.scrollTop;
       // if (currentScrollTop >= maxScrollTop) {
       if (scrollTop + clientHeight >= scrollHeight) {
-        await handleLoadNext();
+        handleLoadNext();
       }
-      isLoadingRef.current = false;
+      // isLoadingRef.current = false;
     }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -85,7 +95,7 @@ function Home() {
       <div className={styles.headerContainer}>
         <header className={styles.header}>
           <h1 className={styles.heading}>
-            MBTI별{console.log('로딩')}
+            MBTI별
             <br />
             <span className={styles.accent}>좋아하는 컬러</span>
           </h1>
@@ -95,8 +105,8 @@ function Home() {
                 {filter}
                 <img
                   className={styles.removeIcon}
-                  src='/images/x.svg'
-                  alt='필터 삭제'
+                  src="/images/x.svg"
+                  alt="필터 삭제"
                 />
               </div>
             )}
@@ -104,7 +114,7 @@ function Home() {
         </header>
       </div>
       <main className={styles.content}>
-        <Link className={styles.addItem} to='/new'>
+        <Link className={styles.addItem} to="/new">
           + 새 컬러 등록하기
         </Link>
         <ul className={styles.items}>

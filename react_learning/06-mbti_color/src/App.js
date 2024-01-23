@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import New from './New';
-import './App.css';
-import { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import New from "./New";
+import "./App.css";
+import { useEffect } from "react";
 
 function App() {
   useEffect(() => {
@@ -12,9 +12,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/'>
+        <Route path="/">
           <Route index element={<Home />} />
-          <Route path='new' element={<New />} />
+          <Route path="new" element={<New />} />
         </Route>
       </Routes>
     </BrowserRouter>
