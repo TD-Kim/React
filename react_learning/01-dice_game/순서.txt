@@ -1,4 +1,6 @@
-0. node 재설치 후 cra 명령어가 오류가 나면 아래 명령어 진행 후 다시 실행
+0.1 npm install -g npx (글로벌 npm 폴더에 npx 설치)
+0.2 npx create-react-app 앱이름
+0.3 node 재설치 후 cra 명령어가 오류가 나면 아래 명령어 진행 후 다시 실행
     $ npm rm -g create-react-app
     $ npm install create-react-app
     위 명령어는 윈도우 cmd 에서 진행

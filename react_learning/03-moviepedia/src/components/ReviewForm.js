@@ -1,12 +1,12 @@
-import { useState } from "react";
-import "./ReviewForm.css";
-import FileInput from "./FileInput";
-import RatingInput from "./RatingInput";
+import { useState } from 'react';
+import './ReviewForm.css';
+import FileInput from './FileInput';
+import RatingInput from './RatingInput';
 
 const INITIAL_VALUES = {
-  title: "",
+  title: '',
   rating: 0,
-  content: "",
+  content: '',
   imgUrl: null,
 };
 
@@ -71,7 +71,7 @@ function ReviewForm({
       imgUrl: values.imgUrl,
     };
 
-    // formData 는 XMLHttpRequest 전송을 위해 설꼐된 특수한 객체여서
+    // formData 는 XMLHttpRequest 전송을 위해 설계된 특수한 객체여서
     // 문자열화할 수 없는 객체이기 때문에 console 로 확인할 수 없다.
     // console.log(formData);
     // for (let key of formData.keys()) {
@@ -80,7 +80,7 @@ function ReviewForm({
     try {
       setSubmittingError(null);
       setIsSubmitting(true);
-      const { review } = await onSubmit("movie", formData);
+      const { review } = await onSubmit('movie', formData);
       onSubmitSuccess(review);
     } catch (error) {
       setSubmittingError(error);
@@ -92,9 +92,9 @@ function ReviewForm({
   };
 
   return (
-    <form className="ReviewForm" onSubmit={handleSubmit}>
+    <form className='ReviewForm' onSubmit={handleSubmit}>
       <FileInput
-        name="imgUrl"
+        name='imgUrl'
         value={values.imgUrl}
         initialPreview={initialPreview}
         onChange={handleChange}
@@ -111,7 +111,7 @@ function ReviewForm({
       {/* <input value={title} onChange={handleTitleChange} />
       <input type="number" value={rating} onChange={handleRatingChange} />
       <textarea value={content} onChange={handleContentChange} /> */}
-      <input name="title" value={values.title} onChange={handleInputChange} />
+      <input name='title' value={values.title} onChange={handleInputChange} />
       {/* <input
         type="number"
         name="rating"
@@ -119,18 +119,18 @@ function ReviewForm({
         onChange={handleInputChange}
       /> */}
       <RatingInput
-        type="number"
-        name="rating"
+        type='number'
+        name='rating'
         value={values.rating}
         onChange={handleChange}
       />
       <textarea
-        name="content"
+        name='content'
         value={values.content}
         onChange={handleInputChange}
       />
       {onCancel && <button onClick={onCancel}>취소</button>}
-      <button type="submit" disabled={isSubmitting}>
+      <button type='submit' disabled={isSubmitting}>
         확인
       </button>
       {submittingError?.message && <div>{submittingError.message}</div>}
