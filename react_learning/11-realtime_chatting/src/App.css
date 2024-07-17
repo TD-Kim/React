@@ -1,0 +1,169 @@
+body {
+  background-color: #282c34;
+}
+
+.App {
+  text-align: center;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.App header {
+  background-color: #a9bdce;
+  height: 10vh;
+  min-height: 50px;
+  color: rgb(59, 59, 59);
+  position: fixed;
+  width: 100%;
+  max-width: 450px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.App section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #b2c7d9;
+}
+
+main {
+  padding: 10px;
+  height: 82vh;
+  margin: 15vh 0 8vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+main::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+main::-webkit-scrollbar-track {
+  background: #b2c7d9;
+}
+
+main::-webkit-scrollbar-thumb {
+  background: #8b9aa6;
+}
+
+form {
+  height: 8vh;
+  position: fixed;
+  bottom: 0;
+  background-color: #ffec42;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  font-size: 1.5rem;
+}
+
+form button {
+  width: 20%;
+  background-color: #ffec42;
+}
+
+input {
+  width: 100%;
+  font-size: 1rem;
+  background: white;
+  color: #262626;
+  outline: none;
+  border: none;
+  padding: 0 15px;
+}
+
+button {
+  /* Green */
+  border: none;
+  color: gray;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1rem;
+  outline: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sign-in {
+  color: gray;
+  background: white;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 15px;
+  border-radius: 25px;
+}
+.notice {
+  margin-top: 20px;
+  color: #72808b;
+}
+.sign-out {
+  border: none;
+  color: gray;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 0.8rem;
+  border-radius: 25px;
+}
+.sign-out:hover {
+  color: rgb(255, 255, 255);
+  background: rgb(255, 85, 43);
+}
+
+ul,
+li {
+  text-align: left;
+  list-style: none;
+}
+
+p {
+  max-width: 500px;
+  line-height: 24px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+}
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+.sent p {
+  color: #262626;
+  background: #ffec42;
+  align-self: flex-end;
+}
+.received p {
+  background: white;
+  color: #262626;
+}
+
+img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 2px 5px;
+}

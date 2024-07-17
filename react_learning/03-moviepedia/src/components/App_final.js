@@ -4,7 +4,7 @@ import ReviewList from './ReviewList.js';
 // import mockItems from "../mock.json";
 import { useCallback, useEffect, useState } from 'react';
 import { addDatas, getDatas, deleteDatas } from '../firebase.js';
-import ReviewForm from './ReviewForm2.js';
+import ReviewForm from './ReviewForm.js';
 import useAsync from '../hooks/useAsync.js';
 import LocaleContext, { LocaleProvider } from '../contexts/LocaleContext.js';
 import LocaleSelect from './LocaleSelect.js';

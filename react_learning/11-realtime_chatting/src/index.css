@@ -1,0 +1,14 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', san-serif;
+}
+
+button {
+  font-family: 'Noto Sans KR', san-serif;
+}
+code {
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
+}

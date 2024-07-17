@@ -1,5 +1,5 @@
 import FoodList from "./FoodList";
-// import mockItems from "../mock.json";
+import mockItems from "../mock.json";
 import { useState, useEffect } from "react";
 import { db, getDatas } from "../firebase.js";
 import FoodForm from "./FoodForm.js";
@@ -7,8 +7,8 @@ import FoodForm from "./FoodForm.js";
 const LIMIT = 15;
 
 function App() {
-  // const [items, setItems] = useState(mockItems);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(mockItems);
+  // const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
   const [lq, setLq] = useState({});
   const [hasNext, setHasNext] = useState(false);

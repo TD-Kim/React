@@ -1,21 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom";
-// import App from "./App";
-// import Cleanup from "./Cleanup";
-// import ToDoList from "./ToDoList";
-// import CoinTracker from "./CoinTracker";
-// import MovieApp from "./MovieApp";
-import ReactRouter from "./ReactRouter";
-import styles from "./styles.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import Cleanup from './Cleanup';
+import ToDoList from './ToDoList';
+import CoinTracker from './CoinTracker';
+import MovieApp from './MovieApp';
+import ReactRouter from './ReactRouter';
+import styles from './styles.css';
 
 ReactDOM.render(
-  // <App />
-  // <Cleanup />
-  // <ToDoList />
-  // <CoinTracker />
-  // <MovieApp />
+  // <App />,
+  // <Cleanup />,
+  // <ToDoList />,
+  // <CoinTracker />,
+  // <MovieApp />,
   <ReactRouter />,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // rendering이 두번되는 현상이 있어서 찾아보았더니 index.js에

@@ -1,9 +1,22 @@
 .ReviewForm {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   padding: 10px 0;
+  gap: 20px;
+  max-height: 350px;
 }
 
-.ReviewForm > :not(:last-child) {
-  margin-bottom: 20px;
+.ReviewForm .Form-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+
+.Form-container textarea {
+  flex: 1;
+}
+
+/* .ReviewForm > :not(:last-child) {
+  margin-bottom: 20px;
+} */

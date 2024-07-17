@@ -93,13 +93,14 @@ function ReviewForm({
 
   return (
     <form className='ReviewForm' onSubmit={handleSubmit}>
-      <FileInput
-        name='imgUrl'
-        value={values.imgUrl}
-        initialPreview={initialPreview}
-        onChange={handleChange}
-      />
-      {/*
+      <div>
+        <FileInput
+          name='imgUrl'
+          value={values.imgUrl}
+          initialPreview={initialPreview}
+          onChange={handleChange}
+        />
+        {/*
           HTML form 태그의 기본 동작은 submit 버튼을 눌렀을 때 입력 폼의 값과 함께 GET 리퀘스트를 보내는 것이다.
           그래서 기본 동작을 막아 줘야 한다.
 
@@ -108,32 +109,35 @@ function ReviewForm({
           그런데 리액트에서는 onChange 이벤트가 사용자가 값을 입력할 때마다 발생한다.
           리액트 만든 개발자들이 onChange가 더 직관적이라고 이렇게 만듬.
         */}
-      {/* <input value={title} onChange={handleTitleChange} />
+      </div>
+      <div className='Form-container'>
+        {/* <input value={title} onChange={handleTitleChange} />
       <input type="number" value={rating} onChange={handleRatingChange} />
       <textarea value={content} onChange={handleContentChange} /> */}
-      <input name='title' value={values.title} onChange={handleInputChange} />
-      {/* <input
+        <input name='title' value={values.title} onChange={handleInputChange} />
+        {/* <input
         type="number"
         name="rating"
         value={values.rating}
         onChange={handleInputChange}
       /> */}
-      <RatingInput
-        type='number'
-        name='rating'
-        value={values.rating}
-        onChange={handleChange}
-      />
-      <textarea
-        name='content'
-        value={values.content}
-        onChange={handleInputChange}
-      />
-      {onCancel && <button onClick={onCancel}>취소</button>}
-      <button type='submit' disabled={isSubmitting}>
-        확인
-      </button>
-      {submittingError?.message && <div>{submittingError.message}</div>}
+        <RatingInput
+          type='number'
+          name='rating'
+          value={values.rating}
+          onChange={handleChange}
+        />
+        <textarea
+          name='content'
+          value={values.content}
+          onChange={handleInputChange}
+        />
+        {onCancel && <button onClick={onCancel}>취소</button>}
+        <button type='submit' disabled={isSubmitting}>
+          확인
+        </button>
+        {submittingError?.message && <div>{submittingError.message}</div>}
+      </div>
     </form>
   );
 }
