@@ -99,7 +99,7 @@ function QuestionListPage() {
       <p className={styles.count}>총 {items.length}개 질문</p>
 
       {/* {questions.length === 0 ? ( */}
-      {items.length === 0 && !isInitPage ? (
+      {items.length === 0 ? (
         <Warn
           className={styles.emptyList}
           title='조건에 맞는 질문이 없어요.'

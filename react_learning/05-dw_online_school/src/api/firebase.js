@@ -27,12 +27,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC1oPPa_zO7fFXUmfBrLnxsjlAwfj1zUrs",
-  authDomain: "dwos-9bd0b.firebaseapp.com",
-  projectId: "dwos-9bd0b",
-  storageBucket: "dwos-9bd0b.appspot.com",
-  messagingSenderId: "401090286699",
-  appId: "1:401090286699:web:a2553c88b240b5fab34d2e",
+  apiKey: "AIzaSyDysKNGaSgFliRlmIL9e-cP1YbakXZCHQs",
+  authDomain: "dwos-a8465.firebaseapp.com",
+  projectId: "dwos-a8465",
+  storageBucket: "dwos-a8465.appspot.com",
+  messagingSenderId: "895188158918",
+  appId: "1:895188158918:web:be31f735a2cf21c4f84ac7"
 };
 
 // Initialize Firebase
