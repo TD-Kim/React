@@ -8,6 +8,7 @@ import Lined from '../components/Lined';
 import Warn from '../components/Warn';
 import styles from './QuestionPage.module.css';
 import { Navigate, useLocation, useParams } from 'react-router-dom';
+import DOMPurify from "dompurify";
 
 function QuestionPage() {
   const { questionId } = useParams();
@@ -19,6 +20,10 @@ function QuestionPage() {
   if (!question) {
     return <Navigate to='/questions' />;
   }
+
+  const sanitizedData = (data) => ({
+    __html: DOMPurify.sanitize(data)
+  })
 
   return (
     <>
@@ -43,7 +48,7 @@ function QuestionPage() {
             </div>
             <p
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: question.content }}
+              dangerouslySetInnerHTML={sanitizedData(question.content)}
             />
           </div>
         </Container>
