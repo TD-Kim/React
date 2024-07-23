@@ -1,154 +1,126 @@
-import useTranslate from 'hooks/useTranslate'
-import React, { useState } from 'react'
-import styled, { css } from 'styled-components'
-import FileInput from './FileInput'
+import { useState } from 'react';
+import useTranslate from '../hooks/useTranslate';
+import FileInput from './FileInput';
+import './FoodForm.css';
 
-const sanitize = (type, value) => {
+function sanitize(type, value) {
   switch (type) {
     case 'number':
-      return Number(value) || 0
+      return Number(value) || 0;
 
     default:
-      return value
+      return value;
   }
 }
 
 const INITIAL_VALUES = {
+  imgFile: null,
   title: '',
   calorie: 0,
   content: '',
-}
-const FoodForm = ({
+};
+
+function FoodForm({
   initialValues = INITIAL_VALUES,
   initialPreview,
   onSubmit,
   onSubmitSuccess,
   onCancel,
-}) => {
-  const t = useTranslate()
-  const [values, setValues] = useState(initialValues)
+}) {
+  const t = useTranslate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittingError, setSubmittingError] = useState(null);
+  const [values, setValues] = useState(initialValues);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    const formData = new FormData()
-    formData.append('imgFile', values.imgFile)
-    formData.append('title', values.title)
-    formData.append('calorie', values.calorie)
-    formData.append('content', values.content)
-    const { food } = await onSubmit(formData)
-
-    setValues(INITIAL_VALUES)
-    onSubmitSuccess(food)
-  }
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('imgFile', values.imgFile);
+    formData.append('title', values.title);
+    formData.append('calorie', values.calorie);
+    formData.append('content', values.content);
+    let result;
+    try {
+      setSubmittingError(null);
+      setIsSubmitting(true);
+      result = await onSubmit(formData);
+    } catch (error) {
+      setSubmittingError(error);
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
+    const { food } = result;
+    setValues(initialValues);
+    onSubmitSuccess(food);
+  };
 
   const handleChange = (name, value) => {
-    setValues((preValues) => ({
-      ...preValues,
+    setValues((prevValues) => ({
+      ...prevValues,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleInputChange = (e) => {
-    const { name, value, type } = e.target
-    handleChange(name, sanitize(type, value))
-  }
+    const { name, value, type } = e.target;
+    handleChange(name, sanitize(type, value));
+  };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <form className="FoodForm" onSubmit={handleSubmit}>
       <FileInput
+        className="FoodForm-preview"
         name="imgFile"
-        value={values.imgFile}
         initialPreview={initialPreview}
+        value={values.imgFile}
         onChange={handleChange}
       />
-      <FormRow>
-        <FormLowContainer>
-          <Input
-            $title
-            value={values.title}
+      <div className="FoodForm-rows">
+        <div className="FoodForm-title-calorie">
+          <input
+            className="FoodForm-title"
             name="title"
+            value={values.title}
+            placeholder={t('title placeholder')}
             onChange={handleInputChange}
-            placeholder="이름을 작성해 주세요."
           />
-          <Input
-            value={values.calorie}
-            name="calorie"
+          <input
+            className="FoodForm-calorie"
             type="number"
+            name="calorie"
+            value={values.calorie}
+            placeholder={t('calorie placeholder')}
             onChange={handleInputChange}
           />
           {onCancel && (
-            <Button onClick={onCancel} $cancel>
-              {t('cancel button')}
-            </Button>
+            <button
+              className="FoodForm-cancel-button"
+              type="button"
+              onClick={onCancel}
+            >
+              취소
+            </button>
           )}
-          <Button type="submit" $submit>
-            {t('confirm button')}
-          </Button>
-        </FormLowContainer>
-        <FormContent
+          <button
+            className="FoodForm-submit-button"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            확인
+          </button>
+        </div>
+        <textarea
+          className="FoodForm-content"
           name="content"
           value={values.content}
           placeholder="내용을 작성해 주세요."
           onChange={handleInputChange}
         />
-      </FormRow>
-    </Form>
-  )
+        {submittingError && <p>{submittingError.message}</p>}
+      </div>
+    </form>
+  );
 }
 
-const Form = styled.form`
-  display: flex;
-  flex: 1 1;
-  margin: 60px 0 90px;
-  padding: 22px;
-  border-radius: 15px;
-  box-shadow: 0 0 9px 0 rgba(100, 126, 118, 0.09);
-  background-color: #ffffff;
-`
-const FormContent = styled.textarea`
-  flex: 1 1;
-`
-
-const FormRow = styled.div`
-  display: flex;
-  flex: 1 1;
-  flex-direction: column;
-  margin-left: 20px;
-`
-const FormLowContainer = styled.div`
-  flex: none;
-  margin-bottom: 14px;
-  display: flex;
-`
-const Input = styled.input`
-  margin-right: 15px;
-  flex: ${(props) => (props.$title ? `2 1` : `1 1`)};
-`
-
-const Button = styled.button`
-  padding: 13px 20px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 400;
-  font-size: 16px;
-  cursor: pointer;
-
-  ${(props) =>
-    props.$submit &&
-    css`
-      flex: none;
-      color: #fff;
-      background-color: #2c9631;
-    `}
-
-  ${(props) =>
-    props.$cancel &&
-    css`
-      margin-right: 15px;
-      color: #000;
-      background-color: transparent;
-    `}
-`
-
-export default FoodForm
+export default FoodForm;
