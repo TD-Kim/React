@@ -6,6 +6,7 @@ import {
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
@@ -25,7 +26,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 function getCollection(collectionName) {
-    return collection(db, collectionName);
+  return collection(db, collectionName);
 }
 
 function getUserAuth() {
@@ -33,17 +34,33 @@ function getUserAuth() {
 }
 
 async function getDatasOrderByLimit(collectionName, orderByField, limitValue) {
-    const collect = getCollection(collectionName);
-    const q = query(collect, orderBy(orderByField), limit(limitValue));
-    const snapshot = await getDocs(q);
-    const resultData = snapshot.docs.map(doc => ({...doc.data()}))
-    return resultData;
+  const collect = getCollection(collectionName);
+  const q = query(collect, orderBy(orderByField), limit(limitValue));
+  const snapshot = await getDocs(q);
+  const resultData = snapshot.docs.map((doc) => ({ ...doc.data() }));
+  return resultData;
 }
 
 async function addDatas(collectionName, addObj) {
-    const collect = getCollection(collectionName);
-    await addDoc(collect, addObj);
+  const collect = getCollection(collectionName);
+  await addDoc(collect, addObj);
 }
 
+async function getRealTimeMessages(collectionName, orderField, limits) {
+  let messages = [];
+  const q = query(
+    collection(db, collectionName),
+    orderBy(orderField),
+    limit(limits)
+  );
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const datas = [];
+    querySnapshot.forEach((doc) => {
+      datas.push(doc.data());
+    });
+    messages = datas;
+  });
+  return [messages, unsubscribe];
+}
 
-export { db, getUserAuth, getDatasOrderByLimit, addDatas };
+export { db, getUserAuth, getDatasOrderByLimit, addDatas, getRealTimeMessages };

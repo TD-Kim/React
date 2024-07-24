@@ -34,7 +34,7 @@ body {
 .App section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   /* min-height: 100vh; */
   background-color: #b2c7d9;
   overflow: hidden;

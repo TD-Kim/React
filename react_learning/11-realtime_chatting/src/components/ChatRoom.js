@@ -1,9 +1,4 @@
 import {
-  addDoc,
-  collection,
-  limit,
-  orderBy,
-  query,
   serverTimestamp,
 } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
@@ -21,6 +16,11 @@ function ChatRoom({ auth }) {
     const resultData = await getDatasOrderByLimit('messages', 'createdAt', 500);
     setMessages(resultData);
   };
+  console.log(messages)
+  const handleLoad = async () => {
+    const [datas, unsubscribe] = await getRealTimeMessages('messages', 'createdAt', 500);
+    setMessages(datas);
+  }
 
   // const messagesCollect = collection(db, 'messages');
   // const q = query(messagesCollect, orderBy('createdAt'), limit(500));
@@ -40,21 +40,25 @@ function ChatRoom({ auth }) {
     await addDatas('messages', addObj);
     setFormValue('');
     // dummy.current.scrollIntoView({ behavior: 'smooth' });
-    getMessages();
+    // getMessages();
     // getMessages().then(() => {
     //   dummy.current.scrollIntoView({ behavior: 'smooth' });
     // });
   };
 
   useEffect(() => {
-    getMessages();
+    handleLoad()
   }, []);
 
-  useEffect(() => {
-    // scrollIntoView() 메소드는 자신이 호출된 요소가 사용자에게 표시되도록
-    // 상위 컨테이너를 스크롤한다.
-    dummy.current.scrollIntoView(false, { behavior: 'smooth' });
-  }, [messages]);
+  // useEffect(() => {
+  //   getMessages();
+  // }, []);
+
+  // useEffect(() => {
+  //   // scrollIntoView() 메소드는 자신이 호출된 요소가 사용자에게 표시되도록
+  //   // 상위 컨테이너를 스크롤한다.
+  //   dummy.current.scrollIntoView(false, { behavior: 'smooth' });
+  // }, [messages]);
   return (
     <>
       <main>
