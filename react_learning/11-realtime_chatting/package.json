@@ -2,6 +2,7 @@
   "name": "superchat",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://td-kim.github.io/React/",
   "dependencies": {
     "@egjs/agent": "^2.4.3",
     "@testing-library/jest-dom": "^6.4.7",
@@ -40,6 +41,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "homepage": "https://park-siwan.github.io/react-firebase-chatting"
+  }
 }
