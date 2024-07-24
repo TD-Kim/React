@@ -3,7 +3,7 @@ import {
 } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { addDatas, db, getDatasOrderByLimit } from '../api/firebase';
+import { addDatas, db, getDatasOrderByLimit, getRealTimeMessages } from '../api/firebase';
 import ChatMessage from './ChatMessage';
 import * as FaIcons from 'react-icons/fa';
 
