@@ -43,8 +43,8 @@ body {
 
 main {
   padding: 10px;
-  height: 100%;
-  flex: 1 1;
+  /* height: 100%; */
+  /* flex: 1 1; */
   /* margin: 15vh 0 8vh; */
   overflow-y: auto;
   display: flex;
@@ -66,7 +66,7 @@ main::-webkit-scrollbar-thumb {
 form {
   flex: none;
   height: 8vh;
-  position: fixed;
+  position: relative;
   bottom: 0;
   background-color: #ffec42;
   width: 100%;
