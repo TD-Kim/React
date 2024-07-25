@@ -1,0 +1,346 @@
+@font-face {
+  font-family: "NanumSquareRound";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: "NanumSquareRound", sans-serif;
+  font-size: 18px;
+  letter-spacing: -0.03rem;
+  white-space: nowrap;
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  background-color: #f1f5f9;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  background-color: white;
+}
+
+.App {
+  padding: 0px 50px;
+  width: 1152px;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+}
+
+/* Button */
+.Button {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 20px 40px;
+  transition: all 0.3s ease-in-out;
+}
+
+.Button_default {
+  background-color: #ececec;
+  color: black;
+}
+
+.Button_positive {
+  background-color: #4292ed;
+  color: white;
+}
+
+.Button_negative {
+  background-color: #63686e;
+  color: white;
+}
+
+/* Selector */
+.Selector {
+  width: 400px;
+  height: 760px;
+  padding: 30px 0px;
+}
+
+.Selector .cost_tag {
+  display: flex;
+  justify-content: center;
+  margin-right: 5px;
+  margin-bottom: 16px;
+  border: 0.5px solid #f56d6d;
+}
+
+.Selector .cost_tag span {
+  font-size: 28px;
+  color: white;
+  margin-left: 100px;
+  padding: 15px 10px;
+  background-color: #f56d6d;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.Selector .number_list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.Selector .number_list Button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
+
+.Selector .control_btn {
+  display: grid;
+  grid-template-areas:
+    "reset auto"
+    "submit submit";
+  gap: 10px;
+}
+
+.Selector .control_btn Button:nth-child(1) {
+  grid-area: reset;
+}
+
+.Selector .control_btn Button:nth-child(2) {
+  grid-area: auto;
+}
+
+.Selector .control_btn Button:nth-child(3) {
+  grid-area: submit;
+}
+
+/* LottoList */
+.LottoList {
+  flex-grow: 1;
+  height: 760px;
+  padding: 10px 30px;
+  margin: 0px 20px;
+  border: 1px solid #e2e2e2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.LottoList .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 0px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.LottoList .header span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.LottoList .lotto_count {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 30px;
+}
+
+.LottoList .lotto_count span:nth-child(2) {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f56d6d;
+}
+
+.LottoList .lotto_list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  margin: 4px 0px;
+}
+
+.LottoList .result_btn Button {
+  width: 100%;
+  padding: 25px 0px;
+  font-size: 22px;
+}
+
+/* LottoItem */
+.LottoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px 0px;
+  border-bottom: 2px dashed #e2e2e2;
+}
+
+.LottoItem .tag span {
+  font-size: 22px;
+  margin-right: 20px;
+}
+
+.LottoItem .content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.LottoItem .content div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+
+  margin: 0px 5px;
+}
+
+.LottoItem .content span {
+  font-size: 22px;
+  color: white;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.LottoItem Button {
+  margin-left: 20px;
+  padding: 15px 30px;
+}
+
+/* Result */
+.Result {
+  flex-grow: 1;
+  height: 100%;
+  padding: 10px 30px;
+  margin: 0px 20px;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Result .header {
+  background-color: #4292ed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px 0px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.Result .header span {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ececec;
+}
+
+.Result .winning_number_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0px;
+}
+
+.Result .winning_number_wrapper > span {
+  font-size: 26px;
+  font-weight: bold;
+  padding: 15px 0px;
+}
+
+.Result .winning_number {
+  display: flex;
+}
+
+.Result .winning_number span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+
+  font-size: 24px;
+  color: white;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+
+  margin: 0px 5px;
+}
+
+.Result .lotto_list {
+  margin-top: 10px;
+  flex-grow: 1;
+}
+
+.Result .result_btn Button {
+  width: 100%;
+  padding: 25px 0px;
+  margin-bottom: 5px;
+  font-size: 22px;
+}
+
+/* Animation */
+.Animation {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Animation .container {
+  position: relative;
+  width: 300px;
+}
+
+.Animation > h1 {
+  font-size: 32px;
+}
+
+/* lottoColor */
+.quotient-zero {
+  background-color: #fce832;
+}
+
+.quotient-one {
+  background-color: #68c6f0;
+}
+
+.quotient-two {
+  background-color: #ff7272;
+}
+
+.quotient-three {
+  background-color: #a7a8a7;
+}
+
+.quotient-four {
+  background-color: #95c73a;
+}

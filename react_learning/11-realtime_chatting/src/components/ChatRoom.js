@@ -66,7 +66,6 @@ function ChatRoom({ auth }) {
     });
     dummy.current.scrollIntoView({ behavior: 'smooth' });
     return () => {
-      console.log('언제실행되냐?');
       dummy.current.scrollIntoView({ behavior: 'smooth' });
     };
   }, []);
