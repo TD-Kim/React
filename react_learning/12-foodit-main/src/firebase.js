@@ -75,12 +75,12 @@ async function getDatasByOrderLimit(collectionName, options) {
   } else if (!options.lq && options.search) {
     q = query(
       collect,
-      orderBy(options.search),
-      startAt(options.search),
-      endAt(options.search + '\uf8ff'),
+      // orderBy(options.search),
       orderBy(options.fieldName, 'desc'),
-      // where('title', '>=', options.search),
-      // where('title', '<=', options.search + '\uf8ff'),
+      // startAt(options.search),
+      // endAt(options.search + '\uf8ff'),
+      where('title', '>=', options.search),
+      where('title', '<=', options.search + '\uf8ff'),
       limit(options.limits)
     );
   } else {
@@ -96,7 +96,7 @@ async function getDatasByOrderLimit(collectionName, options) {
     docId: doc.id,
     ...doc.data(),
   }));
-  debugger;
+  // debugger;
   return { resultData, lastQuery };
 }
 
