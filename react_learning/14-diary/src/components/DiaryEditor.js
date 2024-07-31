@@ -13,25 +13,27 @@ import { emotionList } from '../util/emotion.js';
 const env = process.env;
 env.PUBLIC_URL = env.PUBLIC_URL || '';
 
-const DiaryEditor = ({ isEdit, originData }) => {
+const INITIAL_VALUES = {
+  createdAt: '',
+  content: '',
+  emotion: 3,
+};
+
+const DiaryEditor = ({ isEdit, originData = INITIAL_VALUES }) => {
   const contentRef = useRef();
   const [content, setContent] = useState('');
   const [emotion, setEmotion] = useState(3);
   const [date, setDate] = useState(getStringDate(new Date()));
-  const [values, setValues] = useState({
-    createdAt: "",
-    content: "",
-    emotion: 3
-  });
+  const [values, setValues] = useState(originData);
 
   const handleChange = (name, value) => {
-    setValues(prevValues => ({...prevValues, [name]: value}));
-  }
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
+  };
 
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     handleChange(name, value);
-  }
+  };
 
   const { onCreate, onEdit, onRemove } = useContext(DiaryDispatchContext);
   const handleClickEmote = useCallback((emotion) => {
@@ -68,9 +70,13 @@ const DiaryEditor = ({ isEdit, originData }) => {
 
   useEffect(() => {
     if (isEdit) {
-      setDate(getStringDate(new Date(parseInt(originData.date))));
-      setEmotion(originData.emotion);
-      setContent(originData.content);
+      // setDate(getStringDate(new Date(parseInt(originData.createdAt))));
+      handleChange(
+        'createdAt',
+        getStringDate(new Date(parseInt(originData.createdAt)))
+      );
+      // setEmotion(originData.emotion);
+      // setContent(originData.content);
     }
   }, [isEdit, originData]);
 
@@ -97,7 +103,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
           <div className='input_box'>
             <input
               className='input_date'
-              name="createdAt"
+              name='createdAt'
               value={values.createdAt}
               onChange={handleInputChange}
               type='date'
@@ -112,7 +118,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
                 key={it.emotion_id}
                 {...it}
                 onClick={handleClickEmote}
-                name="emotion"
+                name='emotion'
                 onChange={handleChange}
                 isSelected={it.emotion_id === values.emotion}
               />
@@ -124,7 +130,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
           <div className='input_box text_wrapper'>
             <textarea
               placeholder='오늘은 어땠나요'
-              name="content"
+              name='content'
               ref={contentRef}
               value={values.content}
               onChange={handleInputChange}

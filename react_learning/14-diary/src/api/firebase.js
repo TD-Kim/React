@@ -4,6 +4,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   orderBy,
@@ -42,4 +43,11 @@ async function getDatas(collectionName) {
   return { resultData, lastQuery };
 }
 
-export { getDatas };
+async function getData(collectionName, docId) {
+  const docRef = doc(db, collectionName, docId);
+  const snapshot = await getDoc(docRef);
+  const resultData = { ...snapshot.data(), docId: snapshot.id };
+  return resultData;
+}
+
+export { getDatas, getData };

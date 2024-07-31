@@ -64,7 +64,7 @@ const DiaryList = ({ diaryList }) => {
   return (
     <div className="DiaryList">
       <div className="menu_wrapper">
-        <div className="left_col">
+        <div className="control_menus">
           <ControlMenu
             value={sortType}
             onChange={setSortType}
@@ -76,7 +76,7 @@ const DiaryList = ({ diaryList }) => {
             optionList={filterOptionList}
           />
         </div>
-        <div className="right_col">
+        <div className="new_btn">
           <MyButton
             type={"positive"}
             text={"새 일기쓰기"}

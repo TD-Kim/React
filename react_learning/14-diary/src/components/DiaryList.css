@@ -8,11 +8,11 @@
   justify-content: space-between;
 }
 
-.DiaryList .menu_wrapper .right_col {
+.DiaryList .menu_wrapper .new_btn {
   flex-grow: 1;
 }
 
-.DiaryList .menu_wrapper .right_col button {
+.DiaryList .menu_wrapper .new_btn button {
   width: 100%;
 }
 

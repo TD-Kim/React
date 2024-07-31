@@ -32,11 +32,11 @@ body {
 }
 
 .App section {
+  background-color: #b2c7d9;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   /* min-height: 100vh; */
-  background-color: #b2c7d9;
   overflow: hidden;
   flex: 1 1;
 }
@@ -144,11 +144,11 @@ li {
 
 p {
   max-width: 500px;
-  line-height: 24px;
+  /* line-height: 24px; */
   padding: 10px 20px;
   border-radius: 25px;
-  position: relative;
-  color: white;
+  /* position: relative; */
+  /* color: white; */
   text-align: center;
 }
 
