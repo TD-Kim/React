@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -8,45 +8,51 @@ import New from './pages/New';
 import Edit from './pages/Edit';
 import Diary from './pages/Diary';
 import { getDatas } from './api/firebase';
-import useReducer from './hooks/useReducer';
+import {
+  addItem,
+  deleteItem,
+  fetchItems,
+  initialState,
+  reducer,
+  updateItem,
+} from './api/itemReducer';
 
-const reducer = (state, action) => {
-  // console.log(state);
-  // console.log(action);
-  let newState = [];
-  switch (action.type) {
-    case 'INIT': {
-      // return action.data;
-      return action.data;
-    }
-    case 'CREATE': {
-      newState = [action.data, ...state];
-      break;
-    }
-    case 'REMOVE': {
-      newState = state.filter((it) => it.id !== action.targetId);
-      break;
-    }
-    case 'EDIT': {
-      newState = state.map((it) =>
-        it.id === action.data.id ? { ...action.data } : it
-      );
-      break;
-    }
-    default:
-      return state;
-  }
+// const reducer = (state, action) => {
+//   // console.log(state);
+//   // console.log(action);
+//   let newState = [];
+//   switch (action.type) {
+//     case 'INIT': {
+//       // return action.data;
+//       return action.data;
+//     }
+//     case 'CREATE': {
+//       newState = [action.data, ...state];
+//       break;
+//     }
+//     case 'REMOVE': {
+//       newState = state.filter((it) => it.id !== action.targetId);
+//       break;
+//     }
+//     case 'EDIT': {
+//       newState = state.map((it) =>
+//         it.id === action.data.id ? { ...action.data } : it
+//       );
+//       break;
+//     }
+//     default:
+//       return state;
+//   }
 
-  localStorage.setItem('diary', JSON.stringify(newState));
-  return newState;
-};
+//   localStorage.setItem('diary', JSON.stringify(newState));
+//   return newState;
+// };
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
-  console.log(data);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleLoad = async () => {
     dispatch({ type: 'INIT', data: await getDatas('diary') });
@@ -64,42 +70,41 @@ function App() {
     //     dispatch({ type: "INIT", data: diaryList });
     //   }
     // }
-    handleLoad();
+    // handleLoad();
+    fetchItems('diary', dispatch);
   }, []);
 
   const dataId = useRef(0);
   // CREATE
-  const onCreate = (date, content, emotion) => {
-    dispatch({
-      type: 'CREATE',
-      data: {
-        id: dataId.current,
-        date: new Date(date).getTime(),
-        content,
-        emotion,
-      },
-    });
+  const onCreate = async (values) => {
+    const addObj = {
+      createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime(),
+      date: new Date(values.date).getTime(),
+      content: values.content,
+      emotion: values.emotion,
+      userEmail: 'kjy.devops@gmail.com',
+    };
+    await addItem('diary', addObj, dispatch);
     dataId.current += 1;
   };
   // REMOVE
-  const onRemove = (targetId) => {
-    dispatch({ type: 'REMOVE', targetId });
+  const onRemove = async (docId) => {
+    await deleteItem('diary', docId, dispatch);
   };
   // EDIT
-  const onEdit = (targetId, date, content, emotion) => {
-    dispatch({
-      type: 'EDIT',
-      data: {
-        id: targetId,
-        date: new Date(date).getTime(),
-        content,
-        emotion,
-      },
-    });
+  const onEdit = async (values, docId) => {
+    const updateObj = {
+      updatedAt: new Date().getTime(),
+      date: new Date(values.date).getTime(),
+      content: values.content,
+      emotion: values.emotion,
+    };
+    await updateItem('diary', docId, updateObj, dispatch);
   };
 
   return (
-    <DiaryStateContext.Provider value={data}>
+    <DiaryStateContext.Provider value={state.items}>
       <DiaryDispatchContext.Provider
         value={{
           onCreate,

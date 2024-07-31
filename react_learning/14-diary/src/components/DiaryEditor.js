@@ -14,7 +14,7 @@ const env = process.env;
 env.PUBLIC_URL = env.PUBLIC_URL || '';
 
 const INITIAL_VALUES = {
-  createdAt: '',
+  date: '',
   content: '',
   emotion: 3,
 };
@@ -42,7 +42,7 @@ const DiaryEditor = ({ isEdit, originData = INITIAL_VALUES }) => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    if (content.length < 1) {
+    if (values.content.length < 1) {
       contentRef.current.focus();
       return;
     }
@@ -52,9 +52,10 @@ const DiaryEditor = ({ isEdit, originData = INITIAL_VALUES }) => {
       )
     ) {
       if (!isEdit) {
-        onCreate(date, content, emotion);
+        // onCreate(date, content, emotion);
+        onCreate(values);
       } else {
-        onEdit(originData.id, date, content, emotion);
+        onEdit(values, originData.docId);
       }
     }
 
@@ -63,7 +64,7 @@ const DiaryEditor = ({ isEdit, originData = INITIAL_VALUES }) => {
 
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      onRemove(originData.id);
+      onRemove(originData.docId);
       navigate('/', { replace: true });
     }
   };
@@ -71,10 +72,7 @@ const DiaryEditor = ({ isEdit, originData = INITIAL_VALUES }) => {
   useEffect(() => {
     if (isEdit) {
       // setDate(getStringDate(new Date(parseInt(originData.createdAt))));
-      handleChange(
-        'createdAt',
-        getStringDate(new Date(parseInt(originData.createdAt)))
-      );
+      handleChange('date', getStringDate(new Date(parseInt(originData.date))));
       // setEmotion(originData.emotion);
       // setContent(originData.content);
     }
@@ -103,8 +101,8 @@ const DiaryEditor = ({ isEdit, originData = INITIAL_VALUES }) => {
           <div className='input_box'>
             <input
               className='input_date'
-              name='createdAt'
-              value={values.createdAt}
+              name='date'
+              value={values.date}
               onChange={handleInputChange}
               type='date'
             />

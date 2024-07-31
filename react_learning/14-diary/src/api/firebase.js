@@ -1,14 +1,18 @@
 import { initializeApp } from 'firebase/app';
 import {
+  addDoc,
   arrayRemove,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   getFirestore,
+  limit,
   orderBy,
   query,
+  runTransaction,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -50,4 +54,49 @@ async function getData(collectionName, docId) {
   return resultData;
 }
 
-export { getDatas, getData };
+async function addDatas(collectionName, addObj) {
+  try {
+    const resultData = await runTransaction(db, async (transaction) => {
+      const lastId = (await getLastNum('diary', 'id')) + 1;
+      addObj.id = lastId;
+      const docRef = await addDoc(getCollection(collectionName), addObj);
+      const snapshot = await getDoc(docRef);
+      const resultData = { ...snapshot.data(), docId: snapshot.id };
+      return resultData;
+    });
+    return resultData;
+  } catch (error) {
+    console.log('Error transaction: ', error);
+  }
+}
+
+async function updateDatas(collectionName, docId, updateObj) {
+  const docRef = doc(db, collectionName, docId);
+  await updateDoc(docRef, updateObj);
+  const snapshot = await getDoc(docRef);
+  const resultData = { ...snapshot.data(), docId: snapshot.id };
+  return resultData;
+}
+
+async function deleteDatas(collectionName, docId) {
+  try {
+    const docRef = doc(db, collectionName, docId);
+    await deleteDoc(docRef);
+    return docId;
+  } catch (error) {
+    return null;
+  }
+}
+
+async function getLastNum(collectionName, field) {
+  const q = query(
+    collection(db, collectionName),
+    orderBy(field, 'desc'),
+    limit(1)
+  );
+  const lastDoc = await getDocs(q);
+  const lastNum = lastDoc.docs[0].data()[field];
+  return lastNum;
+}
+
+export { getDatas, getData, addDatas, updateDatas, deleteDatas };

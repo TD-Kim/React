@@ -30,7 +30,7 @@ function App() {
     <>
       <Routes>
         <Route
-          path="/login"
+          path='/login'
           element={
             <LoginPage
               isAuth={isAuth}
@@ -40,19 +40,19 @@ function App() {
           }
         />
         <Route
-          path="/"
+          path='/'
           element={
             <MainPage isAuth={isAuth} handleSignOutClick={handleSignOutClick} />
           }
         />
         <Route
-          path="/view"
+          path='/view'
           element={
             <ViewPage isAuth={isAuth} handleSignOutClick={handleSignOutClick} />
           }
         />
         <Route
-          path="/write"
+          path='/write'
           element={
             <WritePage
               isAuth={isAuth}
