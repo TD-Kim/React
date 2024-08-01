@@ -54,10 +54,6 @@ export const DiaryDispatchContext = React.createContext();
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleLoad = async () => {
-    dispatch({ type: 'INIT', data: await getDatas('diary') });
-  };
-
   useEffect(() => {
     // const localData = localStorage.getItem("diary");
     // if (localData) {

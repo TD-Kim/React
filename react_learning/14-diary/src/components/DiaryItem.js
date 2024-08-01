@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './DiaryItem.css';
 import MyButton from './MyButton';
 
-const DiaryItem = ({ docId, emotion, content, createdAt, date }) => {
+const DiaryItem = ({ docId, emotion, content, date, id }) => {
   const navigate = useNavigate();
 
   const env = process.env;
@@ -12,11 +12,11 @@ const DiaryItem = ({ docId, emotion, content, createdAt, date }) => {
   const strDate = new Date(date).toLocaleDateString();
 
   const goDetail = () => {
-    navigate(`/diary/${docId}`);
+    navigate(`/diary/${id}`);
   };
 
   const goEdit = () => {
-    navigate(`/edit/${docId}`);
+    navigate(`/edit/${id}`);
   };
 
   return (

@@ -25,19 +25,19 @@ const Edit = () => {
   useEffect(() => {}, []);
 
   useEffect(() => {
-    handleLoad();
-    // if (diaryList.length >= 1) {
-    //   const targetDiary = diaryList.find(
-    //     (it) => parseInt(it.id) === parseInt(id)
-    //   );
+    // handleLoad();
+    if (diaryList.length >= 1) {
+      const targetDiary = diaryList.find(
+        (it) => parseInt(it.id) === parseInt(id)
+      );
 
-    //   if (targetDiary) {
-    //     setOriginData(targetDiary);
-    //   } else {
-    //     alert("없는 일기입니다.");
-    //     navigate("/", { replace: true });
-    //   }
-    // }
+      if (targetDiary) {
+        setOriginData(targetDiary);
+      } else {
+        alert('없는 일기입니다.');
+        navigate('/', { replace: true });
+      }
+    }
   }, [id, diaryList]);
 
   return (
