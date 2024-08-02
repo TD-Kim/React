@@ -65,7 +65,6 @@ const addItem = async (collectionName, addObj, dispatch) => {
 const updateItem = async (collectionName, docId, updateObj, dispatch) => {
   try {
     const resultData = await updateDatas(collectionName, docId, updateObj);
-    console.log(resultData);
     dispatch({ type: UPDATE_ITEM, payload: resultData });
   } catch (error) {
     dispatch({ type: SET_ERROR, payload: error.message });

@@ -32,7 +32,7 @@ const Diary = () => {
         navigate('/', { replace: true });
       }
     }
-  }, [id, diaryList]);
+  }, [diaryList]);
 
   if (!data) {
     return <div className='DiaryPage'>로딩중입니다...</div>;
@@ -65,7 +65,7 @@ const Diary = () => {
               ].join(' ')}
             >
               <img src={curEmotionData.emotion_img} />
-              <div className='emotion_descript'>
+              <div className='emotion_description'>
                 {curEmotionData.emotion_descript}
               </div>
             </div>
