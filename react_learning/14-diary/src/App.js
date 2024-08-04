@@ -1,13 +1,10 @@
 import React, { useEffect, useReducer, useRef } from 'react';
-
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
 import Home from './pages/Home';
 import New from './pages/New';
 import Edit from './pages/Edit';
 import Diary from './pages/Diary';
-import { getDatas } from './api/firebase';
 import {
   addItem,
   deleteItem,
@@ -16,6 +13,14 @@ import {
   reducer,
   updateItem,
 } from './api/itemReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchItems as fetchItems2,
+  addItem as addItem2,
+  updateItem as updateItem2,
+  deleteItem as deleteItem2,
+} from './diarySlice';
+import customSelector from './hooks/customSelector';
 
 // const reducer = (state, action) => {
 //   // console.log(state);
@@ -53,21 +58,15 @@ export const DiaryDispatchContext = React.createContext();
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const status = useSelector((state) => state.diary.status);
+  const dispatch2 = useDispatch();
+  const items = useSelector((state) => {
+    return state.diary.items;
+  });
 
   useEffect(() => {
-    // const localData = localStorage.getItem("diary");
-    // if (localData) {
-    //   const diaryList = JSON.parse(localData).sort(
-    //     (a, b) => parseInt(b.id) - parseInt(a.id)
-    //   );
-
-    //   if (diaryList.length >= 1) {
-    //     dataId.current = parseInt(diaryList[0].id) + 1;
-    //     dispatch({ type: "INIT", data: diaryList });
-    //   }
-    // }
-    // handleLoad();
-    fetchItems('diary', dispatch);
+    dispatch2(fetchItems2('diary'));
+    // fetchItems('diary', dispatch);
   }, []);
 
   const dataId = useRef(0);
@@ -81,12 +80,13 @@ function App() {
       emotion: values.emotion,
       userEmail: 'kjy.devops@gmail.com',
     };
-    await addItem('diary', addObj, dispatch);
+    // await addItem('diary', addObj, dispatch);
+    dispatch2(addItem2({ collectionName: 'diary', addObj }));
     dataId.current += 1;
   };
   // REMOVE
   const onRemove = async (docId) => {
-    await deleteItem('diary', docId, dispatch);
+    dispatch2(deleteItem2({ collectionName: 'diary', docId }));
   };
   // EDIT
   const onEdit = async (values, docId) => {
@@ -96,32 +96,32 @@ function App() {
       content: values.content,
       emotion: values.emotion,
     };
-    await updateItem('diary', docId, updateObj, dispatch);
+    dispatch2(updateItem2({ collectionName: 'diary', docId, updateObj }));
   };
 
   return (
-    <DiaryStateContext.Provider value={state.items}>
-      <DiaryDispatchContext.Provider
-        value={{
-          onCreate,
-          onEdit,
-          onRemove,
-        }}
-      >
-        <BrowserRouter>
-          <div className='App'>
-            <Routes>
-              <Route path='/'>
-                <Route index element={<Home />} />
-                <Route path='new' element={<New />} />
-                <Route path='edit/:id' element={<Edit />} />
-                <Route path='diary/:id' element={<Diary />} />
-              </Route>
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </DiaryDispatchContext.Provider>
-    </DiaryStateContext.Provider>
+    // <DiaryStateContext.Provider value={items}>
+    <DiaryDispatchContext.Provider
+      value={{
+        onCreate,
+        onEdit,
+        onRemove,
+      }}
+    >
+      <BrowserRouter>
+        <div className='App'>
+          <Routes>
+            <Route path='/'>
+              <Route index element={<Home />} />
+              <Route path='new' element={<New />} />
+              <Route path='edit/:id' element={<Edit />} />
+              <Route path='diary/:id' element={<Diary />} />
+            </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </DiaryDispatchContext.Provider>
+    // </DiaryStateContext.Provider>
   );
 }
 

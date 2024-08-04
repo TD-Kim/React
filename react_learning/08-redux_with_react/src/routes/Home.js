@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { connect } from "react-redux";
-import { actionCreators } from "../store";
-import ToDo from "../components/ToDo";
+import { useState } from 'react';
+import { connect } from 'react-redux';
+import { actionCreators, add } from '../store';
+import ToDo from '../components/ToDo';
 
 function Home({ toDos, addToDo }) {
   //   console.log(props);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const onChange = (e) => {
     setText(e.target.value);
   };
   const onSubmit = (e) => {
     e.preventDefault();
     addToDo(text);
-    setText("");
+    setText('');
   };
   return (
     <>
       <h1>To Do</h1>
       <form onSubmit={onSubmit}>
-        <input type="text" value={text} onChange={onChange} />
+        <input type='text' value={text} onChange={onChange} />
         <button>Add</button>
       </form>
       {/* <ul>{JSON.stringify(toDos)}</ul> */}
@@ -31,14 +31,18 @@ function Home({ toDos, addToDo }) {
   );
 }
 
-// function getCurrentState(state, ownProps) {  // store로 부터 state 를 가져다주는 용도의 함수이다.
+// store로 부터 state 를 가져다주는 용도의 함수이다.
+// function getCurrentState(state, ownProps) {};
 function mapStateToProps(state, ownProps) {
   return { toDos: state };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    // dispatch 에서 actionCrreators 를 호출
+    // 함수를 만드는것.
+    // addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    addToDo: (text) => dispatch(add(text)),
   };
 }
 

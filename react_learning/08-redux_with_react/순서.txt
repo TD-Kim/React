@@ -3,6 +3,22 @@
  리덕스 프로젝트를 시작할 때 부터 만들 수 있다. npx create-react-app [프로젝트명] --template redux
  리액트 프로젝트에 리덕스를 추가 할 때는 프로젝트 폴더에서 npm install redux
 
+ redux 는 상태관리자이다.
+ 프로젝트의 상태를 관리해주는 고마운 친구.
+ react 와는 무관.
+ react 에서 사용하면 어려운데 이 문제를 해결해준 도구가 react-redux
+ 그럼에도 불구하고 redux 를 사용하려면 어려운데 이 문제를 해결해준 도구가 redux-toolkit
+ 등장 이유.
+  1. 설정할 때 좋음
+  2. 미들웨어 설치할 때 도와줌
+  3. 반복되는 코드가 많았는데 줄여줌
+  4. 불변성 유지의 어려움
+
+ 작은 slice 들을 모아서 store 를 만들때 사용하는것이 configureStore 함수이다.
+
+ state 라고 생성된 것을 console 로 찍어보고 뭐를 의미하는지 알려주기.
+ 
+
  store 란? ==> 데이터를 넣는곳. state 이다.
  state ==> 어플리케이션에서 변화하는 데이터
 

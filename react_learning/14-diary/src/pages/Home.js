@@ -4,14 +4,22 @@ import { DiaryStateContext } from '../App';
 import MyHeader from './../components/MyHeader';
 import MyButton from './../components/MyButton';
 import DiaryList from './../components/DiaryList';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchItems as fetchItems2 } from '../diarySlice';
 
 const Home = () => {
-  const diaryList = useContext(DiaryStateContext);
-  console.log(diaryList);
-
+  // const diaryList = useContext(DiaryStateContext);
+  const dispatch2 = useDispatch();
   const [data, setData] = useState([]);
   const [curDate, setCurDate] = useState(new Date());
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
+  const diaryList = useSelector((state) => {
+    return state.diary.items;
+  });
+  useEffect(() => {
+    dispatch2(fetchItems2('diary'));
+    // fetchItems('diary', dispatch);
+  }, []);
 
   useEffect(() => {
     const titleElement = document.getElementsByTagName('title')[0];

@@ -7,10 +7,12 @@ import { emotionList } from '../util/emotion';
 
 import MyHeader from '../components/MyHeader';
 import MyButton from '../components/MyButton';
+import { useSelector } from 'react-redux';
 
 const Diary = () => {
   const { id } = useParams();
-  const diaryList = useContext(DiaryStateContext);
+  // const diaryList = useContext(DiaryStateContext);
+  const diaryList = useSelector((state) => state.diary.items);
   const navigate = useNavigate();
   const [data, setData] = useState();
 

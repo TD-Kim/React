@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { DiaryStateContext } from '../App';
 import DiaryEditor from '../components/DiaryEditor';
 import { getData } from '../api/firebase';
+import { useSelector } from 'react-redux';
 
 const Edit = () => {
   const [originData, setOriginData] = useState();
@@ -10,7 +11,8 @@ const Edit = () => {
   const { id } = useParams();
   console.log(id);
 
-  const diaryList = useContext(DiaryStateContext);
+  // const diaryList = useContext(DiaryStateContext);
+  const diaryList = useSelector((state) => state.diary.items);
 
   const handleLoad = async () => {
     const resultData = await getData('diary', id);
