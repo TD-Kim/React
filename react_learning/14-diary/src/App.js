@@ -21,6 +21,7 @@ import {
   deleteItem as deleteItem2,
 } from './diarySlice';
 import customSelector from './hooks/customSelector';
+import MyButton from './components/MyButton';
 
 // const reducer = (state, action) => {
 //   // console.log(state);
@@ -110,6 +111,7 @@ function App() {
     >
       <BrowserRouter>
         <div className='App'>
+          <MyButton text={'로그인'} />
           <Routes>
             <Route path='/'>
               <Route index element={<Home />} />
