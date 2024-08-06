@@ -15,7 +15,14 @@ import searchImg from '../assets/ic-search.png';
 import logoTextImg from '../assets/logo-text.png';
 import backgroundImg from '../assets/background.png';
 import './App.css';
-import { fetchItems } from '../store/foodSlice';
+import {
+  fetchItems,
+  setHasNext,
+  setInitialItems,
+  setOrder,
+  updateItem,
+} from '../store/foodSlice';
+import LoadingSpinner from './LoadingSpinner';
 
 function AppSortButton({ selected, children, onClick }) {
   return (
@@ -34,19 +41,22 @@ const LIMITS = 5;
 function App() {
   const t = useTranslate();
   const dispatch = useDispatch();
-  const { items } = useSelector((state) => state.food);
+  const { items, order, lq, hasNext, loading } = useSelector(
+    (state) => state.food
+  );
 
   // const [items, setItems] = useState([]);
-  const [order, setOrder] = useState('createdAt');
-  const [lq, setLq] = useState(null);
-  const [hasNext, setHasNext] = useState(true);
+  // const [order, setOrder] = useState('createdAt');
+  // const [lq, setLq] = useState(null);
+  // const [hasNext, setHasNext] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
   const [search, setSearch] = useState('');
 
-  const handleNewestClick = () => setOrder('createdAt');
-
-  const handleCalorieClick = () => setOrder('calorie');
+  // const handleNewestClick = () => setOrder('createdAt');
+  // const handleCalorieClick = () => setOrder('calorie');
+  const handleNewestClick = () => dispatch(setOrder('createdAt'));
+  const handleCalorieClick = () => dispatch(setOrder('calorie'));
 
   const handleDelete = async (docId, imgUrl) => {
     // items 에서 docId 를 받아온다.
@@ -56,6 +66,7 @@ function App() {
       alert(message);
       return;
     }
+    handleResetData();
     // 삭제 성공시 화면에 그 결과를 반영한다.
     // setItems((prevItems) =>
     //   prevItems.filter(function (item) {
@@ -63,7 +74,6 @@ function App() {
     //   })
     // );
   };
-
   const handleLoad = async (options) => {
     let result;
     let lq;
@@ -87,20 +97,23 @@ function App() {
     } else {
       // setItems((prevItems) => [...prevItems, ...result]);
     }
-    setLq(lq);
+    // setLq(lq);
     if (!lq) {
-      setHasNext(false);
+      // setHasNext(false);
     } else {
-      setHasNext(true);
+      // setHasNext(true);
     }
   };
 
   const handleLoadMore = () => {
-    handleLoad({
-      fieldName: order,
-      lq: lq,
+    const queryOptions = {
+      orderBys: [{ field: order, direction: 'desc' }],
+      lastQuery: lq,
       limits: LIMITS,
-    });
+    };
+    // handleLoad(queryOptions);
+    dispatch(fetchItems({ collectionName: 'food', queryOptions }));
+    console.log(lq === undefined);
   };
 
   const handleSearchChange = (e) => {
@@ -118,7 +131,18 @@ function App() {
     // setSearch(e.target['search'].value);
   };
 
+  const handleResetData = () => {
+    dispatch(setOrder('createdAt'));
+    const queryOptions = {
+      orderBys: [{ field: order, direction: 'desc' }],
+      lastQuery: undefined,
+      limits: LIMITS,
+    };
+    dispatch(fetchItems({ collectionName: 'food', queryOptions }));
+  };
+
   const handleCreateSuccess = (newItem) => {
+    handleResetData();
     // setItems((prevItems) => [newItem, ...prevItems]);
   };
 
@@ -133,20 +157,27 @@ function App() {
     // });
   };
 
-  const sortedItems = items.sort((a, b) => b[order] - a[order]);
+  const handleUpdate = (collectionName, docId, updateObj, imgUrl) => {
+    dispatch(updateItem({ collectionName, docId, updateObj, imgUrl }));
+  };
+
+  // const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
   useEffect(() => {
     const queryOptions = {
-      conditions: [
-        { field: 'title', operator: '>=', value: search },
-        { field: 'title', operator: '<=', value: search + '\uf8ff' },
-      ],
+      // conditions: [
+      //   { field: 'title', operator: '>=', value: search },
+      //   { field: 'title', operator: '<=', value: search + '\uf8ff' },
+      // ],
       orderBys: [{ field: order, direction: 'desc' }],
       lastQuery: undefined,
       limits: LIMITS,
     };
     // handleLoad(queryOptions);
-    dispatch(fetchItems({ collectionName: 'food', queryOptions }));
+    // dispatch(setInitialItems());
+    const result = dispatch(
+      fetchItems({ collectionName: 'food', queryOptions })
+    );
     // handleLoad({
     //   fieldName: order,
     //   lq: undefined,
@@ -157,6 +188,7 @@ function App() {
 
   return (
     <div className='App' style={{ backgroundImage: `url("${backgroundImg}")` }}>
+      {loading === 'Loading' && <LoadingSpinner />}
       <div className='App-nav'>
         <img src={logoImg} alt='Foodit' />
       </div>
@@ -193,7 +225,8 @@ function App() {
         <FoodList
           className='App-FoodList'
           items={items}
-          onUpdate={updateDatas}
+          // onUpdate={updateDatas}
+          onUpdate={handleUpdate}
           onUpdateSuccess={handleUpdateSuccess}
           onDelete={handleDelete}
         />

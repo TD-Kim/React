@@ -18,33 +18,33 @@ function FoodListItem({ item, onEdit, onDelete }) {
   };
 
   const handleDeleteClick = () => {
-    onDelete(item.id);
+    onDelete(item.docId, imgUrl);
   };
 
   return (
-    <div className="FoodListItem">
+    <div className='FoodListItem'>
       <img
-        className="FoodListItem-preview"
+        className='FoodListItem-preview'
         src={imgUrl || placeholderImg}
         alt={title}
       />
-      <div className="FoodListItem-rows">
-        <div className="FoodListItem-title-calorie">
-          <h1 className="FoodListItem-title">{title}</h1>
-          <span className="FoodListItem-calorie">{calorie}kcal</span>
+      <div className='FoodListItem-rows'>
+        <div className='FoodListItem-title-calorie'>
+          <h1 className='FoodListItem-title'>{title}</h1>
+          <span className='FoodListItem-calorie'>{calorie}kcal</span>
         </div>
-        <p className="FoodListItem-content">{content}</p>
-        <div className="FoodListItem-date-buttons">
-          <p className="FoodListItem-date">{formatDate(createdAt)}</p>
-          <div className="FoodListItem-buttons">
+        <p className='FoodListItem-content'>{content}</p>
+        <div className='FoodListItem-date-buttons'>
+          <p className='FoodListItem-date'>{formatDate(createdAt)}</p>
+          <div className='FoodListItem-buttons'>
             <button
-              className="FoodListItem-edit-button"
+              className='FoodListItem-edit-button'
               onClick={handleEditClick}
             >
               {t('edit button')}
             </button>
             <button
-              className="FoodListItem-delete-button"
+              className='FoodListItem-delete-button'
               onClick={handleDeleteClick}
             >
               {t('delete button')}
@@ -73,12 +73,16 @@ function FoodList({
     <ul className={`FoodList ${className}`}>
       {items.map((item) => {
         if (item.id === editingId) {
-          const { id, imgUrl, title, calorie, content } = item;
-          const initialValues = { title, calorie, content, imgFile: null };
+          const { id, imgUrl, title, calorie, content, docId } = item;
+          const initialValues = { title, calorie, content, imgUrl: null };
 
-          const handleSubmit = (formData) => onUpdate(id, formData);
+          const handleSubmit = (collectionName, updateObj) => {
+            const result = onUpdate(collectionName, docId, updateObj, imgUrl);
+            return result;
+          };
 
           const handleSubmitSuccess = (newItem) => {
+            console.log(newItem);
             onUpdateSuccess(newItem);
             setEditingId(null);
           };

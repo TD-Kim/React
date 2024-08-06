@@ -1,22 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
-import resetWhiteImg from '../assets/ic-reset-white.png';
+import React, { useEffect, useState } from 'react';
 import placeholderImg from '../assets/preview-placeholder.png';
+import resetImg from '../assets/ic-reset-white.png';
 import './FileInput.css';
 
-function FileInput({ className = '', initialPreview, name, value, onChange }) {
+function FileInput({ name, value, onChange, initialPreview }) {
+  if (typeof value === 'string') {
+    value = null;
+  }
   const [preview, setPreview] = useState(initialPreview);
-  const inputRef = useRef();
-
   const handleChange = (e) => {
     const nextValue = e.target.files[0];
     onChange(name, nextValue);
   };
 
   const handleClearClick = () => {
-    const inputNode = inputRef.current;
-    if (!inputNode) return;
-
-    inputNode.value = '';
     onChange(name, null);
   };
 
@@ -30,27 +27,24 @@ function FileInput({ className = '', initialPreview, name, value, onChange }) {
       URL.revokeObjectURL(nextPreview);
     };
   }, [value, initialPreview]);
-
   return (
-    <div className={`FileInput ${className}`}>
+    <div className='FileInput'>
       <img
         className={`FileInput-preview ${preview ? 'selected' : ''}`}
         src={preview || placeholderImg}
-        alt="이미지 미리보기"
       />
       <input
-        className="FileInput-hidden-overlay"
-        type="file"
+        className='FileInput-hidden-overlay'
+        type='file'
         onChange={handleChange}
-        ref={inputRef}
       />
       {value && (
         <button
-          className="FileInput-clear-button"
-          type="button"
+          className='FileInput-clear-button'
           onClick={handleClearClick}
+          type='button'
         >
-          <img src={resetWhiteImg} alt="지우기" />
+          <img src={resetImg} />
         </button>
       )}
     </div>

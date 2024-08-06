@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getDatasByOrderLimit } from '../firebase';
-import createTransform from 'redux-persist/es/createTransform';
-import storage from 'redux-persist/lib/storage';
+import { addDatas, getDatasByOrderLimit, updateDatas } from '../firebase';
 
 const foodSlice = createSlice({
   name: 'food',
@@ -14,7 +12,18 @@ const foodSlice = createSlice({
     search: '',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setOrder: (state, action) => {
+      state.order = action.payload;
+      state.items = [];
+    },
+    setHasNext: (state, action) => {
+      state.hasNext = action.payload;
+    },
+    setInitialItems: (state, action) => {
+      state.items = [];
+    },
+  },
   extraReducers: (builder) => {
     // 비동기작업은 actionCreator 를 자동으로 만들어주지 못한다. 그런애들은 여기에.
     // pending, fulfilled, rejected는
@@ -22,15 +31,29 @@ const foodSlice = createSlice({
     builder
       .addCase(fetchItems.pending, (state, action) => {
         // addCase 의 두번째 파라미터가 reducer
-        state.status = 'Loading';
+        state.loading = 'Loading';
       })
       .addCase(fetchItems.fulfilled, (state, action) => {
-        state.items = action.payload.resultData;
+        state.items = [...state.items, ...action.payload.resultData];
         state.lq = action.payload.lastQuery;
-        state.status = 'complete';
+        // if (!action.payload.lastQuery) {
+        //   state.hasNext = false;
+        // } else {
+        //   state.hasNext = true;
+        // }
+        // state.hasNext = action.payload.lastQuery ? true : false;
+        state.hasNext = !!action.payload.lastQuery;
+        state.loading = 'complete';
       })
       .addCase(fetchItems.rejected, (state, action) => {
-        state.status = 'fail';
+        state.loading = 'fail';
+      })
+      .addCase(updateItem.fulfilled, (state, action) => {
+        const index = state.items.findIndex(
+          (item) => item.id === action.payload.id
+        );
+        state.items[index] = action.payload;
+        state.loading = 'complete';
       });
     //   .addCase(addItem.fulfilled, (state, action) => {
     //     state.items.push(action.payload);
@@ -53,21 +76,6 @@ const foodSlice = createSlice({
   },
 });
 
-const dataTransform = createTransform(
-  // 저장 시
-  (inboundState) => ({
-    ...inboundState,
-    lq: inboundState.lq ? JSON.stringify(inboundState.lq) : null,
-  }),
-  // 복원 시
-  (outboundState) => ({
-    ...outboundState,
-    lq: outboundState.lq ? JSON.parse(outboundState.lq) : null,
-  }),
-  // 직렬화 및 역직렬화 할 state의 키를 지정
-  { whitelist: ['lq'] }
-);
-
 const fetchItems = createAsyncThunk(
   'items/fetchAllItems',
   async ({ collectionName, queryOptions }) => {
@@ -76,7 +84,6 @@ const fetchItems = createAsyncThunk(
         collectionName,
         queryOptions
       );
-      console.log(resultData);
       return resultData;
     } catch (error) {
       console.log('FETCH Error: ', error);
@@ -84,30 +91,35 @@ const fetchItems = createAsyncThunk(
   }
 );
 
-// const addItem = createAsyncThunk(
-//   'items/addItem',
-//   async ({ collectionName, addObj }) => {
-//     try {
-//       const resultData = await addDatas(collectionName, addObj);
-//       return resultData;
-//     } catch (error) {
-//       console.log('ADD Error: ', error);
-//     }
-//   }
-// );
+const addItem = createAsyncThunk(
+  'items/addItem',
+  async ({ collectionName, addObj }) => {
+    try {
+      const resultData = await addDatas(collectionName, addObj);
+      return resultData;
+    } catch (error) {
+      console.log('ADD Error: ', error);
+    }
+  }
+);
 
-// const updateItem = createAsyncThunk(
-//   'items/updateItem',
-//   async ({ collectionName, docId, updateObj }) => {
-//     console.log(collectionName, docId, updateObj);
-//     try {
-//       const resultData = await updateDatas(collectionName, docId, updateObj);
-//       return resultData;
-//     } catch (error) {
-//       console.log('UPDATE Error: ', error);
-//     }
-//   }
-// );
+const updateItem = createAsyncThunk(
+  'items/updateItem',
+  async ({ collectionName, docId, updateObj, imgUrl }) => {
+    console.log(collectionName, docId, updateObj);
+    try {
+      const resultData = await updateDatas(
+        collectionName,
+        docId,
+        updateObj,
+        imgUrl
+      );
+      return resultData;
+    } catch (error) {
+      console.log('UPDATE Error: ', error);
+    }
+  }
+);
 
 // const deleteItem = createAsyncThunk(
 //   'items/removeItem',
@@ -122,4 +134,5 @@ const fetchItems = createAsyncThunk(
 // );
 
 export default foodSlice;
-export { dataTransform, fetchItems };
+export { fetchItems, updateItem };
+export const { setOrder, setHasNext, setInitialItems } = foodSlice.actions;

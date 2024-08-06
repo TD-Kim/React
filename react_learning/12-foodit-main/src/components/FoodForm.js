@@ -14,10 +14,10 @@ function sanitize(type, value) {
 }
 
 const INITIAL_VALUES = {
-  imgFile: null,
   title: '',
-  calorie: 0,
   content: '',
+  calorie: 0,
+  imgUrl: null,
 };
 
 function FoodForm({
@@ -31,28 +31,24 @@ function FoodForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittingError, setSubmittingError] = useState(null);
   const [values, setValues] = useState(initialValues);
-
+  console.log(values);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('imgFile', values.imgFile);
-    formData.append('title', values.title);
-    formData.append('calorie', values.calorie);
-    formData.append('content', values.content);
     let result;
     try {
       setSubmittingError(null);
       setIsSubmitting(true);
-      result = await onSubmit(formData);
+      result = await onSubmit('food', values);
     } catch (error) {
       setSubmittingError(error);
       return;
     } finally {
       setIsSubmitting(false);
     }
-    const { food } = result;
+    // const { food } = result;
+
     setValues(initialValues);
-    onSubmitSuccess(food);
+    onSubmitSuccess(result);
   };
 
   const handleChange = (name, value) => {
@@ -68,53 +64,53 @@ function FoodForm({
   };
 
   return (
-    <form className="FoodForm" onSubmit={handleSubmit}>
+    <form className='FoodForm' onSubmit={handleSubmit}>
       <FileInput
-        className="FoodForm-preview"
-        name="imgFile"
-        initialPreview={initialPreview}
-        value={values.imgFile}
+        className='FoodForm-preview'
         onChange={handleChange}
+        name='imgUrl'
+        value={values.imgUrl}
+        initialPreview={initialPreview}
       />
-      <div className="FoodForm-rows">
-        <div className="FoodForm-title-calorie">
+      <div className='FoodForm-rows'>
+        <div className='FoodForm-title-calorie'>
           <input
-            className="FoodForm-title"
-            name="title"
+            className='FoodForm-title'
+            name='title'
             value={values.title}
             placeholder={t('title placeholder')}
             onChange={handleInputChange}
           />
           <input
-            className="FoodForm-calorie"
-            type="number"
-            name="calorie"
+            className='FoodForm-calorie'
+            type='number'
+            name='calorie'
             value={values.calorie}
             placeholder={t('calorie placeholder')}
             onChange={handleInputChange}
           />
           {onCancel && (
             <button
-              className="FoodForm-cancel-button"
-              type="button"
+              className='FoodForm-cancel-button'
+              type='button'
               onClick={onCancel}
             >
               취소
             </button>
           )}
           <button
-            className="FoodForm-submit-button"
-            type="submit"
+            className='FoodForm-submit-button'
+            type='submit'
             disabled={isSubmitting}
           >
             확인
           </button>
         </div>
         <textarea
-          className="FoodForm-content"
-          name="content"
+          className='FoodForm-content'
+          name='content'
           value={values.content}
-          placeholder="내용을 작성해 주세요."
+          placeholder='내용을 작성해 주세요.'
           onChange={handleInputChange}
         />
         {submittingError && <p>{submittingError.message}</p>}
