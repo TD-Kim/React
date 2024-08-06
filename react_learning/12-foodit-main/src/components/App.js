@@ -9,11 +9,13 @@ import FoodList from './FoodList';
 import FoodForm from './FoodForm';
 import LocaleSelect from './LocaleSelect';
 import useTranslate from '../hooks/useTranslate';
+import { useSelector, useDispatch } from 'react-redux';
 import logoImg from '../assets/logo.png';
 import searchImg from '../assets/ic-search.png';
 import logoTextImg from '../assets/logo-text.png';
 import backgroundImg from '../assets/background.png';
 import './App.css';
+import { fetchItems } from '../store/foodSlice';
 
 function AppSortButton({ selected, children, onClick }) {
   return (
@@ -31,9 +33,12 @@ const LIMITS = 5;
 
 function App() {
   const t = useTranslate();
+  const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.food);
+
+  // const [items, setItems] = useState([]);
   const [order, setOrder] = useState('createdAt');
   const [lq, setLq] = useState(null);
-  const [items, setItems] = useState([]);
   const [hasNext, setHasNext] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
@@ -52,11 +57,11 @@ function App() {
       return;
     }
     // 삭제 성공시 화면에 그 결과를 반영한다.
-    setItems((prevItems) =>
-      prevItems.filter(function (item) {
-        return item.docId !== docId;
-      })
-    );
+    // setItems((prevItems) =>
+    //   prevItems.filter(function (item) {
+    //     return item.docId !== docId;
+    //   })
+    // );
   };
 
   const handleLoad = async (options) => {
@@ -78,9 +83,9 @@ function App() {
       setIsLoading(false);
     }
     if (!options.lq) {
-      setItems(result);
+      // setItems(result);
     } else {
-      setItems((prevItems) => [...prevItems, ...result]);
+      // setItems((prevItems) => [...prevItems, ...result]);
     }
     setLq(lq);
     if (!lq) {
@@ -114,35 +119,41 @@ function App() {
   };
 
   const handleCreateSuccess = (newItem) => {
-    setItems((prevItems) => [newItem, ...prevItems]);
+    // setItems((prevItems) => [newItem, ...prevItems]);
   };
 
   const handleUpdateSuccess = (newItem) => {
-    setItems((prevItems) => {
-      const splitIdx = prevItems.findIndex((item) => item.id === newItem.id);
-      return [
-        ...prevItems.slice(0, splitIdx),
-        newItem,
-        ...prevItems.slice(splitIdx + 1),
-      ];
-    });
+    // setItems((prevItems) => {
+    //   const splitIdx = prevItems.findIndex((item) => item.id === newItem.id);
+    //   return [
+    //     ...prevItems.slice(0, splitIdx),
+    //     newItem,
+    //     ...prevItems.slice(splitIdx + 1),
+    //   ];
+    // });
   };
 
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
   useEffect(() => {
-    handleLoad({
-      fieldName: order,
-      lq: undefined,
+    const queryOptions = {
+      conditions: [
+        { field: 'title', operator: '>=', value: search },
+        { field: 'title', operator: '<=', value: search + '\uf8ff' },
+      ],
+      orderBys: [{ field: order, direction: 'desc' }],
+      lastQuery: undefined,
       limits: LIMITS,
-      search: search,
-    });
+    };
+    // handleLoad(queryOptions);
+    dispatch(fetchItems({ collectionName: 'food', queryOptions }));
+    // handleLoad({
+    //   fieldName: order,
+    //   lq: undefined,
+    //   limits: LIMITS,
+    //   search: search,
+    // });
   }, [order]);
-
-  // useEffect(() => {
-  //   if(!search) return;
-
-  // }, [search])
 
   return (
     <div className='App' style={{ backgroundImage: `url("${backgroundImg}")` }}>

@@ -58,19 +58,22 @@ export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // const [state, dispatch] = useReducer(reducer, initialState);
   const status = useSelector((state) => state.diary.status);
   const dispatch2 = useDispatch();
-  const items = useSelector((state) => {
-    return state.diary.items;
-  });
-
+  const items = useSelector(
+    (state) => {
+      return state.diary.items;
+    },
+    (before, after) => before === after
+  );
+  console.log(items);
   useEffect(() => {
     dispatch2(fetchItems2('diary'));
     // fetchItems('diary', dispatch);
   }, []);
 
-  const dataId = useRef(0);
+  // const dataId = useRef(0);
   // CREATE
   const onCreate = async (values) => {
     const addObj = {
@@ -83,7 +86,7 @@ function App() {
     };
     // await addItem('diary', addObj, dispatch);
     dispatch2(addItem2({ collectionName: 'diary', addObj }));
-    dataId.current += 1;
+    // dataId.current += 1;
   };
   // REMOVE
   const onRemove = async (docId) => {
