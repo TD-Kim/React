@@ -140,9 +140,14 @@ function App() {
     };
     dispatch(fetchItems({ collectionName: 'food', queryOptions }));
   };
-
-  const handleCreateSuccess = (newItem) => {
+  console.log('App 로딩!!!');
+  const handleCreateSuccess = (newItem, setImgUrlFn) => {
+    console.log('handleCreateSuccess 시작!!!');
+    if (setImgUrlFn) {
+      setImgUrlFn('imgUrl', null);
+    }
     handleResetData();
+    console.log('handleCreateSuccess 끝!!!');
     // setItems((prevItems) => [newItem, ...prevItems]);
   };
 

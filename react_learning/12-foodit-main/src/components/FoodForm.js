@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useTranslate from '../hooks/useTranslate';
 import FileInput from './FileInput';
 import './FoodForm.css';
@@ -27,13 +27,14 @@ function FoodForm({
   onSubmitSuccess,
   onCancel,
 }) {
+  console.log('FoodForm 로딩!!!');
   const t = useTranslate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittingError, setSubmittingError] = useState(null);
   const [values, setValues] = useState(initialValues);
-  console.log(values);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('handleSubmit 시작!!!');
     let result;
     try {
       setSubmittingError(null);
@@ -45,18 +46,18 @@ function FoodForm({
     } finally {
       setIsSubmitting(false);
     }
+    setValues(INITIAL_VALUES);
+    onSubmitSuccess(result, handleChange);
+    console.log('handleSubmit 끝!!!');
     // const { food } = result;
-
-    setValues(initialValues);
-    onSubmitSuccess(result);
   };
 
-  const handleChange = (name, value) => {
+  const handleChange = useCallback((name, value) => {
     setValues((prevValues) => ({
       ...prevValues,
       [name]: value,
     }));
-  };
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
