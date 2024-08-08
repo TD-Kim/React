@@ -1,23 +1,36 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getDatas } from '../../firebase';
 
 // 비동기 작업 생성: 제품 목록 가져오기
+// export const fetchProducts = createAsyncThunk(
+//   'products/fetchProducts',
+//   async (category, thunkAPI) => {
+//     try {
+//       let response;
+//       if (category) {
+//         response = await axios.get(
+//           `https://fakestoreapi.com/products/category/${category}`
+//         );
+//       } else {
+//         response = await axios.get('https://fakestoreapi.com/products');
+//       }
+
+//       return response.data; // payload
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue('Error loading products');
+//     }
+//   }
+// );
+
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (category, thunkAPI) => {
+  async ({ collectionName, queryOptions }) => {
     try {
-      let response;
-      if (category) {
-        response = await axios.get(
-          `https://fakestoreapi.com/products/category/${category}`
-        );
-      } else {
-        response = await axios.get('https://fakestoreapi.com/products');
-      }
-
-      return response.data; // payload
+      const resultData = await getDatas(collectionName, queryOptions);
+      return resultData;
     } catch (error) {
-      return thunkAPI.rejectWithValue('Error loading products');
+      return null;
     }
   }
 );

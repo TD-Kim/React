@@ -10,7 +10,17 @@ const CardList = () => {
   const category = useSelector((state) => state.categoriesSlice);
 
   useEffect(() => {
-    dispatch(fetchProducts(category?.toLowerCase()));
+    const queryOptions = {
+      conditions: [
+        {
+          field: 'category',
+          operator: category ? '==' : '>=',
+          value: category.toLowerCase(),
+        },
+      ],
+    };
+    // dispatch(fetchProducts(category?.toLowerCase()));
+    dispatch(fetchProducts({ collectionName: 'products', queryOptions }));
   }, [category]);
 
   if (isLoading) return <CardSkeleton />;

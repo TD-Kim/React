@@ -1,21 +1,20 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import {
-  addDoc,
-  arrayRemove,
-  arrayUnion,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
   getFirestore,
-  limit,
-  orderBy,
+  collection,
+  addDoc,
   query,
-  runTransaction,
-  updateDoc,
+  orderBy,
+  limit,
+  onSnapshot,
   where,
+  getDoc,
+  runTransaction,
+  getDocs,
+  updateDoc,
+  doc,
+  deleteDoc,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -36,19 +35,28 @@ function getCollection(collectionName) {
   return collection(db, collectionName);
 }
 
-function getUserAuth() {
+export function getUserAuth() {
   return auth;
+}
+
+async function getLastNum(collectionName, field) {
+  const q = query(
+    collection(db, collectionName),
+    orderBy(field, 'desc'),
+    limit(1)
+  );
+  const lastDoc = await getDocs(q);
+  if (lastDoc.docs.length === 0) {
+    return 0;
+  }
+  const lastNum = lastDoc.docs[0].data()[field];
+  return lastNum;
 }
 
 function getQuery(collectionName, queryOption) {
   const { conditions = [], orderBys = [], limits } = queryOption;
   const collect = getCollection(collectionName);
   let q = query(collect);
-
-  const condition = [
-    { field: 'text', operator: '==', value: 'test' },
-    { field: 'uid', operator: '==', value: 'xjdiwjKDJ2jdkxJND2J' },
-  ];
 
   // where 조건
   conditions.forEach((condition) => {
@@ -66,4 +74,10 @@ function getQuery(collectionName, queryOption) {
   return q;
 }
 
-export { getUserAuth };
+export async function getDatas(collectionName, queryOptions) {
+  const q = getQuery(collectionName, queryOptions);
+  const snapshot = await getDocs(q);
+  const docs = snapshot.docs;
+  const resultData = docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
+  return resultData;
+}
