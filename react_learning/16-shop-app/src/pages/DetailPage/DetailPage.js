@@ -13,7 +13,7 @@ const DetailPage = () => {
 
   const { product, isLoading } = useSelector((state) => state.productSlice);
   const { products } = useSelector((state) => state.cartSlice);
-  const productMatching = products.some((product) => product.id === product.id);
+  const productMatching = products.some((item) => item.id === product.id);
 
   useEffect(() => {
     dispatch(fetchProduct(productId));

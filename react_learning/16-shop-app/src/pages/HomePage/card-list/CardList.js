@@ -19,8 +19,8 @@ const CardList = () => {
         },
       ],
     };
-    // dispatch(fetchProducts(category?.toLowerCase()));
-    dispatch(fetchProducts({ collectionName: 'products', queryOptions }));
+    dispatch(fetchProducts(category?.toLowerCase()));
+    // dispatch(fetchProducts({ collectionName: 'products', queryOptions }));
   }, [category]);
 
   if (isLoading) return <CardSkeleton />;
