@@ -15,6 +15,8 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  setDoc,
+  writeBatch,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -27,7 +29,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
@@ -80,4 +82,25 @@ export async function getDatas(collectionName, queryOptions) {
   const docs = snapshot.docs;
   const resultData = docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
   return resultData;
+}
+
+export async function joinUser(userObj) {
+  await setDoc(doc(db, 'users', userObj.uid), {
+    email: userObj.email,
+    cart: userObj.cart,
+  });
+}
+
+export async function asyncCart(uid, cartArr) {
+  const cartRef = collection(db, 'users', uid, 'cart');
+  const batch = writeBatch(db);
+
+  cartArr.forEach((item) => {
+    const itemRef = doc(cartRef, item.id.toString());
+    batch.set(itemRef, item);
+  });
+
+  await batch.commit();
+
+  // await setDoc(doc(db, 'users', uid), cartObj, { merge: true });
 }

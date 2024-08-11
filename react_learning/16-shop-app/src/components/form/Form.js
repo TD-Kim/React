@@ -3,6 +3,13 @@ import { useForm } from 'react-hook-form';
 import styles from './Form.module.scss';
 
 const Form = ({ title, getDataForm, firebaseError }) => {
+  // const test = useForm();
+  // console.log(test);
+  // useForm은 react-hook-form에서 제공하는 훅으로, 폼 상태와 유효성 검사를 관리하는데 사용한다.
+  // register: 폼의 입력 필드를 등록하여 react-hook-form이 상태를 관리하고 유효성 검사를
+  // 수행할 수 있도록 한다.
+  // 사용법: register 함수를 입력 필드의 ref 속성에 전달하여 해당 필드를 폼의 일부분으로
+  // 등록한다.
   const {
     register,
     handleSubmit,

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Form from '../../../components/form/Form';
-import { getUserAuth } from '../../../firebase';
+import { app, asyncCart, getUserAuth } from '../../../firebase';
 import { setUserId } from '../../../store/cart/cartSlice';
 import { setUser } from '../../../store/user/userSlice';
 
@@ -11,24 +11,34 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [firebaseError, setFirebaseError] = useState('');
   const dispatch = useDispatch();
-  const auth = getUserAuth();
+  const auth = getAuth(app);
 
-  const handleLogin = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        dispatch(
-          setUser({
-            email: userCredential.user.email,
-            token: userCredential.user.refreshToken,
-            id: userCredential.user.uid,
-          })
-        );
-        dispatch(setUserId(userCredential.user.uid));
-        navigate('/');
-      })
-      .catch((error) => {
-        setFirebaseError('이메일 또는 비밀번호가 잘못되었습니다.');
-      });
+  const handleLogin = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(userCredential);
+      // 로컬 스토리지에서 장바구니 데이터 읽기
+      const { user } = userCredential;
+      const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
+      // await asyncCart(user.uid, { cart: cartItems });
+      await asyncCart(user.uid, cartItems);
+      dispatch(
+        setUser({
+          email: user.email,
+          token: user.refreshToken,
+          id: user.uid,
+        })
+      );
+      dispatch(setUserId(user.uid));
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+      setFirebaseError('이메일 또는 비밀번호가 잘못되었습니다.');
+    }
   };
 
   return (
