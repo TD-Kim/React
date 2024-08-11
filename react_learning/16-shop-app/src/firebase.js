@@ -104,3 +104,23 @@ export async function asyncCart(uid, cartArr) {
 
   // await setDoc(doc(db, 'users', uid), cartObj, { merge: true });
 }
+
+export async function addItemToCart() {
+  // const itemRef = doc(db, 'users', userId, 'cart', item.id.toString());
+  // await setDoc(itemRef, item, { merge: true });
+  // console.log('장바구니 아이템 추가 성공');
+}
+
+export async function removeItemFromCart(itemId) {
+  // const userId = getAuth().currentUser.uid;
+  // const itemRef = doc(db, 'users', userId, 'cart', itemId.toString());
+  // await itemRef.delete();
+  // console.log('장바구니 아이템 삭제 성공');
+}
+
+export async function updateItemInCart(item) {
+  // const userId = getAuth().currentUser.uid;
+  // const itemRef = doc(db, 'users', userId, 'cart', item.id.toString());
+  // await setDoc(itemRef, item, { merge: true });
+  // console.log('장바구니 아이템 수정 성공');
+}
