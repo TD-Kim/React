@@ -4,19 +4,25 @@ import { useAppSelector, useAppDispatch } from '../../../hooks/redux';
 import { useAuth } from '../../../hooks/useAuth';
 import styles from './Checkout.module.scss';
 import { getTotalPrice, postOrder } from '../../../store/cart/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Checkout = () => {
-  const cart = useAppSelector((state) => state.cartSlice);
-  const dispatch = useAppDispatch();
+  const { products, totalPrice } = useSelector((state) => state.cartSlice);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getTotalPrice());
-  }, [cart]);
+  }, [products]);
 
-  const { isAuth } = useAuth();
+  const { isAuth, id } = useAuth();
+  console.log(id);
 
   const sendOrder = () => {
-    dispatch(postOrder(cart));
+    const orderObj = {
+      totalPrice,
+      products,
+    };
+    dispatch(postOrder({ uid: id, cart: orderObj }));
   };
 
   return (
@@ -24,7 +30,7 @@ const Checkout = () => {
       <div>
         <p>
           {' '}
-          <span>합계:</span> $ {cart.totalPrice.toFixed(2)}
+          <span>합계:</span> $ {totalPrice.toFixed(2)}
         </p>
 
         {isAuth ? (

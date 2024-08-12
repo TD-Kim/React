@@ -5,6 +5,7 @@ import OrderItem from './order-item/OrderItem';
 import styles from './OrdersList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrder } from '../../../store/order/orderSlice';
+import { getISODate } from '../../../utils/getFormattedDate';
 
 const OrdersList = () => {
   const { id } = useAuth();
@@ -12,7 +13,9 @@ const OrdersList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchOrder(id));
+    dispatch(
+      fetchOrder({ collectionPath: ['users', id, 'orders'], queryOptions: {} })
+    );
   }, [id]);
 
   if (!order.length) {
@@ -24,7 +27,11 @@ const OrdersList = () => {
       {order.map((item) => (
         <div key={item.id}>
           <div className={styles.order_header}>
-            <h3>주문 번호_{item.id}</h3>
+            <h3>주문 번호_{item.createdAt}</h3>
+            <h3>
+              주문 날짜_{getISODate(item.createdAt).yyyyMMdd}{' '}
+              {getISODate(item.createdAt).HHmmss}
+            </h3>
             <p>합계: $ {item.totalPrice.toFixed(2)}</p>
           </div>
 

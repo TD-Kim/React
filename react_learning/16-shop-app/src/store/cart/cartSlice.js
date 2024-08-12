@@ -1,16 +1,33 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createOrder } from '../../firebase';
 
 // `postOrder` 비동기 작업 생성
-export const postOrder = createAsyncThunk(
-  'cart/postOrder',
-  async (order, thunkAPI) => {
-    try {
-      await axios.post(
-        'https://640f6d494ed25579dc4ec41b.mockapi.io/orders',
-        order
-      );
+// export const postOrder = createAsyncThunk(
+//   'cart/postOrder',
+//   async (order, thunkAPI) => {
+//     try {
+//       await axios.post(
+//         'https://640f6d494ed25579dc4ec41b.mockapi.io/orders',
+//         order
+//       );
 
+//       thunkAPI.dispatch(sendOrder());
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue('Error sending order');
+//     }
+//   }
+// );
+
+export const postOrder = createAsyncThunk(
+  'cart/createOrder',
+  async ({ uid, cart }, thunkAPI) => {
+    try {
+      const result = await createOrder(uid, cart);
+
+      if (!result) {
+        return;
+      }
       thunkAPI.dispatch(sendOrder());
     } catch (error) {
       return thunkAPI.rejectWithValue('Error sending order');

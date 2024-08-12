@@ -33,8 +33,8 @@ export const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-function getCollection(collectionName) {
-  return collection(db, collectionName);
+function getCollection(...path) {
+  return collection(db, ...path);
 }
 
 export function getUserAuth() {
@@ -57,7 +57,7 @@ async function getLastNum(collectionName, field) {
 
 function getQuery(collectionName, queryOption) {
   const { conditions = [], orderBys = [], limits } = queryOption;
-  const collect = getCollection(collectionName);
+  const collect = getCollection(...collectionName);
   let q = query(collect);
 
   // where 조건
@@ -77,6 +77,7 @@ function getQuery(collectionName, queryOption) {
 }
 
 export async function getDatas(collectionName, queryOptions) {
+  console.log(collectionName);
   const q = getQuery(collectionName, queryOptions);
   const snapshot = await getDocs(q);
   const docs = snapshot.docs;
@@ -103,6 +104,22 @@ export async function asyncCart(uid, cartArr) {
   await batch.commit();
 
   // await setDoc(doc(db, 'users', uid), cartObj, { merge: true });
+}
+
+export async function createOrder(uid, orderObj) {
+  try {
+    const orderRef = collection(db, 'users', uid, 'orders');
+    const createObj = {
+      ...orderObj,
+      createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime(),
+      cancelYn: 'N',
+    };
+    const docRef = await addDoc(orderRef, createObj);
+    return docRef.id;
+  } catch (error) {
+    console.log('CREATE Order Error: ', error);
+  }
 }
 
 export async function addItemToCart() {
