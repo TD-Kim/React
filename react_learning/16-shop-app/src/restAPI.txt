@@ -1,0 +1,101 @@
+-조회-
+https://firestore.googleapis.com/v1/projects/{프로젝트ID}/databases/{데이터베이스ID}/documents/{collectionId}
+
+https://firestore.googleapis.com/v1/projects/shop-app-c8539/databases/(default)/documents/products
+
+
+AIzaSyAeVAA1GOql8fn9OuSe2LrhG2pzNLBWdF8
+
+
+-사용자 정보 postman 으로 가져오기-
+Type: POST
+URL : https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=YOUR_API_KEY
+Headers: 
+  Content-Type: application/json
+Body: 
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "returnSecureToken": true
+}
+
+------------------------Response----------------------------
+{
+  "kind": "identitytoolkit#VerifyPasswordResponse",
+  "localId": "xxxxxxxxxxxx",
+  "email": "user@example.com",
+  "displayName": "",
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg1Njg...",
+  "registered": true,
+  "refreshToken": "AEu...",
+  "expiresIn": "3600"
+}
+---------------------------------------------------------------
+여기서 idToken 값이 Firebase Authentication ID 토큰입니다.
+
+
+
+-사용자 id 토큰을 가져와서 CRUD-
+test@gmail.com idToken : eyJhbGciOiJSUzI1NiIsImtpZCI6ImNlMzcxNzMwZWY4NmViYTI5YTUyMTJkOWI5NmYzNjc1NTA0ZjYyYmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2hvcC1hcHAtYzg1MzkiLCJhdWQiOiJzaG9wLWFwcC1jODUzOSIsImF1dGhfdGltZSI6MTcyMzQzOTQxNiwidXNlcl9pZCI6IlVHbTZXYk1sU1hVVW9pS1JZTWNqM3lMdlQ3NjIiLCJzdWIiOiJVR202V2JNbFNYVVVvaUtSWU1jajN5THZUNzYyIiwiaWF0IjoxNzIzNDM5NDE2LCJleHAiOjE3MjM0NDMwMTYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.jjKv82RpIU9_eSt6GpAmFZ1gin02_6unyV5yH88n_nIYBWO7z522cImC54s5neKF1CKbrUWPyT66lNFjOnZB9NB1YdH5oFK8eMvXbj5VXN05hBaT-qAHWMre494hVUhGHbrN5tBDajevv0_5his5lTV8nVbmgidUDn6sr1XXxEwZqpWv6W0OmPxQ-AsRnG6UR9hzPXWLjNXFeTUvWyA_beiT1mNEFRVWtKBlj-P6mJFeehhn0dFcNUU7FL5TdKQX66ECVFZqBaemUuJfmvcZLAPdARq17wVQ9r38699hXGUJXs9CgntfOWxj4pTb8bOgH95ZGE_pblA62-setrxD5w
+
+
+[ CREATE ]
+------------------------------------------------------------------------------------------------------------------
+Type: POST
+URL : https://firestore.googleapis.com/v1/projects/YOUR_PROJECT_ID/databases/(default)/documents/users
+Headers: 
+  Authorization: Bearer YOUR_ID_TOKEN
+  Content-Type: application/json
+Body: 
+{
+  "fields": {
+    "email": { "stringValue": "test@example.com" },
+    "name": { "stringValue": "John Doe" },
+    "age": { "integerValue": 30 }
+  }
+}
+------------------------------------------------------------------------------------------------------------------
+
+
+[ READ ]
+------------------------------------------------------------------------------------------------------------------
+Type: GET
+URL : https://firestore.googleapis.com/v1/projects/shop-app-c8539/databases/(default)/documents/users/
+Headers: 
+  Authorization: Bearer YOUR_ID_TOKEN
+  Content-Type: application/json
+------------------------------------------------------------------------------------------------------------------
+
+
+[ UPDATE ]
+------------------------------------------------------------------------------------------------------------------
+Type: PATCH
+URL : https://firestore.googleapis.com/v1/projects/shop-app-c8539/databases/(default)/documents/users/DOCUMENT_ID?key=YOUR_API_KEY&updateMask.fieldPaths=email&updateMask.fieldPaths=name
+Headers: 
+  Authorization: Bearer YOUR_ID_TOKEN
+  Content-Type: application/json
+Body: 
+{
+  "fields": {
+    "email": { "stringValue": "newemail@example.com" },
+    "name": { "stringValue": "John Smith" }
+  }
+}
+------------------------------------------------------------------------------------------------------------------
+
+
+[ DELETE ]
+------------------------------------------------------------------------------------------------------------------
+Type: DELETE
+URL : https://firestore.googleapis.com/v1/projects/shop-app-c8539/databases/(default)/documents/users/{DOCUMENT_ID}
+Headers: 
+  Authorization: Bearer YOUR_ID_TOKEN
+  Content-Type: application/json
+------------------------------------------------------------------------------------------------------------------
+
+
+
+
+-하위 컬렉션 있을 때-
+
+https://firestore.googleapis.com/v1/projects/shop-app-c8539/databases/(default)/documents/users/cW4ce7eYrlyMAQrA5piu/cart/emS2TygZ9EXGglkNBPx2?key=AIzaSyAeVAA1GOql8fn9OuSe2LrhG2pzNLBWdF8
