@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { createOrder } from '../../firebase';
+import { addCart, asyncCart, createOrder, deleteDatas } from '../../firebase';
 
 // `postOrder` 비동기 작업 생성
 // export const postOrder = createAsyncThunk(
@@ -72,6 +72,10 @@ export const cartSlice = createSlice({
       );
       localStorage.setItem('cartProducts', JSON.stringify(state.products));
     },
+    asyncCartAndSlice: (state, action) => {
+      state.products = action.payload;
+      localStorage.setItem('cartProducts', JSON.parse(state.products));
+    },
     incrementProduct: (state, action) => {
       state.products = state.products.map((item) =>
         item.id === action.payload
@@ -109,10 +113,56 @@ export const cartSlice = createSlice({
   },
 });
 
+export const asyncCartAndStorage = createAsyncThunk(
+  'cart/asyncCartItem',
+  async ({ uid, cartItems }, thunkAPI) => {
+    try {
+      const result = await asyncCart(uid, cartItems);
+      console.log(result);
+      thunkAPI.dispatch(asyncCartAndSlice(result));
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue('Async Cart and Storage Error');
+    }
+  }
+);
+
+export const addCartItem = createAsyncThunk(
+  'cart/addCartItem',
+  async ({ collectionName, product }, thunkAPI) => {
+    try {
+      await thunkAPI.dispatch(addToCart(product));
+      // const products = thunkAPI.getState().cartSlice.products;
+      const {
+        cartSlice: { products },
+      } = thunkAPI.getState();
+      const addItem = products.find(
+        (sliceProduct) => sliceProduct.id === product.id
+      );
+      await addCart(collectionName, addItem);
+    } catch (error) {}
+  }
+);
+
+export const deleteCartItem = createAsyncThunk(
+  'cart/deleteCartItem',
+  async ({ collectionName, productId }, thunkAPI) => {
+    try {
+      const resultData = await deleteDatas(collectionName, productId);
+      if (resultData) {
+        thunkAPI.dispatch(deleteFromCart(productId));
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Error Delete CartItem');
+    }
+  }
+);
+
 export const {
   addToCart,
   sendOrder,
   deleteFromCart,
+  asyncCartAndSlice,
   incrementProduct,
   decrementProduct,
   getTotalPrice,

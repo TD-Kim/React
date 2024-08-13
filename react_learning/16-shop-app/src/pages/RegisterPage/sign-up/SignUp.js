@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../../../components/form/Form';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { getUserAuth, joinUser } from '../../../firebase';
+import { asyncCart, getUserAuth, joinUser } from '../../../firebase';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../store/user/userSlice';
 import { setUserId } from '../../../store/cart/cartSlice';
@@ -31,21 +31,18 @@ const SignUp = () => {
       console.log(user);
       // 로컬 스토리지에서 장바구니 데이터 읽기
       const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
-      const userObj = {
-        uid: user.uid,
-        email: user.email,
-        cart: cartItems,
-      };
-      await joinUser(userObj);
+
+      await joinUser(user.uid, user.email);
+      await asyncCart(user.uid, cartItems);
       // Update Redux store
       dispatch(
         setUser({
           email: user.email,
           token: user.refreshToken,
-          id: user.uid,
+          uid: user.uid,
         })
       );
-      dispatch(setUserId(userCredential.user.uid));
+      // dispatch(setUserId(userCredential.user.uid));
       navigate('/');
     } catch (error) {
       console.log(error);

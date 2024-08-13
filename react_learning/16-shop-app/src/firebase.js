@@ -34,7 +34,14 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 function getCollection(...path) {
-  return collection(db, ...path);
+  let newPath = path;
+  if (typeof path[0] !== 'string') {
+    // [newPath] = path;
+    newPath = path.flat();
+  }
+  console.log(path);
+  console.log(newPath);
+  return collection(db, ...newPath);
 }
 
 export function getUserAuth() {
@@ -77,7 +84,6 @@ function getQuery(collectionName, queryOption) {
 }
 
 export async function getDatas(collectionName, queryOptions) {
-  console.log(collectionName);
   const q = getQuery(collectionName, queryOptions);
   const snapshot = await getDocs(q);
   const docs = snapshot.docs;
@@ -85,25 +91,70 @@ export async function getDatas(collectionName, queryOptions) {
   return resultData;
 }
 
-export async function joinUser(userObj) {
-  await setDoc(doc(db, 'users', userObj.uid), {
-    email: userObj.email,
-    cart: userObj.cart,
-  });
+export async function getData(collectionName, queryOptions) {
+  const q = getQuery(collectionName, queryOptions);
+  const snapshot = await getDocs(q);
+  const doc = snapshot.docs[0];
+  const resultData = { ...doc.data(), docId: doc.id };
+  return resultData;
+}
+
+export async function joinUser(uid, email) {
+  await setDoc(doc(db, 'users', uid), { email: email });
 }
 
 export async function asyncCart(uid, cartArr) {
-  const cartRef = collection(db, 'users', uid, 'cart');
+  const cartRef = getCollection('users', uid, 'cart');
   const batch = writeBatch(db);
 
-  cartArr.forEach((item) => {
-    const itemRef = doc(cartRef, item.id.toString());
-    batch.set(itemRef, item);
-  });
+  for (const item of cartArr) {
+    const result = await updateQuantity(uid, item);
+    if (!result) {
+      const itemRef = doc(cartRef, item.id.toString());
+      batch.set(itemRef, item);
+    }
+    console.log(batch);
+  }
 
   await batch.commit();
+  // const snapshot = await getDocs(cartRef);
+  const resultData = await getDatas(['users', uid, 'cart'], {});
+  console.log(resultData);
+  return resultData;
+}
 
-  // await setDoc(doc(db, 'users', uid), cartObj, { merge: true });
+export async function updateQuantity(uid, cartItem) {
+  const cartRef = getCollection('users', uid, 'cart');
+  const itemRef = doc(cartRef, cartItem.id.toString());
+  // 문서가 존재하는지 확인
+  const itemDoc = await getDoc(itemRef);
+  console.log(itemDoc);
+  if (itemDoc.exists()) {
+    const currentData = itemDoc.data();
+    debugger;
+    const updatedQuantity = (currentData.quantity || 0) + 1;
+    await updateDoc(itemRef, { quantity: updatedQuantity });
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export async function deleteDatas(collectionName, docId) {
+  try {
+    const cartRef = getCollection(collectionName);
+    const docRef = doc(cartRef, docId.toString());
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.log('Error Delete: ', error);
+  }
+}
+
+export async function addCart(collectionName, cartObj) {
+  const collectionRef = getCollection(collectionName);
+  const cartRef = doc(collectionRef, cartObj.id.toString());
+  await setDoc(cartRef, cartObj);
 }
 
 export async function createOrder(uid, orderObj) {
