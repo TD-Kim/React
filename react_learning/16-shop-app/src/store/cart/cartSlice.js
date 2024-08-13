@@ -74,7 +74,7 @@ export const cartSlice = createSlice({
     },
     asyncCartAndSlice: (state, action) => {
       state.products = action.payload;
-      localStorage.setItem('cartProducts', JSON.parse(state.products));
+      localStorage.setItem('cartProducts', JSON.stringify(state.products));
     },
     incrementProduct: (state, action) => {
       state.products = state.products.map((item) =>

@@ -2,15 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './NavCartItem.module.scss';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
-import { deleteFromCart } from '../../../../../../store/cart/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteCartItem,
+  deleteFromCart,
+} from '../../../../../../store/cart/cartSlice';
 
 // NavCartItem 컴포넌트
 const NavCartItem = ({ item }) => {
   const dispatch = useDispatch();
+  const { uid, isAuthenticated } = useSelector((state) => state.userSlice);
 
   const deleteProduct = () => {
-    dispatch(deleteFromCart(item.id));
+    if (isAuthenticated) {
+      dispatch(
+        deleteCartItem({
+          collectionName: ['users', uid, 'cart'],
+          productId: item.id,
+        })
+      );
+    } else {
+      dispatch(deleteFromCart(item.id));
+    }
   };
 
   return (

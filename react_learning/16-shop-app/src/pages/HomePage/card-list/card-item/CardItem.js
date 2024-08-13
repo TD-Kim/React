@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './CardItem.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../../../store/cart/cartSlice';
+import { addCartItem, addToCart } from '../../../../store/cart/cartSlice';
 
 // CardItem 컴포넌트
 const CardItem = ({ item }) => {
@@ -19,9 +19,16 @@ const CardItem = ({ item }) => {
   //     ? true
   //     : false;
   const dispatch = useDispatch();
+  const { uid, isAuthenticated } = useSelector((state) => state.userSlice);
 
   const addItemToCart = () => {
-    dispatch(addToCart(item));
+    if (isAuthenticated) {
+      dispatch(
+        addCartItem({ collectionName: ['users', uid, 'cart'], product: item })
+      );
+    } else {
+      dispatch(addToCart(item));
+    }
   };
 
   return (

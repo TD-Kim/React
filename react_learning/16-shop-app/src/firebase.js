@@ -39,8 +39,6 @@ function getCollection(...path) {
     // [newPath] = path;
     newPath = path.flat();
   }
-  console.log(path);
-  console.log(newPath);
   return collection(db, ...newPath);
 }
 
@@ -64,7 +62,7 @@ async function getLastNum(collectionName, field) {
 
 function getQuery(collectionName, queryOption) {
   const { conditions = [], orderBys = [], limits } = queryOption;
-  const collect = getCollection(...collectionName);
+  const collect = getCollection(collectionName);
   let q = query(collect);
 
   // where 조건
@@ -113,7 +111,6 @@ export async function asyncCart(uid, cartArr) {
       const itemRef = doc(cartRef, item.id.toString());
       batch.set(itemRef, item);
     }
-    console.log(batch);
   }
 
   await batch.commit();
@@ -128,12 +125,14 @@ export async function updateQuantity(uid, cartItem) {
   const itemRef = doc(cartRef, cartItem.id.toString());
   // 문서가 존재하는지 확인
   const itemDoc = await getDoc(itemRef);
-  console.log(itemDoc);
   if (itemDoc.exists()) {
     const currentData = itemDoc.data();
-    debugger;
     const updatedQuantity = (currentData.quantity || 0) + 1;
-    await updateDoc(itemRef, { quantity: updatedQuantity });
+    const updatedTotal = currentData.price * updatedQuantity;
+    await updateDoc(itemRef, {
+      quantity: updatedQuantity,
+      total: updatedTotal,
+    });
     return true;
   } else {
     return false;

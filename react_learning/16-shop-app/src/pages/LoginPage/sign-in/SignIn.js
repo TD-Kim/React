@@ -30,7 +30,7 @@ const SignIn = () => {
         setUser({
           email: user.email,
           token: user.refreshToken,
-          id: user.uid,
+          uid: user.uid,
         })
       );
       // dispatch(setUserId(user.uid));
