@@ -21,7 +21,6 @@ export const fetchOrder = createAsyncThunk(
   async ({ collectionPath, queryOptions }, thunkAPI) => {
     try {
       const resultData = await getDatas(collectionPath, queryOptions);
-      console.log(resultData);
       return resultData;
     } catch (err) {
       return thunkAPI.rejectWithValue('Error receiving order');

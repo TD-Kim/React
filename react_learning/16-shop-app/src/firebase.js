@@ -116,7 +116,6 @@ export async function asyncCart(uid, cartArr) {
   await batch.commit();
   // const snapshot = await getDocs(cartRef);
   const resultData = await getDatas(['users', uid, 'cart'], {});
-  console.log(resultData);
   return resultData;
 }
 
@@ -166,6 +165,13 @@ export async function createOrder(uid, orderObj) {
       cancelYn: 'N',
     };
     const docRef = await addDoc(orderRef, createObj);
+    const batch = writeBatch(db);
+    orderObj.products.forEach((product) => {
+      const cartRef = getCollection('users', uid, 'cart');
+      const docRef = doc(cartRef, product.id.toString());
+      batch.delete(docRef);
+    });
+    await batch.commit();
     return docRef.id;
   } catch (error) {
     console.log('CREATE Order Error: ', error);

@@ -14,15 +14,14 @@ const Checkout = () => {
     dispatch(getTotalPrice());
   }, [products]);
 
-  const { isAuth, id } = useAuth();
-  console.log(id);
+  const { isAuth, uid } = useAuth();
 
   const sendOrder = () => {
     const orderObj = {
       totalPrice,
       products,
     };
-    dispatch(postOrder({ uid: id, cart: orderObj }));
+    dispatch(postOrder({ uid: uid, cart: orderObj }));
   };
 
   return (
