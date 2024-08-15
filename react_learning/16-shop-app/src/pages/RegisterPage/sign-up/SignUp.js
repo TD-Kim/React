@@ -6,6 +6,7 @@ import { asyncCart, getUserAuth, joinUser } from '../../../firebase';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../store/user/userSlice';
 import { setUserId } from '../../../store/cart/cartSlice';
+import { addDatasRest, API_KEY, asyncCartRest, signUpUser } from '../../../api';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -27,13 +28,20 @@ const SignUp = () => {
         email,
         password
       );
+      // const userCredential = await signUpUser(
+      //   `signUp?key=${API_KEY}`,
+      //   email,
+      //   password
+      // );
       const { user } = userCredential;
       console.log(user);
       // 로컬 스토리지에서 장바구니 데이터 읽기
       const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
 
-      await joinUser(user.uid, user.email);
-      await asyncCart(user.uid, cartItems);
+      // await joinUser(user.uid, user.email);
+      // await asyncCart(user.uid, cartItems);
+      await addDatasRest(`/users/${user.uid}`, { email: user.email });
+      await asyncCartRest(user.uid, cartItems);
       // Update Redux store
       dispatch(
         setUser({

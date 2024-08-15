@@ -1,15 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { getProduct } from '../../api';
 
 // 비동기 작업 생성: 제품 데이터 가져오기
 export const fetchProduct = createAsyncThunk(
   'product/fetchProduct',
   async (id, thunkAPI) => {
     try {
-      const response = await axios.get(
-        `https://fakestoreapi.com/products/${id}`
-      );
-      return response.data;
+      // const response = await axios.get(
+      //   `https://fakestoreapi.com/products/${id}`
+      // );
+      // return response.data;
+      const resultData = await getProduct(id);
+      return resultData;
     } catch (error) {
       // 여기서 return 하는 값이 reducer 의 rejected 로 들어간다.
       return thunkAPI.rejectWithValue('Error loading product');

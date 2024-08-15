@@ -11,22 +11,31 @@ const CardList = () => {
   const category = useSelector((state) => state.categoriesSlice);
 
   const handleLoad = async (queryOptions) => {
-    const result = await getDatasRest('products', queryOptions);
-    console.log(result);
+    // const result = await getDatasRest('products', queryOptions);
+    // console.log(result);
   };
 
   useEffect(() => {
+    // const queryOptions = {
+    //   conditions: [
+    //     {
+    //       field: 'category',
+    //       operator: category ? '==' : '>=',
+    //       value: category.toLowerCase(),
+    //     },
+    //   ],
+    // };
     const queryOptions = {
       conditions: [
         {
           field: 'category',
-          operator: category ? '==' : '>=',
+          op: category ? 'EQUAL' : 'GREATER_THAN_OR_EQUAL',
           value: category.toLowerCase(),
         },
       ],
     };
     dispatch(fetchProducts({ collectionName: 'products', queryOptions }));
-    handleLoad(queryOptions);
+    // handleLoad(queryOptions);
   }, [category]);
 
   if (isLoading) return <CardSkeleton />;

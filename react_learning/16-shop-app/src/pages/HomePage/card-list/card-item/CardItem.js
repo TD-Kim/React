@@ -24,7 +24,11 @@ const CardItem = ({ item }) => {
   const addItemToCart = () => {
     if (isAuthenticated) {
       dispatch(
-        addCartItem({ collectionName: ['users', uid, 'cart'], product: item })
+        // addCartItem({ collectionName: ['users', uid, 'cart'], product: item })
+        addCartItem({
+          collectionName: `/users/${uid}/cart/${item.id}`,
+          product: item,
+        })
       );
     } else {
       dispatch(addToCart(item));
@@ -33,7 +37,8 @@ const CardItem = ({ item }) => {
 
   return (
     <li className={styles.card_item}>
-      <Link to={`/product/${item.id}`}>
+      {/* <Link to={`/product/${item.id}`}> */}
+      <Link to={`/product/${item.docId}`}>
         <img src={item.image} alt='product card' />
       </Link>
 

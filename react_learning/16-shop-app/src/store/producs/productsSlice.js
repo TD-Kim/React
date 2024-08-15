@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getDatas } from '../../firebase';
+import { getDatasRest } from '../../api';
 
 // 비동기 작업 생성: 제품 목록 가져오기
 // export const fetchProducts = createAsyncThunk(
@@ -33,7 +34,8 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async ({ collectionName, queryOptions }) => {
     try {
-      const resultData = await getDatas(collectionName, queryOptions);
+      // const resultData = await getDatas(collectionName, queryOptions);
+      const resultData = await getDatasRest(collectionName, queryOptions);
       return resultData;
     } catch (error) {
       return null;

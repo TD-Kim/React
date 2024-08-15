@@ -409,15 +409,14 @@ export const dummyData = {
 
 export const parseFirestoreFields = (fields) => {
   const parsed = {};
-
   Object.keys(fields).forEach((key) => {
     const field = fields[key];
     if (field.stringValue !== undefined) {
       parsed[key] = field.stringValue;
     } else if (field.integerValue !== undefined) {
-      parsed[key] = field.integerValue;
+      parsed[key] = Number(field.integerValue);
     } else if (field.doubleValue !== undefined) {
-      parsed[key] = field.doubleValue;
+      parsed[key] = Number(field.doubleValue);
     } else if (field.booleanValue !== undefined) {
       parsed[key] = field.booleanValue;
     } else if (field.timestampValue !== undefined) {
@@ -430,7 +429,6 @@ export const parseFirestoreFields = (fields) => {
       );
     }
   });
-
   return parsed;
 };
 
@@ -464,34 +462,3 @@ export const toFirestoreFields = (obj) => {
 
   return fields;
 };
-
-export async function getDatasRest(collectionName, queryOptions) {
-  const {
-    conditions: [condition],
-  } = queryOptions;
-  console.log(condition);
-  const { field, operator, value } = condition;
-  try {
-    const response = await api.post(`:runQuery`, {
-      structuredQuery: {
-        from: [{ collectionId: collectionName }],
-        where: {
-          fieldFilter: {
-            field: { fieldPath: field },
-            op: 'GREATER_THAN_OR_EQUAL',
-            value: {
-              stringValue: value,
-            },
-          },
-        },
-      },
-    });
-    console.log(response);
-    return response.data.map((data) => {
-      return parseFirestoreFields(data.document.fields);
-    });
-  } catch (error) {
-    console.error('데이터 가져오기 오류:', error);
-    throw error;
-  }
-}

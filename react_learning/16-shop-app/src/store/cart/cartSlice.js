@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { addCart, asyncCart, createOrder, deleteDatas } from '../../firebase';
+import { addDatasRest } from '../../api';
 
 // `postOrder` 비동기 작업 생성
 // export const postOrder = createAsyncThunk(
@@ -59,6 +60,7 @@ export const cartSlice = createSlice({
       localStorage.setItem('userId', JSON.stringify(state.userId));
     },
     addToCart: (state, action) => {
+      console.log(action.payload);
       state.products.push({
         ...action.payload,
         quantity: 1,
@@ -139,7 +141,8 @@ export const addCartItem = createAsyncThunk(
       const addItem = products.find(
         (sliceProduct) => sliceProduct.id === product.id
       );
-      await addCart(collectionName, addItem);
+      // await addCart(collectionName, addItem);
+      await addDatasRest(collectionName, addItem);
     } catch (error) {}
   }
 );

@@ -16,7 +16,8 @@ const DetailPage = () => {
   const productMatching = products.some((item) => item.id === product.id);
 
   useEffect(() => {
-    dispatch(fetchProduct(productId));
+    // dispatch(fetchProduct(productId));
+    dispatch(fetchProduct(id));
   }, [productId]);
 
   const addItemToCart = () => {
