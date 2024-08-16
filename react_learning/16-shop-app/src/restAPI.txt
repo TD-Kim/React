@@ -14,6 +14,13 @@ PUT: 자원 전체 수정
 PATCH: 자원 부분 수정
 DELETE: 자원 삭제
 
+GET /users: 모든 사용자 목록을 가져옵니다.
+GET /users/{userId}: 특정 사용자의 정보를 가져옵니다.
+POST /users: 새로운 사용자를 생성합니다.
+PUT /users/{userId}: 특정 사용자의 정보를 전체적으로 업데이트합니다.
+PATCH /users/{userId}: 특정 사용자의 정보 중 일부를 업데이트합니다.
+DELETE /users/{userId}: 특정 사용자를 삭제합니다.
+
 3. 무상태성(Statelessness):
 각 요청은 독립적이어야 하며, 서버는 요청 간의 상태를 저장하지 않습니다. 
 모든 필요한 정보는 요청에 포함되어야 합니다.
@@ -28,13 +35,6 @@ DELETE: 자원 삭제
 6. 일관된 인터페이스(Uniform Interface):
 자원에 접근하는 인터페이스는 일관되어야 하며, RESTful API는 표준화된 인터페이스를 통해 
 클라이언트와 서버 간의 상호작용을 단순화합니다.
-
-GET /users: 모든 사용자 목록을 가져옵니다.
-GET /users/{userId}: 특정 사용자의 정보를 가져옵니다.
-POST /users: 새로운 사용자를 생성합니다.
-PUT /users/{userId}: 특정 사용자의 정보를 전체적으로 업데이트합니다.
-PATCH /users/{userId}: 특정 사용자의 정보 중 일부를 업데이트합니다.
-DELETE /users/{userId}: 특정 사용자를 삭제합니다.
 
 
 -조회-

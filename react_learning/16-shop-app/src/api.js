@@ -68,7 +68,6 @@ export async function getProduct(productId) {
 
 export async function addDatasRest(collectionName, addObj) {
   addObj = toFirestoreFields(addObj);
-  console.log(addObj);
   await api.patch(collectionName, { fields: addObj });
 }
 
@@ -80,6 +79,21 @@ export async function signUpUser(url, email, password) {
       returnSecureToken: true,
     });
     console.log('User signed up successfully:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error signing up user:', error.response.data);
+  }
+}
+
+export async function signInUser(url, email, password) {
+  try {
+    const response = await authApi.post(url, {
+      email,
+      password,
+      returnSecureToken: true,
+    });
+    console.log('User signed up successfully:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Error signing up user:', error.response.data);
   }
@@ -90,7 +104,7 @@ export async function asyncCartRest(uid, cartArr) {
     const requests = cartArr.map((item) => {
       return {
         create: {
-          name: `projects/shop-app-c8539/databases/(default)/documents/users/${uid}/cart/${item.id.toSting()}`,
+          name: `projects/shop-app-c8539/databases/(default)/documents/users/${uid}/cart/${item.id}`,
           fields: toFirestoreFields(item),
         },
       };
@@ -108,8 +122,11 @@ export async function asyncCartRest(uid, cartArr) {
       }
     );
     console.log('BatchWrite response:', response.data);
+    const resultData = await api.get(`/users/${uid}/cart`);
+    return parseFirestoreFields(resultData);
   } catch (error) {
     console.error('Error performing batch write:', error);
+    return false;
   }
 }
 

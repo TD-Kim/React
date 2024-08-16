@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { addCart, asyncCart, createOrder, deleteDatas } from '../../firebase';
-import { addDatasRest } from '../../api';
+import { addDatasRest, asyncCartRest } from '../../api';
 
 // `postOrder` 비동기 작업 생성
 // export const postOrder = createAsyncThunk(
@@ -24,11 +24,20 @@ export const postOrder = createAsyncThunk(
   'cart/createOrder',
   async ({ uid, cart }, thunkAPI) => {
     try {
-      const result = await createOrder(uid, cart);
-
-      if (!result) {
-        return;
-      }
+      // const result = await createOrder(uid, cart);
+      const addObj = {
+        cancelYn: 'N',
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime(),
+        ...cart,
+      };
+      await addDatasRest(
+        `/users/${uid}/orders/${crypto.randomUUID().slice(0, 20)}`,
+        addObj
+      );
+      // if (!result) {
+      //   return;
+      // }
       thunkAPI.dispatch(sendOrder());
     } catch (error) {
       return thunkAPI.rejectWithValue('Error sending order');
@@ -119,8 +128,8 @@ export const asyncCartAndStorage = createAsyncThunk(
   'cart/asyncCartItem',
   async ({ uid, cartItems }, thunkAPI) => {
     try {
-      const result = await asyncCart(uid, cartItems);
-      console.log(result);
+      // const result = await asyncCart(uid, cartItems);
+      const result = await asyncCartRest(uid, cartItems);
       thunkAPI.dispatch(asyncCartAndSlice(result));
     } catch (error) {
       console.error(error);

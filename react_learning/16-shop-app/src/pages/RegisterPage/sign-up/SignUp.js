@@ -23,31 +23,31 @@ const SignUp = () => {
     // 사용된다. 이 토큰은 상대적으로 긴 수명을 가지며, 클라이언트 측에서 안전하게 저장된다.
     // 리프레시 토큰을 사용하면 사용자가 다시 로그인하지 않고도 세션을 유지할 수 있다.
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // const userCredential = await signUpUser(
-      //   `signUp?key=${API_KEY}`,
+      // const userCredential = await createUserWithEmailAndPassword(
+      //   auth,
       //   email,
       //   password
       // );
-      const { user } = userCredential;
-      console.log(user);
+      const userCredential = await signUpUser(
+        `signUp?key=${API_KEY}`,
+        email,
+        password
+      );
+      // const { user } = userCredential;
+      const { email, localId, refreshToken } = userCredential;
       // 로컬 스토리지에서 장바구니 데이터 읽기
       const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
 
       // await joinUser(user.uid, user.email);
       // await asyncCart(user.uid, cartItems);
-      await addDatasRest(`/users/${user.uid}`, { email: user.email });
-      await asyncCartRest(user.uid, cartItems);
+      await addDatasRest(`/users/${localId}`, { email: email });
+      await asyncCartRest(localId, cartItems);
       // Update Redux store
       dispatch(
         setUser({
-          email: user.email,
-          token: user.refreshToken,
-          uid: user.uid,
+          email: email,
+          token: refreshToken,
+          uid: localId,
         })
       );
       // dispatch(setUserId(userCredential.user.uid));

@@ -6,6 +6,7 @@ import Form from '../../../components/form/Form';
 import { app, asyncCart, getUserAuth } from '../../../firebase';
 import { asyncCartAndStorage, setUserId } from '../../../store/cart/cartSlice';
 import { setUser } from '../../../store/user/userSlice';
+import { API_KEY, signInUser } from '../../../api';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -15,22 +16,28 @@ const SignIn = () => {
 
   const handleLogin = async (email, password) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
+      // const userCredential = await signInWithEmailAndPassword(
+      //   auth,
+      //   email,
+      //   password
+      // );
+      const userCredential = await signInUser(
+        `signInWithPassword?key=${API_KEY}`,
         email,
         password
       );
       // 로컬 스토리지에서 장바구니 데이터 읽기
-      const { user } = userCredential;
+      const { email, localId, refreshToken } = userCredential;
       const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
       // await asyncCart(user.uid, { cart: cartItems });
       // await asyncCart(user.uid, cartItems);
-      dispatch(asyncCartAndStorage({ uid: user.uid, cartItems }));
+      // dispatch(asyncCartAndStorage({ uid: user.uid, cartItems }));
+      dispatch(asyncCartAndStorage({ uid: localId, cartItems }));
       dispatch(
         setUser({
-          email: user.email,
-          token: user.refreshToken,
-          uid: user.uid,
+          email: email,
+          token: refreshToken,
+          uid: localId,
         })
       );
       // dispatch(setUserId(user.uid));
