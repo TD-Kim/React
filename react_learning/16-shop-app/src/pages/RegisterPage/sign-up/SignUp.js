@@ -34,18 +34,17 @@ const SignUp = () => {
         password
       );
       // const { user } = userCredential;
-      const { email, localId, refreshToken } = userCredential;
+      const { email: userEmail, localId, refreshToken } = userCredential;
       // 로컬 스토리지에서 장바구니 데이터 읽기
       const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
-
       // await joinUser(user.uid, user.email);
       // await asyncCart(user.uid, cartItems);
-      await addDatasRest(`/users/${localId}`, { email: email });
+      await addDatasRest(`/users/${localId}`, { email: userEmail });
       await asyncCartRest(localId, cartItems);
       // Update Redux store
       dispatch(
         setUser({
-          email: email,
+          email: userEmail,
           token: refreshToken,
           uid: localId,
         })

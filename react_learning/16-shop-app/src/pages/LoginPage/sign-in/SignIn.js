@@ -27,7 +27,8 @@ const SignIn = () => {
         password
       );
       // 로컬 스토리지에서 장바구니 데이터 읽기
-      const { email, localId, refreshToken } = userCredential;
+      const { email: userEmail, localId, refreshToken } = userCredential;
+      console.log(userEmail);
       const cartItems = JSON.parse(localStorage.getItem('cartProducts')) || [];
       // await asyncCart(user.uid, { cart: cartItems });
       // await asyncCart(user.uid, cartItems);
@@ -35,7 +36,7 @@ const SignIn = () => {
       dispatch(asyncCartAndStorage({ uid: localId, cartItems }));
       dispatch(
         setUser({
-          email: email,
+          email: userEmail,
           token: refreshToken,
           uid: localId,
         })
